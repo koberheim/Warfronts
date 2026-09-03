@@ -19,6 +19,16 @@ public partial class EnemyDefinition : Resource
     [Export] public int LeakCost;
     [Export] public int Bounty;
 
+    [ExportGroup("Special Ability")]
+    [Export] public string SpecialAbilityId = "";
+    [Export] public int CohesionGroupSize = 1;
+    [Export] public float CohesionCatchupSpeedMultiplier = 1f;
+    [Export] public float CohesionCatchupThreshold = 0.05f;
+    [Export] public bool SuppressionImmune;
+    [Export] public float SiegeBombardRangeTiles = 11f;
+    [Export] public float SiegeBombardIntervalSeconds = 8f;
+    [Export] public float SiegeSuppressionDurationSeconds = 6f;
+
     [ExportGroup("Boss Phase")]
     [Export] public bool IsBoss;
     [Export] public float SkirtHp;

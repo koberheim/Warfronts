@@ -6,6 +6,7 @@ using FrontsOfWar.Economy;
 using FrontsOfWar.Enemies;
 using FrontsOfWar.Towers;
 using FrontsOfWar.Waves;
+using System.Linq;
 
 namespace FrontsOfWar.Map;
 
@@ -74,6 +75,7 @@ public partial class MapRuntime : Node2D, ISimTickable
         CommandPoints = new CommandPointLedger(config, () => CommandPosts.TotalCommandPointBonus());
         Abilities = new AbilitySystem(config);
         Waves = new WaveRunner(Enemies, Path, enemyContainer);
+        Enemies.SiegeTargetsProvider = () => Towers.Towers.Select(tower => (ISiegeTarget)tower).ToArray();
         FriendlyUnits = new FriendlyUnitManager(friendlyContainer);
         EventBus.Instance?.Subscribe<BossAddsRequestedEvent>(OnBossAddsRequested);
         EventBus.Instance?.Subscribe<BossReachedObjectiveEvent>(OnBossReachedObjective);
@@ -114,9 +116,10 @@ public partial class MapRuntime : Node2D, ISimTickable
         if (DebugLogEvents) _debugLogger = new DebugEventLogger();
         if (DebugWaveSequence?.Waves is { Length: > 0 } sequence)
         {
-            Waves.StartWave(sequence[0]);
+            int startIndex = RequestedDebugWaveIndex(sequence);
+            Waves.StartWave(sequence[startIndex]);
             if (!DebugSingleWave)
-                for (int i = 1; i < sequence.Length; i++) Waves.QueueWaves(new[] { sequence[i] });
+                for (int i = startIndex + 1; i < sequence.Length; i++) Waves.QueueWaves(new[] { sequence[i] });
         }
         else if (DebugStartWave != null)
         {
@@ -124,6 +127,20 @@ public partial class MapRuntime : Node2D, ISimTickable
         }
 
         GameLoop.Instance.CurrentMission = this;
+    }
+
+    private static int RequestedDebugWaveIndex(WaveDefinition[] sequence)
+    {
+        var args = OS.GetCmdlineArgs();
+        for (int i = 0; i + 1 < args.Length; i++)
+        {
+            if (args[i] == "--wave" && int.TryParse(args[i + 1], out int requested))
+            {
+                for (int waveIndex = 0; waveIndex < sequence.Length; waveIndex++)
+                    if (sequence[waveIndex].WaveNumber == requested) return waveIndex;
+            }
+        }
+        return 0;
     }
 
     public override void _ExitTree()

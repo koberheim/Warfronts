@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_heavy_armor.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e7_heavy_armor"
+Archetype = 6
+ArmorClass = 3
+BaseHp = 1400.0
+MoveSpeedTilesPerSec = 1.0
+LeakCost = 5
+Bounty = 50
+SuppressionImmune = true
+ControllerScene = ExtResource("2")

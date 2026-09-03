@@ -104,7 +104,8 @@ public class WaveRunner
         var instance = scene.Instantiate<EnemyController>();
         instance.Definition = state.Group.Enemy;
         _enemyParent.AddChild(instance);
-        instance.Initialize(_path);
+        float hpMultiplier = state.Group.HpMultiplierOverride > 0f ? state.Group.HpMultiplierOverride : 1f;
+        instance.Initialize(_path, hpMultiplier);
         _enemyManager.Register(instance);
 
         state.SpawnedCount++;

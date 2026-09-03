@@ -2,6 +2,7 @@ using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
 using FrontsOfWar.Enemies;
+using FrontsOfWar.Map;
 using System.Linq;
 
 namespace FrontsOfWar.Towers;
@@ -12,14 +13,17 @@ namespace FrontsOfWar.Towers;
 // bookkeeping is delegated to TowerUpgradeController; the Supply
 // transaction itself (checking/spending balance) is the caller's job — this
 // class only tracks what upgrading or selling would cost/refund.
-public partial class TowerController : Node2D, IDamageSource
+public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
 {
     [Export] public TowerDefinition Definition;
+    [Export] public PadTag PadTag = PadTag.Standard;
 
     public TargetingProfile CurrentTargeting { get; set; }
     public TowerUpgradeController Upgrade { get; private set; }
     public float LifetimeDamage { get; private set; }
     public string SourceId => Name;
+    public Vector2 SiegePosition => GlobalPosition;
+    public bool IsSiegeImmune => PadTag == PadTag.Enclosed;
 
     // Set each tick by CommandPostManager before towers fire (GDD §7.5,
     // T9's aura); reset to 1 (no bonus) at the top of every tick. Multiple
@@ -51,11 +55,13 @@ public partial class TowerController : Node2D, IDamageSource
         Upgrade = new TowerUpgradeController(Definition, GameBalanceConfigAutoload.Config);
         SetupClickArea();
         EventBus.Instance?.Subscribe<EnemyDamagedEvent>(OnEnemyDamaged);
+        EventBus.Instance?.Subscribe<EnemySiegeBombardEvent>(OnEnemySiegeBombard);
     }
 
     public override void _ExitTree()
     {
         EventBus.Instance?.Unsubscribe<EnemyDamagedEvent>(OnEnemyDamaged);
+        EventBus.Instance?.Unsubscribe<EnemySiegeBombardEvent>(OnEnemySiegeBombard);
     }
 
     // Built in code rather than hand-added to each tower's .tscn (GDD §13.5:
@@ -218,6 +224,14 @@ public partial class TowerController : Node2D, IDamageSource
     private void OnEnemyDamaged(EnemyDamagedEvent evt)
     {
         if (ReferenceEquals(evt.Source, this)) LifetimeDamage += evt.DamageDealt;
+    }
+
+    private void OnEnemySiegeBombard(EnemySiegeBombardEvent evt)
+    {
+        float tileSize = GameBalanceConfigAutoload.Config.TilePixelSize;
+        float distanceTiles = GlobalPosition.DistanceTo(evt.Position) / tileSize;
+        if (SiegeRules.ShouldSuppress(PadTag, distanceTiles, evt.RangeTiles))
+            ApplySuppression(evt.DurationSeconds);
     }
 
     // Computes the refund and announces the sale; the caller (the tower

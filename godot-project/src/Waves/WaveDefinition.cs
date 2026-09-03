@@ -9,6 +9,9 @@ public partial class WaveDefinition : Resource
 {
     [Export] public int WaveNumber = 1;
     [Export] public float BuildTimeSeconds = 25f;
+    [Export] public string[] PreviewTags = System.Array.Empty<string>();
+    [Export] public bool IsAirWave;
     [Export] public bool IsBossWave;
+    [Export] public float EarlyCallBonusMultiplier = 1f;
     [Export] public SpawnGroup[] Groups = System.Array.Empty<SpawnGroup>();
 }

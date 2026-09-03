@@ -41,9 +41,9 @@ godot --headless --path . --run-tests=CoreTests --quit-after 1200
 M3 vertical-slice systems are implemented in primitive grey-box form: Arsenal
 friendlies, the Breakthrough Panzer boss, briefing/loadout/mission/results
 flow, and the integrated tutorial. M3.5 adds the editor-only Map Planner, and
-M4 prompt 27 now contains the five remaining universal archetypes with their
-authored upgrade branches. M4 is in progress; NationProfile, the remaining
-enemies, and the Wave Editor have not started. See
+M4 now contains the five remaining universal archetypes, six data-authored
+nation profiles with parity validation, E3/E7/E12 enemy mechanics, and the
+Wave Editor dock. M5 signatures and air systems are next. See
 [docs/PROGRESS.md](docs/PROGRESS.md).
 
 The standalone `dotnet build` command requires an online restore of

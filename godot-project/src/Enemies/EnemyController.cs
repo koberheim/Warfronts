@@ -19,9 +19,12 @@ public partial class EnemyController : Node2D, ITargetable
     private float _hpScaleMultiplier = 1f;
     private Vector2 _previousPosition;
     private bool _softBlocked;
+    private float _cohesionLeadProgress;
+    private float _siegeBombardRemaining;
     private CanvasItem _bossSkirtVisual;
 
     public BossPhaseController BossPhase { get; private set; }
+    public PathNetwork PathNetwork { get; private set; }
 
     public StatusController Status { get; } = new();
 
@@ -29,16 +32,21 @@ public partial class EnemyController : Node2D, ITargetable
     public bool IsAlive => _currentHp > 0f;
     public bool IsAir => Definition.IsAir;
     public float PathProgress => _pathFollower?.Progress ?? 0f;
+    public float PathDistancePixels => _pathFollower?.DistanceTraveled ?? 0f;
     public bool ReachedEnd => _pathFollower?.ReachedEnd ?? false;
     public Vector2 Velocity { get; private set; }
 
     public void Initialize(PathNetwork path, float hpScaleMultiplier = 1f)
     {
+        PathNetwork = path;
         _pathFollower = new PathFollower(path);
         _hpScaleMultiplier = hpScaleMultiplier;
         _maxHp = Definition.BaseHp * hpScaleMultiplier;
         _currentHp = _maxHp;
         BossPhase = Definition.IsBoss ? new BossPhaseController(Definition) : null;
+        _cohesionLeadProgress = 0f;
+        _siegeBombardRemaining = Definition.SpecialAbilityId == "siege_bombard"
+            ? Definition.SiegeBombardIntervalSeconds : 0f;
         _bossSkirtVisual = GetNodeOrNull<CanvasItem>("Skirt");
         GlobalPosition = path.GetPositionAtDistance(0f);
     }
@@ -50,9 +58,23 @@ public partial class EnemyController : Node2D, ITargetable
         Status.Tick(tickDeltaSeconds);
         BossPhase?.Tick(tickDeltaSeconds);
 
+        if (Definition.SpecialAbilityId == "siege_bombard")
+        {
+            _siegeBombardRemaining -= tickDeltaSeconds;
+            if (_siegeBombardRemaining <= 0f)
+            {
+                EventBus.Instance?.Publish(new EnemySiegeBombardEvent(this, GlobalPosition,
+                    Definition.SiegeBombardRangeTiles, Definition.SiegeSuppressionDurationSeconds));
+                _siegeBombardRemaining = Definition.SiegeBombardIntervalSeconds;
+            }
+        }
+
         _previousPosition = GlobalPosition;
         var config = GameBalanceConfigAutoload.Config;
         float speedMultiplier = Status.IsSuppressed ? config.SuppressedMoveSpeedMultiplier : 1f;
+        if (Definition.SpecialAbilityId == "swarm_cohesion" &&
+            _cohesionLeadProgress - PathProgress >= Definition.CohesionCatchupThreshold)
+            speedMultiplier *= Definition.CohesionCatchupSpeedMultiplier;
         if (!_softBlocked)
             _pathFollower.Advance(Definition.MoveSpeedTilesPerSec * (BossPhase?.SpeedMultiplier ?? 1f), speedMultiplier, tickDeltaSeconds, config.TilePixelSize);
         GlobalPosition = _pathFollower.CurrentPosition;
@@ -86,9 +108,20 @@ public partial class EnemyController : Node2D, ITargetable
 
     public void SetSoftBlocked(bool blocked) => _softBlocked = blocked;
 
+    public void SetCohesionLeadProgress(float leadProgress) => _cohesionLeadProgress = leadProgress;
+
+    public void SetSiegeHoldDistance(float distancePixels)
+    {
+        if (_pathFollower != null) _pathFollower.HoldDistancePixels = distancePixels;
+    }
+
     public int ConsumeBossAddRequest() => BossPhase?.ConsumePendingAdds() ?? 0;
 
-    public void ApplySuppressed(float durationSeconds, float hardCapSeconds) => Status.ApplySuppressed(durationSeconds, hardCapSeconds);
+    public void ApplySuppressed(float durationSeconds, float hardCapSeconds)
+    {
+        if (Definition.SuppressionImmune) return;
+        Status.ApplySuppressed(durationSeconds, hardCapSeconds);
+    }
     public void ApplySpotted(float durationSeconds) => Status.ApplySpotted(durationSeconds);
 
     // Health bar only appears once damaged (GDD §13.6 — reduces clutter),

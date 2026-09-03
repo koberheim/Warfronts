@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_swarm_infantry.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e3_swarm_infantry"
+Archetype = 2
+ArmorClass = 0
+BaseHp = 26.0
+MoveSpeedTilesPerSec = 1.9
+LeakCost = 1
+Bounty = 1
+SpecialAbilityId = "swarm_cohesion"
+CohesionGroupSize = 8
+CohesionCatchupSpeedMultiplier = 1.35
+CohesionCatchupThreshold = 0.05
+ControllerScene = ExtResource("2")

@@ -11,6 +11,10 @@ public partial class SpawnGroup : Resource
 {
     [Export] public EnemyDefinition Enemy;
     [Export] public int Count = 1;
+    [Export] public string SpawnPointId = "entry_0";
+    [Export] public string PathId = "path_0";
     [Export] public float StartDelaySeconds;
     [Export] public float IntervalSeconds = 1f;
+    [Export] public bool EliteFlag;
+    [Export] public float HpMultiplierOverride = 1f;
 }

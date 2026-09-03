@@ -26,6 +26,23 @@ public readonly struct EnemyLeakedEvent
     }
 }
 
+public readonly struct EnemySiegeBombardEvent
+{
+    public readonly EnemyController Source;
+    public readonly Godot.Vector2 Position;
+    public readonly float RangeTiles;
+    public readonly float DurationSeconds;
+
+    public EnemySiegeBombardEvent(EnemyController source, Godot.Vector2 position,
+                                  float rangeTiles, float durationSeconds)
+    {
+        Source = source;
+        Position = position;
+        RangeTiles = rangeTiles;
+        DurationSeconds = durationSeconds;
+    }
+}
+
 // Published on every damage instance — the ricochet/ineffective-damage
 // audiovisual feedback (GDD §5.7, M2 prompt 22) subscribes to this rather
 // than TowerController reaching into UI/VFX directly.

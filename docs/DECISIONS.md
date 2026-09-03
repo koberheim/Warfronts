@@ -469,6 +469,42 @@ revisited — worth preserving before it's lost to editing history.
   The correction preserves one coherent implementation order.
 - **Status:** Active.
 
+### D33 - Nation leans preserve a shared universal roster
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Represent nation identity with six `NationProfile` resources
+  that apply small stat leans to shared `TowerDefinition` data. Keep each
+  authored lean inside the ±15% envelope and validate the complete roster's
+  DPS-per-Supply result against the ±3% parity tolerance.
+- **Rationale:** This satisfies GDD §§8 and 19 prompt 28 without creating
+  nation-specific behavior scripts or duplicating the universal tower roster.
+- **Status:** Active.
+
+### D34 - Siege targeting uses an interface-backed path hold and event
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Let `EnemyManager` obtain `ISiegeTarget` positions through a
+  provider, hold E12 at its authored range along the route, and publish a
+  typed bombard event. Towers decide locally whether their pad is Enclosed
+  and whether the shell is in range.
+- **Rationale:** The split preserves low coupling while making Siege
+  suppression, Enclosed immunity, and the 11-tile stop point testable without
+  direct enemy-to-tower references.
+- **Status:** Active.
+
+### D35 - Threat Value uses a review-oriented editor estimate
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Use effective HP × leak cost, with readable air/siege/swarm/
+  elite modifiers, as the Wave Editor's Threat Value estimate. Pair it with
+  a conservative 50 HP/s reference kill estimate for pacing warnings; these
+  values are authoring diagnostics, not runtime combat stats.
+- **Rationale:** The GDD defines the inputs and warnings but does not provide
+  fixed weights. Keeping the estimate isolated in `ThreatValueCalculator`
+  makes future balance review local and prevents editor heuristics from
+  changing gameplay.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

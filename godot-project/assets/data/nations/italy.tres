@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Nations/NationProfile.cs" id="1"]
+[ext_resource type="Script" path="res://src/Nations/NationStatLean.cs" id="2"]
+
+[sub_resource type="Resource" id="Lean1"]
+script = ExtResource("2")
+Archetype = 2
+StatId = "turn_rate"
+Multiplier = 0.90
+
+[sub_resource type="Resource" id="Lean2"]
+script = ExtResource("2")
+Archetype = 8
+StatId = "aura_radius"
+Multiplier = 1.10
+
+[resource]
+script = ExtResource("1")
+Id = "italy"
+DisplayName = "Italy"
+Alliance = "Axis"
+StatLeans = [SubResource("Lean1"), SubResource("Lean2")]
+BranchFlavorIds = ["mobile_screen", "field_command"]
+SignatureId = "rapid_redeployment"

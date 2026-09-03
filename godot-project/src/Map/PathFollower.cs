@@ -10,6 +10,7 @@ public class PathFollower
     private readonly PathNetwork _path;
 
     public float DistanceTraveled { get; private set; }
+    public float HoldDistancePixels { get; set; } = float.MaxValue;
     public float Progress => _path.LengthPixels > 0f ? DistanceTraveled / _path.LengthPixels : 0f;
     public bool ReachedEnd => DistanceTraveled >= _path.LengthPixels;
     public Vector2 CurrentPosition => _path.GetPositionAtDistance(DistanceTraveled);
@@ -24,7 +25,8 @@ public class PathFollower
     // frame delta, so this stays exact regardless of render framerate.
     public void Advance(float speedTilesPerSec, float speedMultiplier, float tickDeltaSeconds, float tilePixelSize)
     {
-        DistanceTraveled += speedTilesPerSec * speedMultiplier * tilePixelSize * tickDeltaSeconds;
-        if (DistanceTraveled > _path.LengthPixels) DistanceTraveled = _path.LengthPixels;
+        float nextDistance = DistanceTraveled + speedTilesPerSec * speedMultiplier * tilePixelSize * tickDeltaSeconds;
+        nextDistance = Mathf.Min(Mathf.Min(nextDistance, HoldDistancePixels), _path.LengthPixels);
+        DistanceTraveled = Mathf.Max(DistanceTraveled, nextDistance);
     }
 }

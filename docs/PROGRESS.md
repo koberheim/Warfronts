@@ -177,24 +177,32 @@ were added and M4 remains unopened.
     Each has authored L1/L2 data plus both L3/L4 branches, with generic
     target-domain, secondary-fire, status, salvo, and minefield-rule hooks.
     The M4 resource tests verify the GDD profiles and branch differences.
-28. [ ] `NationProfile`, national stat leaning, and the ±15%/±3% validators.
-29. [ ] E3, E7, E12, including Siege tower-suppression.
-30. [ ] Wave Editor plugin with the Threat Value graph and pacing warnings.
+28. [x] `NationProfile`, national stat leaning, and the ±15%/±3% validators.
+    Six nation resources apply data-authored stat leans to shared tower
+    definitions; the validator checks the envelope and roster DPS-per-Supply
+    parity.
+29. [x] E3 Swarm Infantry, E7 Heavy Armor, and E12 Siege Artillery. Swarm
+    cohesion catch-up, Heavy suppression immunity, and Siege bombardment are
+    implemented. Siege stops about 11 tiles from the nearest non-enclosed
+    tower and broadcasts six-second suppression every eight seconds.
+30. [x] Wave Editor plugin with a GraphEdit timeline, Threat Value graph-like
+    group blocks, pacing warnings, JSON export, and one-click mission
+    playtest launch.
 31–45. Not started.
 
-**M4 prompt 27 verification:** the .NET build succeeds with 0 warnings/errors;
-the Mono Godot `M4TowerTests` suite passes 3/3, covering resource loading,
-both upgrade branches, target domains, secondary attacks, artillery delay/
-salvos, and minefield limits. Runtime national variants, remaining enemies,
-and the Wave Editor are not started.
+**M4 prompts 28–30 verification:** the .NET build succeeds with 0
+warnings/errors. Mono Godot passes `M4TowerTests` 3/3, `M4NationEnemyWaveTests`
+3/3, and `CoreTests` 15/15. The Mono Godot editor scan initializes both
+editor plugins; only the machine's known editor-cache/IDE-metadata permission
+messages remain. M4 is complete; M5 signatures and air systems are next.
 
 ---
 
 ## Historical blockers / current follow-up
 
-No current hard blockers. D17 is superseded by D25; M4 prompt 27 is complete
-and prompts 28–30 remain. The next work is the NationProfile system, after
-review of the current M3 visual slice and planner output.
+No current hard blockers. D17 is superseded by D25; M4 prompts 27–30 are
+complete. The next work is M5 signature towers and air systems, after review
+of the current M4 editor/runtime behavior.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is now the active

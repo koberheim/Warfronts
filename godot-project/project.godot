@@ -28,7 +28,7 @@ project/assembly_name="FrontsOfWar"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/map_planner/plugin.cfg")
+enabled=PackedStringArray("res://addons/map_planner/plugin.cfg", "res://addons/wave_editor/plugin.cfg")
 
 [rendering]
 

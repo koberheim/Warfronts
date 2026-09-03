@@ -12,6 +12,7 @@ namespace FrontsOfWar.Towers;
 public partial class TowerDefinition : Resource
 {
     [Export] public string Id;
+    [Export] public string BehaviorId = "";
     [Export] public TowerArchetype Archetype;
     [Export] public string DisplayName;
     [Export] public DamageType DamageType;

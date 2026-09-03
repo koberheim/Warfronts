@@ -457,6 +457,18 @@ revisited — worth preserving before it's lost to editing history.
   launch scope, and the post-M3 one-in-one-out rule.
 - **Status:** Active.
 
+### D32 - M4 prompt 27 includes all five remaining universal archetypes
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Treat the numbered M4 implementation ladder as authoritative
+  for milestone placement: implement T2, T5, T6, T7, and T8 in M4. The three
+  individual roster scope labels that said M5 were corrected to M4. Keep M5
+  focused on signatures, air systems, and support enemies.
+- **Rationale:** GDD §19 explicitly assigns all five remaining archetypes to
+  M4 prompt 27, while the individual labels were internally inconsistent.
+  The correction preserves one coherent implementation order.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

@@ -10,5 +10,6 @@ namespace FrontsOfWar.Towers;
 public partial class TowerBranch : Resource
 {
     [Export] public string Name;
+    [Export] public string BehaviorId = "";
     [Export] public TowerStatBlock[] Levels = System.Array.Empty<TowerStatBlock>();
 }

@@ -366,7 +366,7 @@ Nine archetypes. Every nation gets all nine, so the fundamental strategic vocabu
   - **Overwatch** — Ignores targeting priority; automatically targets the highest-value support/escort/recon unit in range and applies **Spotted**. The "kill the healer" branch.
   - **Anti-Materiel** — +100% damage, −35% rate of fire, gains 1-tile splash. Pivots the tower toward vehicles.
 - **National expression:** Britain's SAS Ambush Post leans range and gains a small stealth-reveal aura in flavor terms via the Overwatch branch; the Soviet Siberian Sniper Nest leans damage; Italy's Alpini Post leans cost and gains elevation bonus synergy.
-- **Scope:** **[L]** (Milestone 5)
+- **Scope:** **[L]** (Milestone 4)
 
 ### T3 — Field Mortar
 *Cheap indirect area damage with a minimum range.*
@@ -436,7 +436,7 @@ Nine archetypes. Every nation gets all nine, so the fundamental strategic vocabu
   - **Predictive Fire** — +50% AA damage, +2.0 range, applies **Spotted** to air targets. The pure specialist for heavy air missions.
 - **National expression:** the German **Flak 88** is the flagship — it leans hard into damage and gets the strongest Dual Purpose branch (this is the one place a nation gets a clearly best-in-slot variant, and it is offset by Germany's high costs elsewhere). Britain's Bofors leans rate of fire. Others baseline.
 - **Anti-frustration rule:** Air waves are **always** announced with a distinct klaxon and a full-screen banner **three waves in advance**, and the wave preview marks them with a persistent wing icon. No player ever loses to a surprise air wave.
-- **Scope:** **[L]** (Milestone 5)
+- **Scope:** **[L]** (Milestone 4)
 
 ### T6 — Armored Emplacement
 *Dug-in tank turret. The expensive anchor.*
@@ -483,7 +483,7 @@ Nine archetypes. Every nation gets all nine, so the fundamental strategic vocabu
   - **Rocket Saturation** (Katyusha / Nebelwerfer identity) — 9 shells at 45% damage each scattered across a 4.5-tile radius, fire delay 3.2s. Blankets an area; devastating on swarms, unreliable on single targets.
 - **National expression:** The Soviet **Katyusha Rocket Truck** and German **Nebelwerfer** are the Rocket Saturation branch names and both nations lean into it; the US **105mm Howitzer Battery** and British **Royal Artillery Battery** lean Precision. Italy's **Coastal Artillery Gun** leans range hard (+25%) and cost up.
 - **Balancing risk:** Artillery that both reaches everywhere and hits everything trivializes maps. The fire delay is the balancing lever and must never be reduced below 1.4s on any branch or national variant. Log it in the balance dashboard as a hard floor.
-- **Scope:** **[L]** (Milestone 5)
+- **Scope:** **[L]** (Milestone 4)
 
 ### T8 — Minefield / Route Denial
 *Consumable placed damage. The only free-placement tower.*

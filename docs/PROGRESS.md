@@ -172,15 +172,29 @@ were added and M4 remains unopened.
 
 ## M4 through M8
 
-27–45. Not started.
+27. [x] Remaining universal archetype data: T2 Marksman Post, T5 Flak
+    Battery, T6 Armored Emplacement, T7 Heavy Artillery, and T8 Minefield.
+    Each has authored L1/L2 data plus both L3/L4 branches, with generic
+    target-domain, secondary-fire, status, salvo, and minefield-rule hooks.
+    The M4 resource tests verify the GDD profiles and branch differences.
+28. [ ] `NationProfile`, national stat leaning, and the ±15%/±3% validators.
+29. [ ] E3, E7, E12, including Siege tower-suppression.
+30. [ ] Wave Editor plugin with the Threat Value graph and pacing warnings.
+31–45. Not started.
+
+**M4 prompt 27 verification:** the .NET build succeeds with 0 warnings/errors;
+the Mono Godot `M4TowerTests` suite passes 3/3, covering resource loading,
+both upgrade branches, target domains, secondary attacks, artillery delay/
+salvos, and minefield limits. Runtime national variants, remaining enemies,
+and the Wave Editor are not started.
 
 ---
 
 ## Historical blockers / current follow-up
 
-No current hard blockers. D17 is superseded by D25; M4 is intentionally not
-started. The next work is review of the planner output and visual playtest/art
-insertion for the M3 slice, not runtime procedural maps or new content.
+No current hard blockers. D17 is superseded by D25; M4 prompt 27 is complete
+and prompts 28–30 remain. The next work is the NationProfile system, after
+review of the current M3 visual slice and planner output.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is now the active

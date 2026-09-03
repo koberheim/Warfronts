@@ -1,0 +1,98 @@
+[gd_resource type="Resource" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="3"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2")
+Cost = 90
+DamagePerShot = 45.0
+BlastRadiusTiles = 1.2
+MaxCharges = 6
+ChargeRegenSeconds = 12.0
+TriggerRadiusTiles = 1.2
+TriggerArmingSeconds = 0.4
+
+[sub_resource type="Resource" id="L2"]
+script = ExtResource("2")
+Cost = 59
+DamagePerShot = 48.0
+BlastRadiusTiles = 1.2
+MaxCharges = 6
+ChargeRegenSeconds = 11.0
+TriggerRadiusTiles = 1.2
+TriggerArmingSeconds = 0.4
+
+[sub_resource type="Resource" id="AntiTankL3"]
+script = ExtResource("2")
+Cost = 104
+DamagePerShot = 90.0
+BlastRadiusTiles = 0.8
+MaxCharges = 6
+ChargeRegenSeconds = 12.0
+TriggerRadiusTiles = 0.8
+TriggerArmingSeconds = 0.4
+UsesDamageTypeOverride = true
+DamageTypeOverride = 2
+
+[sub_resource type="Resource" id="AntiTankL4"]
+script = ExtResource("2")
+Cost = 189
+DamagePerShot = 99.0
+BlastRadiusTiles = 0.8
+MaxCharges = 6
+ChargeRegenSeconds = 11.0
+TriggerRadiusTiles = 0.8
+TriggerArmingSeconds = 0.4
+UsesDamageTypeOverride = true
+DamageTypeOverride = 2
+
+[sub_resource type="Resource" id="ConcussionL3"]
+script = ExtResource("2")
+Cost = 104
+DamagePerShot = 27.0
+BlastRadiusTiles = 1.2
+MaxCharges = 6
+ChargeRegenSeconds = 12.0
+TriggerRadiusTiles = 1.2
+TriggerArmingSeconds = 0.4
+StatusEffectId = "Suppressed"
+StatusDurationSeconds = 2.5
+
+[sub_resource type="Resource" id="ConcussionL4"]
+script = ExtResource("2")
+Cost = 189
+DamagePerShot = 30.0
+BlastRadiusTiles = 1.2
+MaxCharges = 6
+ChargeRegenSeconds = 11.0
+TriggerRadiusTiles = 1.2
+TriggerArmingSeconds = 0.4
+StatusEffectId = "Suppressed"
+StatusDurationSeconds = 2.5
+
+[sub_resource type="Resource" id="AntiTank"]
+script = ExtResource("3")
+Name = "Anti-Tank Mines"
+BehaviorId = "minefield_anti_tank"
+Levels = [SubResource("AntiTankL3"), SubResource("AntiTankL4")]
+
+[sub_resource type="Resource" id="Concussion"]
+script = ExtResource("3")
+Name = "Concussion Charges"
+BehaviorId = "minefield_concussion"
+Levels = [SubResource("ConcussionL3"), SubResource("ConcussionL4")]
+
+[resource]
+script = ExtResource("1")
+Id = "t8_minefield"
+BehaviorId = "minefield"
+Archetype = 7
+DisplayName = "Minefield"
+DamageType = 1
+DefaultTargeting = 5
+Levels = [SubResource("L1"), SubResource("L2")]
+BranchA = SubResource("AntiTank")
+BranchB = SubResource("Concussion")
+GroundOnly = true

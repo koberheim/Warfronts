@@ -1,0 +1,99 @@
+[gd_resource type="Resource" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/projectiles/projectile_mortar_shell.tscn" id="4"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2")
+Cost = 350
+DamagePerShot = 45.0
+RateOfFirePerSec = 0.2
+RangeTiles = 20.0
+MinRangeTiles = 6.0
+BlastRadiusTiles = 2.2
+SalvoCount = 3
+FireDelaySeconds = 2.5
+
+[sub_resource type="Resource" id="L2"]
+script = ExtResource("2")
+Cost = 228
+DamagePerShot = 48.0
+RateOfFirePerSec = 0.21
+RangeTiles = 20.0
+MinRangeTiles = 6.0
+BlastRadiusTiles = 2.2
+SalvoCount = 3
+FireDelaySeconds = 2.5
+
+[sub_resource type="Resource" id="PrecisionL3"]
+script = ExtResource("2")
+Cost = 403
+DamagePerShot = 117.0
+RateOfFirePerSec = 0.2
+RangeTiles = 20.0
+MinRangeTiles = 6.0
+BlastRadiusTiles = 1.4
+SalvoCount = 1
+FireDelaySeconds = 1.4
+
+[sub_resource type="Resource" id="PrecisionL4"]
+script = ExtResource("2")
+Cost = 735
+DamagePerShot = 135.0
+RateOfFirePerSec = 0.22
+RangeTiles = 20.0
+MinRangeTiles = 6.0
+BlastRadiusTiles = 1.4
+SalvoCount = 1
+FireDelaySeconds = 1.4
+
+[sub_resource type="Resource" id="RocketL3"]
+script = ExtResource("2")
+Cost = 403
+DamagePerShot = 20.25
+RateOfFirePerSec = 0.2
+RangeTiles = 20.0
+MinRangeTiles = 6.0
+BlastRadiusTiles = 4.5
+SalvoCount = 9
+FireDelaySeconds = 3.2
+
+[sub_resource type="Resource" id="RocketL4"]
+script = ExtResource("2")
+Cost = 735
+DamagePerShot = 24.0
+RateOfFirePerSec = 0.22
+RangeTiles = 20.0
+MinRangeTiles = 6.0
+BlastRadiusTiles = 4.5
+SalvoCount = 9
+FireDelaySeconds = 3.2
+
+[sub_resource type="Resource" id="Precision"]
+script = ExtResource("3")
+Name = "Precision Battery"
+BehaviorId = "artillery_precision"
+Levels = [SubResource("PrecisionL3"), SubResource("PrecisionL4")]
+
+[sub_resource type="Resource" id="Rocket"]
+script = ExtResource("3")
+Name = "Rocket Saturation"
+BehaviorId = "artillery_rocket_saturation"
+Levels = [SubResource("RocketL3"), SubResource("RocketL4")]
+
+[resource]
+script = ExtResource("1")
+Id = "t7_heavy_artillery"
+BehaviorId = "heavy_artillery"
+Archetype = 6
+DisplayName = "Heavy Artillery"
+DamageType = 1
+DefaultTargeting = 5
+Levels = [SubResource("L1"), SubResource("L2")]
+BranchA = SubResource("Precision")
+BranchB = SubResource("Rocket")
+ProjectileScene = ExtResource("4")
+ProjectileSpeedTilesPerSec = 6.0
+GroundOnly = true

@@ -30,7 +30,7 @@ public class ProjectileManager
         float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
 
-        projectile.Launch(target, stats.DamagePerShot, definition.DamageType,
+        projectile.Launch(target, stats.DamagePerShot * stats.DamageMultiplier, definition.DamageType,
             speedPixelsPerSec, blastRadiusPixels, origin, source);
         _active.Add((projectile, pool));
     }
@@ -50,7 +50,7 @@ public class ProjectileManager
         float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
 
-        projectile.LaunchAtPoint(impactPoint, stats.DamagePerShot, definition.DamageType,
+        projectile.LaunchAtPoint(impactPoint, stats.DamagePerShot * stats.DamageMultiplier, definition.DamageType,
             speedPixelsPerSec, blastRadiusPixels, origin, source);
         _active.Add((projectile, pool));
     }

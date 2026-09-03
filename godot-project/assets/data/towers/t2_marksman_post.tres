@@ -1,0 +1,84 @@
+[gd_resource type="Resource" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="3"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2")
+Cost = 175
+DamagePerShot = 60.0
+RateOfFirePerSec = 0.5
+RangeTiles = 11.0
+DamageMultiplier = 0.75
+
+[sub_resource type="Resource" id="L2"]
+script = ExtResource("2")
+Cost = 114
+DamagePerShot = 66.0
+RateOfFirePerSec = 0.55
+RangeTiles = 11.5
+DamageMultiplier = 0.75
+
+[sub_resource type="Resource" id="OverwatchL3"]
+script = ExtResource("2")
+Cost = 201
+DamagePerShot = 70.0
+RateOfFirePerSec = 0.5
+RangeTiles = 11.5
+DamageMultiplier = 0.75
+StatusEffectId = "Spotted"
+StatusDurationSeconds = 4.0
+
+[sub_resource type="Resource" id="OverwatchL4"]
+script = ExtResource("2")
+Cost = 368
+DamagePerShot = 84.0
+RateOfFirePerSec = 0.6
+RangeTiles = 12.0
+DamageMultiplier = 0.75
+StatusEffectId = "Spotted"
+StatusDurationSeconds = 4.0
+
+[sub_resource type="Resource" id="AntiMaterielL3"]
+script = ExtResource("2")
+Cost = 201
+DamagePerShot = 120.0
+RateOfFirePerSec = 0.325
+RangeTiles = 11.0
+BlastRadiusTiles = 1.0
+DamageMultiplier = 0.75
+
+[sub_resource type="Resource" id="AntiMaterielL4"]
+script = ExtResource("2")
+Cost = 368
+DamagePerShot = 144.0
+RateOfFirePerSec = 0.39
+RangeTiles = 11.5
+BlastRadiusTiles = 1.0
+DamageMultiplier = 0.75
+
+[sub_resource type="Resource" id="Overwatch"]
+script = ExtResource("3")
+Name = "Overwatch"
+BehaviorId = "marksman_overwatch"
+Levels = [SubResource("OverwatchL3"), SubResource("OverwatchL4")]
+
+[sub_resource type="Resource" id="AntiMateriel"]
+script = ExtResource("3")
+Name = "Anti-Materiel"
+BehaviorId = "marksman_anti_materiel"
+Levels = [SubResource("AntiMaterielL3"), SubResource("AntiMaterielL4")]
+
+[resource]
+script = ExtResource("1")
+Id = "t2_marksman_post"
+BehaviorId = "marksman_post"
+Archetype = 1
+DisplayName = "Marksman Post"
+DamageType = 2
+DefaultTargeting = 2
+Levels = [SubResource("L1"), SubResource("L2")]
+BranchA = SubResource("Overwatch")
+BranchB = SubResource("AntiMateriel")
+GroundOnly = true

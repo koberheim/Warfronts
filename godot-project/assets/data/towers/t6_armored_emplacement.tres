@@ -1,0 +1,92 @@
+[gd_resource type="Resource" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="3"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2")
+Cost = 300
+DamagePerShot = 45.0
+RateOfFirePerSec = 1.0
+RangeTiles = 6.5
+BlastRadiusTiles = 0.9
+SecondaryDamagePerShot = 3.0
+SecondaryRateOfFirePerSec = 4.0
+SecondaryDamageType = 0
+SecondaryTargetDomain = 0
+
+[sub_resource type="Resource" id="L2"]
+script = ExtResource("2")
+Cost = 195
+DamagePerShot = 50.0
+RateOfFirePerSec = 1.05
+RangeTiles = 6.8
+BlastRadiusTiles = 0.9
+SecondaryDamagePerShot = 3.5
+SecondaryRateOfFirePerSec = 4.2
+
+[sub_resource type="Resource" id="HeavyTurretL3"]
+script = ExtResource("2")
+Cost = 345
+DamagePerShot = 85.5
+RateOfFirePerSec = 0.7
+RangeTiles = 7.5
+BlastRadiusTiles = 0.9
+
+[sub_resource type="Resource" id="HeavyTurretL4"]
+script = ExtResource("2")
+Cost = 630
+DamagePerShot = 99.0
+RateOfFirePerSec = 0.75
+RangeTiles = 8.0
+BlastRadiusTiles = 0.9
+
+[sub_resource type="Resource" id="AssaultGunL3"]
+script = ExtResource("2")
+Cost = 345
+DamagePerShot = 45.0
+RateOfFirePerSec = 1.0
+RangeTiles = 6.5
+BlastRadiusTiles = 1.8
+UsesDamageTypeOverride = true
+DamageTypeOverride = 1
+SecondaryDamagePerShot = 3.0
+SecondaryRateOfFirePerSec = 8.0
+
+[sub_resource type="Resource" id="AssaultGunL4"]
+script = ExtResource("2")
+Cost = 630
+DamagePerShot = 52.0
+RateOfFirePerSec = 1.1
+RangeTiles = 7.0
+BlastRadiusTiles = 1.8
+UsesDamageTypeOverride = true
+DamageTypeOverride = 1
+SecondaryDamagePerShot = 3.5
+SecondaryRateOfFirePerSec = 8.5
+
+[sub_resource type="Resource" id="HeavyTurret"]
+script = ExtResource("3")
+Name = "Heavy Turret"
+BehaviorId = "emplacement_heavy_turret"
+Levels = [SubResource("HeavyTurretL3"), SubResource("HeavyTurretL4")]
+
+[sub_resource type="Resource" id="AssaultGun"]
+script = ExtResource("3")
+Name = "Assault Gun"
+BehaviorId = "emplacement_assault_gun"
+Levels = [SubResource("AssaultGunL3"), SubResource("AssaultGunL4")]
+
+[resource]
+script = ExtResource("1")
+Id = "t6_armored_emplacement"
+BehaviorId = "armored_emplacement"
+Archetype = 5
+DisplayName = "Armored Emplacement"
+DamageType = 2
+DefaultTargeting = 2
+Levels = [SubResource("L1"), SubResource("L2")]
+BranchA = SubResource("HeavyTurret")
+BranchB = SubResource("AssaultGun")
+GroundOnly = true

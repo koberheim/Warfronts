@@ -40,10 +40,10 @@ godot --headless --path . --run-tests=CoreTests --quit-after 1200
 
 M3 vertical-slice systems are implemented in primitive grey-box form: Arsenal
 friendlies, the Breakthrough Panzer boss, briefing/loadout/mission/results
-flow, and the integrated tutorial. M3.5 adds the editor-only Map Planner:
-catalog browsing, authored plan editing, validation, scoring, deterministic
-candidate generation, and accepted-plan export. M4 has not started; visual
-playtest and placeholder-art insertion remain the next gate. See
+flow, and the integrated tutorial. M3.5 adds the editor-only Map Planner, and
+M4 prompt 27 now contains the five remaining universal archetypes with their
+authored upgrade branches. M4 is in progress; NationProfile, the remaining
+enemies, and the Wave Editor have not started. See
 [docs/PROGRESS.md](docs/PROGRESS.md).
 
 The standalone `dotnet build` command requires an online restore of

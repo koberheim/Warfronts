@@ -42,6 +42,7 @@ public partial class TowerController : Node2D, IDamageSource
     private float _rallyRateOfFireMultiplier = 1f;
 
     private float _cooldownRemaining;
+    private float _secondaryCooldownRemaining;
     private ITargetable _currentTarget;
 
     public override void _Ready()
@@ -88,6 +89,8 @@ public partial class TowerController : Node2D, IDamageSource
         float rallyMultiplier = _rallyRemaining > 0f ? _rallyRateOfFireMultiplier : 1f;
         float rateOfFire = stats.RateOfFirePerSec * AuraRateOfFireMultiplier * rallyMultiplier;
 
+        FireSecondaryIfReady(tickDeltaSeconds, grid, stats);
+
         if (_cooldownRemaining > 0f) _cooldownRemaining -= tickDeltaSeconds;
         if (_cooldownRemaining > 0f) return;
 
@@ -100,7 +103,7 @@ public partial class TowerController : Node2D, IDamageSource
             if (!IsValidTarget(_currentTarget, rangePixels, minRangePixels))
             {
                 var candidates = grid.QueryRadius(GlobalPosition, rangePixels)
-                    .Where(t => IsAcquirable(t) && IsValidTarget(t, rangePixels, minRangePixels));
+                    .Where(t => IsAcquirable(t, stats) && IsValidTarget(t, rangePixels, minRangePixels));
                 _currentTarget = TargetingService.SelectTarget(candidates, CurrentTargeting, GlobalPosition);
             }
 
@@ -120,7 +123,7 @@ public partial class TowerController : Node2D, IDamageSource
                                        ProjectileManager projectileManager, TowerStatBlock stats)
     {
         var candidates = grid.QueryRadius(GlobalPosition, rangePixels)
-            .Where(t => IsAcquirable(t) && IsValidTarget(t, rangePixels, minRangePixels))
+            .Where(t => IsAcquirable(t, stats) && IsValidTarget(t, rangePixels, minRangePixels))
             .ToList();
         if (candidates.Count == 0) return;
 
@@ -128,15 +131,23 @@ public partial class TowerController : Node2D, IDamageSource
         var point = TargetingService.SelectDensestClusterPoint(candidates, clusterRadiusPixels);
         if (point == null) return;
 
-        projectileManager.SpawnAtPoint(Definition, stats, GlobalPosition, point.Value, this);
+        int salvoCount = stats.SalvoCount < 1 ? 1 : stats.SalvoCount;
+        for (int i = 0; i < salvoCount; i++)
+            projectileManager.SpawnAtPoint(Definition, stats, GlobalPosition, point.Value, this);
         EventBus.Instance?.Publish(new TowerFiredEvent(this, null));
     }
 
-    private bool IsAcquirable(ITargetable target)
+    private bool IsAcquirable(ITargetable target, TowerStatBlock stats)
+        => IsAcquirable(target, stats.TargetDomain);
+
+    private static bool IsAcquirable(ITargetable target, TargetDomain domain)
     {
-        if (Definition.AirOnly) return target.IsAir;
-        if (Definition.GroundOnly) return !target.IsAir;
-        return true;
+        return domain switch
+        {
+            TargetDomain.Air => target.IsAir,
+            TargetDomain.GroundAndAir => true,
+            _ => !target.IsAir,
+        };
     }
 
     private bool IsValidTarget(ITargetable target, float rangePixels, float minRangePixels)
@@ -150,19 +161,48 @@ public partial class TowerController : Node2D, IDamageSource
 
     private void Fire(ITargetable target, ProjectileManager projectileManager, TowerStatBlock stats)
     {
+        float damage = stats.DamagePerShot * stats.DamageMultiplier;
+        var damageType = stats.UsesDamageTypeOverride ? stats.DamageTypeOverride : Definition.DamageType;
         if (Definition.ProjectileScene == null)
         {
             // Hitscan (T1 Automatic Gun): damage applies instantly.
             if (target is EnemyController enemy)
-                enemy.ApplyDamage(stats.DamagePerShot, Definition.DamageType, this);
+                enemy.ApplyDamage(damage, damageType, this);
             else
-                target.ApplyDamage(stats.DamagePerShot, Definition.DamageType);
+                target.ApplyDamage(damage, damageType);
         }
         else
         {
             projectileManager.Spawn(Definition, stats, GlobalPosition, target, this);
         }
 
+        if (stats.StatusEffectId == "Spotted" && target is EnemyController spotted)
+            spotted.ApplySpotted(stats.StatusDurationSeconds);
+
+        EventBus.Instance?.Publish(new TowerFiredEvent(this, target));
+    }
+
+    private void FireSecondaryIfReady(float delta, SpatialGrid grid, TowerStatBlock stats)
+    {
+        if (stats.SecondaryDamagePerShot <= 0f || stats.SecondaryRateOfFirePerSec <= 0f) return;
+        _secondaryCooldownRemaining -= delta;
+        if (_secondaryCooldownRemaining > 0f) return;
+        float rangeTiles = stats.SecondaryRangeTiles > 0f ? stats.SecondaryRangeTiles : stats.RangeTiles;
+        float rangePixels = rangeTiles * GameBalanceConfigAutoload.Config.TilePixelSize * AuraRangeMultiplier;
+        var candidates = grid.QueryRadius(GlobalPosition, rangePixels)
+            .Where(candidate => IsAcquirable(candidate, stats.SecondaryTargetDomain) &&
+                IsValidTarget(candidate, rangePixels, 0f));
+        var target = TargetingService.SelectTarget(candidates, stats.SecondaryTargeting, GlobalPosition);
+        if (target == null) return;
+        float damage = stats.SecondaryDamagePerShot * stats.DamageMultiplier;
+        if (target is EnemyController enemy)
+        {
+            enemy.ApplyDamage(damage, stats.SecondaryDamageType, this);
+            if (stats.StatusEffectId == "Suppressed")
+                enemy.ApplySuppressed(stats.StatusDurationSeconds, stats.StatusDurationSeconds);
+        }
+        else target.ApplyDamage(damage, stats.SecondaryDamageType);
+        _secondaryCooldownRemaining = 1f / stats.SecondaryRateOfFirePerSec;
         EventBus.Instance?.Publish(new TowerFiredEvent(this, target));
     }
 

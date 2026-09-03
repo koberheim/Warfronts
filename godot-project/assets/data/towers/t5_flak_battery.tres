@@ -1,0 +1,94 @@
+[gd_resource type="Resource" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="3"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2")
+Cost = 175
+DamagePerShot = 12.0
+RateOfFirePerSec = 2.5
+RangeTiles = 9.0
+TargetDomain = 1
+
+[sub_resource type="Resource" id="L2"]
+script = ExtResource("2")
+Cost = 114
+DamagePerShot = 13.0
+RateOfFirePerSec = 2.6
+RangeTiles = 9.5
+TargetDomain = 1
+
+[sub_resource type="Resource" id="DualPurposeL3"]
+script = ExtResource("2")
+Cost = 201
+DamagePerShot = 12.0
+RateOfFirePerSec = 2.5
+RangeTiles = 9.0
+TargetDomain = 1
+SecondaryDamagePerShot = 55.0
+SecondaryRateOfFirePerSec = 0.6
+SecondaryDamageType = 2
+SecondaryTargetDomain = 0
+SecondaryBlastRadiusTiles = 0.0
+SecondaryRangeTiles = 6.0
+
+[sub_resource type="Resource" id="DualPurposeL4"]
+script = ExtResource("2")
+Cost = 368
+DamagePerShot = 15.0
+RateOfFirePerSec = 2.8
+RangeTiles = 9.5
+TargetDomain = 2
+SecondaryDamagePerShot = 62.0
+SecondaryRateOfFirePerSec = 0.7
+SecondaryDamageType = 2
+SecondaryTargetDomain = 0
+SecondaryRangeTiles = 6.0
+
+[sub_resource type="Resource" id="PredictiveL3"]
+script = ExtResource("2")
+Cost = 201
+DamagePerShot = 18.0
+RateOfFirePerSec = 2.5
+RangeTiles = 11.0
+TargetDomain = 1
+StatusEffectId = "Spotted"
+StatusDurationSeconds = 4.0
+
+[sub_resource type="Resource" id="PredictiveL4"]
+script = ExtResource("2")
+Cost = 368
+DamagePerShot = 21.0
+RateOfFirePerSec = 2.8
+RangeTiles = 11.5
+TargetDomain = 1
+StatusEffectId = "Spotted"
+StatusDurationSeconds = 4.0
+
+[sub_resource type="Resource" id="DualPurpose"]
+script = ExtResource("3")
+Name = "Dual Purpose"
+BehaviorId = "flak_dual_purpose"
+Levels = [SubResource("DualPurposeL3"), SubResource("DualPurposeL4")]
+
+[sub_resource type="Resource" id="Predictive"]
+script = ExtResource("3")
+Name = "Predictive Fire"
+BehaviorId = "flak_predictive_fire"
+Levels = [SubResource("PredictiveL3"), SubResource("PredictiveL4")]
+
+[resource]
+script = ExtResource("1")
+Id = "t5_flak_battery"
+BehaviorId = "flak_battery"
+Archetype = 4
+DisplayName = "Flak Battery"
+DamageType = 3
+DefaultTargeting = 0
+Levels = [SubResource("L1"), SubResource("L2")]
+BranchA = SubResource("DualPurpose")
+BranchB = SubResource("Predictive")
+GroundOnly = false
+AirOnly = true

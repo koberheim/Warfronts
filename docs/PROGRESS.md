@@ -231,13 +231,24 @@ is installed.
   national insignia, and tower/unit identity art pending implementation
   review, per the user's request.
 
+## Post-M5 art plumbing
+
+- [x] Added the 47-entry family-level art catalog under
+  `godot-project/assets/data/art/`, with stable production directories,
+  filename patterns, statuses, and placeholder mappings for every active and
+  held inventory family.
+- [x] Added reusable SVG placeholder templates, physical leaf-directory
+  anchors, `ArtAssetSprite` replacement slots, and a representative
+  placeholder gallery. Gameplay remains primitive-first until art is approved.
+
 ---
 
 ## Historical blockers / current follow-up
 
 No design blockers. D17 is superseded by D25; M4 prompts 27–30 and M5
-prompts 31–34 are implemented. The next work is M6 doctrine and mode work,
-after a .NET-enabled Godot playtest pass and review of the signature balance.
+prompts 31–38 are implemented, and the post-M5 art replacement plumbing is
+in place. The next work is a .NET-enabled Godot playtest/review pass followed
+by M6 doctrine and mode work.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is the active

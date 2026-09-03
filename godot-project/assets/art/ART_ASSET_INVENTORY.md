@@ -28,6 +28,24 @@ These are review images, not yet connected to scenes or considered
 production-ready. They deliberately contain no nation-specific units,
 enemy silhouettes, people, real insignia, political symbols, or gore.
 
+## Placeholder-art plumbing
+
+The complete family-level pathway map is maintained in
+`../data/art/art_asset_catalog.json`. Every inventory family has a stable
+production directory, filename pattern, placeholder type, and status. The
+placeholder SVGs live in `placeholders/` and are intentionally generic: they
+prove wiring and layout without being mistaken for approved art.
+
+Use `scenes/art/art_asset_slot.tscn` for any new scene art reference. Set its
+catalog `AssetId`; the slot resolves the placeholder by default and only
+loads an approved production path after the catalog entry is marked
+`APPROVED` and `UseApprovedAsset` is enabled. The sample
+`scenes/art/art_placeholder_gallery.tscn` exercises representative entries.
+
+The folder structure and catalog also reserve pathways for held tower, unit,
+and enemy art. Those entries remain `HOLD` and are not generated or wired
+into gameplay until the implementation review is complete.
+
 ## Shared assets
 
 ### Gameplay and map readability

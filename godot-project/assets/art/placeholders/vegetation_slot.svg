@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" fill="#294b3b"/>
+  <path d="M18 94Q22 48 48 62Q62 18 82 62Q111 44 110 96Z" fill="#6e9a55"/>
+  <path d="M25 98L42 55M70 98L78 45M97 98L88 61" stroke="#c2d28a" stroke-width="4"/>
+  <rect x="8" y="8" width="112" height="112" fill="none" stroke="#e8e0bd" stroke-width="3" stroke-dasharray="8 6"/>
+  <text x="64" y="116" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#fff8df">VEGETATION SLOT</text>
+</svg>

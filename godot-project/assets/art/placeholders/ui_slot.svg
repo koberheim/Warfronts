@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="128" viewBox="0 0 192 128">
+  <rect width="192" height="128" rx="10" fill="#263b50" stroke="#d8b66b" stroke-width="5"/>
+  <path d="M22 34H170M22 56H130M22 78H154" stroke="#9fb6c4" stroke-width="6" opacity=".75"/>
+  <circle cx="160" cy="92" r="14" fill="#d8b66b"/>
+  <text x="96" y="112" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#fff8df">UI SLOT</text>
+</svg>

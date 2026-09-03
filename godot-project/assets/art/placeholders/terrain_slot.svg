@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" fill="#415548"/>
+  <path d="M0 88L32 68 64 82 96 54 128 70V128H0Z" fill="#6e815a"/>
+  <path d="M0 24H128M0 42H128M0 60H128" stroke="#9eaf78" stroke-width="3" opacity=".45"/>
+  <rect x="8" y="8" width="112" height="112" fill="none" stroke="#e8e0bd" stroke-width="3" stroke-dasharray="8 6"/>
+  <text x="64" y="116" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#fff8df">TERRAIN SLOT</text>
+</svg>

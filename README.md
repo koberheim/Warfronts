@@ -51,3 +51,7 @@ The standalone `dotnet build` command requires an online restore of
 `Godot.NET.Sdk/4.7.2`; the Godot Mono installation can currently load and
 run the project using its bundled tooling. See `docs/DECISIONS.md` entries
 D13 and D25.
+
+Art replacement plumbing is documented in
+`godot-project/assets/art/ART_ASSET_PATHWAYS.md`; new visual references should
+use the catalogued `ArtAssetSprite` slot rather than hardcoded texture paths.

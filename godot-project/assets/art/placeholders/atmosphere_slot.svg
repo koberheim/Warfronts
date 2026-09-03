@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="128" viewBox="0 0 192 128">
+  <rect width="192" height="128" fill="#7e8c99" opacity=".65"/>
+  <path d="M0 30Q40 10 80 30T160 30T240 30M0 72Q40 52 80 72T160 72T240 72" fill="none" stroke="#e5edf0" stroke-width="14" opacity=".45"/>
+  <text x="96" y="112" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#fff8df">ATMOSPHERE SLOT</text>
+</svg>

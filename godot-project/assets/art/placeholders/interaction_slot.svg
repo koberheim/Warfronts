@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" fill="#344951"/>
+  <circle cx="64" cy="58" r="34" fill="none" stroke="#f0d36e" stroke-width="5" stroke-dasharray="9 7"/>
+  <path d="M64 20V96M26 58H102" stroke="#9ee0c1" stroke-width="4" opacity=".85"/>
+  <text x="64" y="116" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#fff8df">INTERACTION</text>
+</svg>

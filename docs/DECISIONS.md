@@ -540,6 +540,23 @@ revisited — worth preserving before it's lost to editing history.
   range restrictions, and counterplay limits.
 - **Status:** Active.
 
+### D38 - Art uses catalogued family slots with placeholder-first resolution
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Add a JSON art catalog that maps every inventory family to a
+  stable production directory, filename pattern, placeholder type, and
+  review status. Add reusable SVG placeholder textures and an
+  `ArtAssetSprite` slot scene that resolves a placeholder by default and an
+  approved production path only after an explicit catalog/status opt-in.
+  Keep the current gameplay primitives as the default until art is approved.
+- **Rationale:** The art specification defines production ranges and family
+  kits rather than one fixed file per future variant. A family-level catalog
+  preserves those ranges while giving artists and agents stable paths. The
+  explicit approval gate prevents the ten generated review images from
+  silently becoming production art and keeps the user's held nation/unit/
+  enemy review boundary intact.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

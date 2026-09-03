@@ -6,13 +6,20 @@ and the first-pass prompt record is [ART_GENERATION_LOG.md](ART_GENERATION_LOG.m
 
 ## Rules
 
+The machine-readable slot catalog is `../data/art/art_asset_catalog.json` and
+the replacement workflow is [ART_ASSET_PATHWAYS.md](ART_ASSET_PATHWAYS.md).
+New scenes should use `scenes/art/art_asset_slot.tscn` and set a catalog
+`AssetId` rather than hardcoding a texture path.
+
 - `theaters/` contains location-specific terrain, architecture, vegetation,
   flavor props, clusters, and decals.
 - `shared/` contains assets reused across theaters: roads, build pads, map
   frame/UI materials, common overlays, and common VFX.
 - `misc/` contains non-theater assets such as the command-table frame,
   objective markers, and authoring references.
-- `units/` and `enemies/` are intentionally held for a later review pass.
+- `towers/`, `units/`, and `enemies/` are intentionally held for a later
+  review pass. Their future pathways exist in the catalog, but no identity
+  art is generated or integrated in this pass.
   Do not generate or integrate them from this inventory during the current
   task.
 

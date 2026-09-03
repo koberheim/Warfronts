@@ -521,6 +521,27 @@ revisited — worth preserving before it's lost to editing history.
 
 ---
 
+### D37 - M5 uses data-authored signature controllers and a shared air/support contract
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Implement the five M5 signatures as separate small controllers
+  driven by one exported `SignatureDefinition` resource, with one signature
+  registered per mission. Use a shared air-corridor resource for E8, extend
+  the target contract with concealment/reveal state and damage attribution,
+  and keep E9/E10/E11 mechanics on `EnemyController` partial support logic.
+  Use primitive, redundant telegraphs until the held nation art review is
+  complete.
+- **Rationale:** This satisfies GDD §§8.2, 10.2, 15.1, and 19 prompts 31–38
+  without duplicating six balance systems or introducing nation-specific unit
+  art. Where the GDD leaves a value open, RAF level damage rises 20% per
+  level, Recon's speed aura uses a 4-tile radius, and a map owns one straight
+  authored air corridor; these are isolated data values for later playtest
+  tuning. Signatures retain their specified finite charges, caps, cooldowns,
+  range restrictions, and counterplay limits.
+- **Status:** Active.
+
+---
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

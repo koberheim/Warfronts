@@ -31,6 +31,10 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     // strongest value it finds per tower, per §6 T9's "do not stack" rule.
     public float AuraRangeMultiplier = 1f;
     public float AuraRateOfFireMultiplier = 1f;
+    public float SignatureRateOfFireMultiplier = 1f;
+    public float SignatureProjectileVelocityMultiplier = 1f;
+    public float SignatureTraverseSpeedMultiplier = 1f;
+    public float SignatureIndirectDelayReductionSeconds;
 
     // Enemy Siege units suppress towers on hit (GDD §5.6) — full disable,
     // never destroyed. Siege (E12) itself isn't implemented until M4, but
@@ -93,7 +97,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         float rangePixels = stats.RangeTiles * tilePixelSize * AuraRangeMultiplier;
         float minRangePixels = stats.MinRangeTiles * tilePixelSize;
         float rallyMultiplier = _rallyRemaining > 0f ? _rallyRateOfFireMultiplier : 1f;
-        float rateOfFire = stats.RateOfFirePerSec * AuraRateOfFireMultiplier * rallyMultiplier;
+        float rateOfFire = stats.RateOfFirePerSec * AuraRateOfFireMultiplier * SignatureRateOfFireMultiplier * rallyMultiplier;
 
         FireSecondaryIfReady(tickDeltaSeconds, grid, stats);
 
@@ -144,14 +148,17 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     }
 
     private bool IsAcquirable(ITargetable target, TowerStatBlock stats)
-        => IsAcquirable(target, stats.TargetDomain);
+        => IsAcquirable(target, stats.TargetDomain, Definition);
 
-    private static bool IsAcquirable(ITargetable target, TargetDomain domain)
+    private bool IsAcquirable(ITargetable target, TargetDomain domain)
+        => IsAcquirable(target, domain, Definition);
+
+    private static bool IsAcquirable(ITargetable target, TargetDomain domain, TowerDefinition definition)
     {
         return domain switch
         {
             TargetDomain.Air => target.IsAir,
-            TargetDomain.GroundAndAir => true,
+            TargetDomain.GroundAndAir => definition?.Archetype == TowerArchetype.FlakBattery,
             _ => !target.IsAir,
         };
     }
@@ -159,6 +166,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     private bool IsValidTarget(ITargetable target, float rangePixels, float minRangePixels)
     {
         if (target == null || !target.IsAlive) return false;
+        if (target.IsConcealed && !target.IsRevealed) return false;
         float distSq = GlobalPosition.DistanceSquaredTo(target.GlobalPosition);
         if (distSq > rangePixels * rangePixels) return false;
         if (minRangePixels > 0f && distSq < minRangePixels * minRangePixels) return false;
@@ -219,6 +227,17 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     {
         _rallyRemaining = Mathf.Max(_rallyRemaining, durationSeconds);
         _rallyRateOfFireMultiplier = rateOfFireMultiplier;
+    }
+
+    public override void _Draw()
+    {
+        if (SignatureRateOfFireMultiplier <= 1.01f) return;
+        var chevron = new[]
+        {
+            new Vector2(-5f, -25f), new Vector2(0f, -20f), new Vector2(5f, -25f),
+            new Vector2(3f, -27f), new Vector2(0f, -23f), new Vector2(-3f, -27f),
+        };
+        DrawColoredPolygon(chevron, new Color(1f, 0.68f, 0.2f));
     }
 
     private void OnEnemyDamaged(EnemyDamagedEvent evt)

@@ -28,4 +28,4 @@ DisplayName = "Japan"
 Alliance = "Axis"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2"), SubResource("Lean3")]
 BranchFlavorIds = ["prepared_positions", "decisive_strike"]
-SignatureId = "island_defense"
+SignatureId = "special_attack_airfield"

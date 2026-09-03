@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using FrontsOfWar.Enemies;
 
 namespace FrontsOfWar.Towers;
 
@@ -30,4 +31,12 @@ public class CommandPostManager
 
     public int TotalCommandPointBonus() => _posts.Sum(p => p.CurrentCommandPointsPerWave);
     public int TotalSupplyPerWaveBonus() => _posts.Sum(p => p.CurrentSupplyPerWave);
+
+    public void RevealTargets(IReadOnlyList<EnemyController> enemies, float tilePixelSize)
+    {
+        foreach (var enemy in enemies ?? System.Array.Empty<EnemyController>())
+            enemy?.SetRevealed(false);
+        foreach (var post in _posts)
+            post.RevealTargets(enemies, tilePixelSize);
+    }
 }

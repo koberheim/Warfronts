@@ -27,7 +27,8 @@ public class ProjectileManager
         var projectile = pool.Rent();
 
         float tilePixelSize = GameBalanceConfigAutoload.Config.TilePixelSize;
-        float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize;
+        float velocityMultiplier = source is TowerController tower ? tower.SignatureProjectileVelocityMultiplier : 1f;
+        float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize * velocityMultiplier;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
 
         projectile.Launch(target, stats.DamagePerShot * stats.DamageMultiplier, definition.DamageType,
@@ -47,7 +48,8 @@ public class ProjectileManager
         var projectile = pool.Rent();
 
         float tilePixelSize = GameBalanceConfigAutoload.Config.TilePixelSize;
-        float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize;
+        float velocityMultiplier = source is TowerController tower ? tower.SignatureProjectileVelocityMultiplier : 1f;
+        float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize * velocityMultiplier;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
 
         projectile.LaunchAtPoint(impactPoint, stats.DamagePerShot * stats.DamageMultiplier, definition.DamageType,

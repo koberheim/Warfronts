@@ -1,0 +1,24 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/SignatureDefinition.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+Id = "special_attack_airfield"
+DisplayName = "Special Attack Airfield"
+NationId = "japan"
+Kind = 4
+LevelCosts = PackedInt32Array(650, 423, 748)
+ChargeCaps = PackedInt32Array(2, 2, 3)
+AirfieldChargeIntervals = PackedFloat32Array(40, 32, 25)
+AirfieldStoredChargeCaps = PackedInt32Array(2, 2, 3)
+AirfieldCommandPointCost = 3
+AirfieldCommandPointProgress = 12.0
+AirfieldStrikeDamage = 420.0
+AirfieldArmorPiercingFraction = 0.6
+AirfieldExplosiveFraction = 0.4
+AirfieldBlastRadiusTiles = 2.6
+AirfieldApproachSeconds = 2.0
+AirfieldLevelTwoDamageBonus = 60.0
+AirfieldLevelThreeBlastBonusTiles = 0.6
+AirfieldSpottedDurationSeconds = 8.0

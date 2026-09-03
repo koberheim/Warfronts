@@ -2,6 +2,8 @@ using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
 using FrontsOfWar.Map;
+using System;
+using System.Collections.Generic;
 
 namespace FrontsOfWar.Enemies;
 
@@ -9,7 +11,7 @@ namespace FrontsOfWar.Enemies;
 // explicit SimTick calls from EnemyManager, not Godot's _PhysicsProcess —
 // see GameLoop's fixed-tick model (§15.4): every enemy must advance exactly
 // the same amount regardless of render framerate or game speed.
-public partial class EnemyController : Node2D, ITargetable
+public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
 {
     [Export] public EnemyDefinition Definition;
 
@@ -22,6 +24,12 @@ public partial class EnemyController : Node2D, ITargetable
     private float _cohesionLeadProgress;
     private float _siegeBombardRemaining;
     private CanvasItem _bossSkirtVisual;
+    private AirCorridorDefinition _airCorridor;
+    private float _airProgress;
+    private float _shieldRemaining;
+    private bool _revealed;
+    private Func<IReadOnlyList<EnemyController>> _enemyProvider;
+    private EnemyController _repairTarget;
 
     public BossPhaseController BossPhase { get; private set; }
     public PathNetwork PathNetwork { get; private set; }
@@ -31,25 +39,44 @@ public partial class EnemyController : Node2D, ITargetable
     public float CurrentHp => _currentHp;
     public bool IsAlive => _currentHp > 0f;
     public bool IsAir => Definition.IsAir;
-    public float PathProgress => _pathFollower?.Progress ?? 0f;
-    public float PathDistancePixels => _pathFollower?.DistanceTraveled ?? 0f;
-    public bool ReachedEnd => _pathFollower?.ReachedEnd ?? false;
+    public bool IsConcealed => Definition?.SpecialAbilityId == "recon_concealment";
+    public bool IsRevealed => !IsConcealed || _revealed || Status.IsSpotted;
+    public float PathProgress => IsAir && _airCorridor != null ? _airProgress : _pathFollower?.Progress ?? 0f;
+    public float PathDistancePixels => IsAir && _airCorridor != null
+        ? _airProgress * _airCorridor.LengthPixels : _pathFollower?.DistanceTraveled ?? 0f;
+    public bool ReachedEnd => IsAir && _airCorridor != null ? _airProgress >= 1f : _pathFollower?.ReachedEnd ?? false;
     public Vector2 Velocity { get; private set; }
+    public float MaxHp => _maxHp;
+    public float ShieldRemaining => _shieldRemaining;
+    public EnemyController RepairTarget => _repairTarget;
 
-    public void Initialize(PathNetwork path, float hpScaleMultiplier = 1f)
+    public void Initialize(PathNetwork path, float hpScaleMultiplier = 1f, AirCorridorDefinition airCorridor = null)
     {
         PathNetwork = path;
         _pathFollower = new PathFollower(path);
         _hpScaleMultiplier = hpScaleMultiplier;
         _maxHp = Definition.BaseHp * hpScaleMultiplier;
         _currentHp = _maxHp;
+        _airCorridor = airCorridor;
+        if (Definition.IsAir && _airCorridor == null)
+            _airCorridor = new AirCorridorDefinition
+            {
+                EntryPosition = path.GetPositionAtDistance(0f),
+                ObjectivePosition = path.GetPositionAtDistance(path.LengthPixels),
+            };
+        _airProgress = 0f;
+        _shieldRemaining = Definition.Archetype == EnemyArchetype.Escort ? Definition.EscortShieldMaxHp : 0f;
+        _revealed = false;
         BossPhase = Definition.IsBoss ? new BossPhaseController(Definition) : null;
         _cohesionLeadProgress = 0f;
         _siegeBombardRemaining = Definition.SpecialAbilityId == "siege_bombard"
             ? Definition.SiegeBombardIntervalSeconds : 0f;
         _bossSkirtVisual = GetNodeOrNull<CanvasItem>("Skirt");
-        GlobalPosition = path.GetPositionAtDistance(0f);
+        GlobalPosition = Definition.IsAir && _airCorridor != null
+            ? _airCorridor.EntryPosition : path.GetPositionAtDistance(0f);
     }
+
+    public void SetEnemyProvider(Func<IReadOnlyList<EnemyController>> provider) => _enemyProvider = provider;
 
     public void SimTick(float tickDeltaSeconds)
     {
@@ -57,6 +84,19 @@ public partial class EnemyController : Node2D, ITargetable
 
         Status.Tick(tickDeltaSeconds);
         BossPhase?.Tick(tickDeltaSeconds);
+
+        if (Definition.Archetype == EnemyArchetype.Support) TickFieldRepair(tickDeltaSeconds);
+        if (Definition.IsAir && _airCorridor != null)
+        {
+            _previousPosition = GlobalPosition;
+            float distance = Mathf.Max(1f, _airCorridor.LengthPixels);
+            _airProgress = Mathf.Min(1f, _airProgress + Definition.MoveSpeedTilesPerSec *
+                GameBalanceConfigAutoload.Config.TilePixelSize * tickDeltaSeconds / distance);
+            GlobalPosition = _airCorridor.EntryPosition.Lerp(_airCorridor.ObjectivePosition, _airProgress);
+            Velocity = tickDeltaSeconds > 0f ? (GlobalPosition - _previousPosition) / tickDeltaSeconds : Vector2.Zero;
+            QueueRedraw();
+            return;
+        }
 
         if (Definition.SpecialAbilityId == "siege_bombard")
         {
@@ -72,6 +112,7 @@ public partial class EnemyController : Node2D, ITargetable
         _previousPosition = GlobalPosition;
         var config = GameBalanceConfigAutoload.Config;
         float speedMultiplier = Status.IsSuppressed ? config.SuppressedMoveSpeedMultiplier : 1f;
+        speedMultiplier *= NearbyReconSpeedMultiplier();
         if (Definition.SpecialAbilityId == "swarm_cohesion" &&
             _cohesionLeadProgress - PathProgress >= Definition.CohesionCatchupThreshold)
             speedMultiplier *= Definition.CohesionCatchupSpeedMultiplier;
@@ -98,6 +139,7 @@ public partial class EnemyController : Node2D, ITargetable
             ?? DamageResolver.ResolveDamage(baseDamage, type, Definition.ArmorClass, Status.IsSpotted, DamageTable.Default);
         if (BossPhase is { IsSkirtIntact: false } && _bossSkirtVisual != null)
             _bossSkirtVisual.Visible = false;
+        dealt = AbsorbShieldedDamage(dealt);
         _currentHp = Mathf.Max(0f, _currentHp - dealt);
 
         EventBus.Instance?.Publish(new EnemyDamagedEvent(this, dealt, multiplier, type, source));
@@ -107,6 +149,17 @@ public partial class EnemyController : Node2D, ITargetable
     }
 
     public void SetSoftBlocked(bool blocked) => _softBlocked = blocked;
+
+    public void SetRevealed(bool revealed) => _revealed = revealed;
+
+    public float RestoreHealth(float amount)
+    {
+        if (!IsAlive || amount <= 0f) return 0f;
+        float restored = Mathf.Min(amount, _maxHp - _currentHp);
+        _currentHp += restored;
+        QueueRedraw();
+        return restored;
+    }
 
     public void SetCohesionLeadProgress(float leadProgress) => _cohesionLeadProgress = leadProgress;
 
@@ -130,15 +183,18 @@ public partial class EnemyController : Node2D, ITargetable
     // differ by armor class, matching the accessibility rule in §13.9.
     public override void _Draw()
     {
-        if (!IsAlive || (!Definition.IsBoss && _currentHp >= _maxHp) || _maxHp <= 0f) return;
+        if (!IsAlive || Definition == null || _maxHp <= 0f) return;
 
         const float barWidth = 42f;
         const float barHeight = 4f;
         const float yOffset = -30f;
         float fraction = _currentHp / _maxHp;
 
-        DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth, barHeight), new Color(0.15f, 0.15f, 0.15f, 0.9f));
-        DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth * fraction, barHeight), new Color(0.75f, 0.15f, 0.15f, 1f));
+        if (Definition.IsBoss || _currentHp < _maxHp)
+        {
+            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth, barHeight), new Color(0.15f, 0.15f, 0.15f, 0.9f));
+            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth * fraction, barHeight), new Color(0.75f, 0.15f, 0.15f, 1f));
+        }
 
         if (BossPhase is { IsSkirtIntact: true })
         {
@@ -158,6 +214,40 @@ public partial class EnemyController : Node2D, ITargetable
         }
         if (Status.IsSpotted)
             DrawCircle(new Vector2(badgeX, badgeY), 3f, new Color(0.85f, 0.2f, 0.2f));
+        if (Definition.Archetype == EnemyArchetype.Escort && _shieldRemaining > 0f)
+        {
+            float radius = Definition.EscortShieldRadiusTiles * GameBalanceConfigAutoload.Config.TilePixelSize;
+            var bubble = new Vector2[7];
+            for (int i = 0; i < bubble.Length; i++)
+                bubble[i] = new Vector2(radius, 0f).Rotated(i * Mathf.Tau / bubble.Length);
+            DrawPolyline(bubble, new Color(0.35f, 0.85f, 0.95f, 0.28f), 2f, true);
+            DrawRect(new Rect2(-21f, 24f, 42f, 3f), new Color(0.08f, 0.1f, 0.12f));
+            DrawRect(new Rect2(-21f, 24f, 42f * (_shieldRemaining / Mathf.Max(1f, Definition.EscortShieldMaxHp)), 3f), new Color(0.35f, 0.85f, 0.95f));
+        }
+        if (_repairTarget != null && _repairTarget.IsAlive)
+            DrawLine(Vector2.Zero, ToLocal(_repairTarget.GlobalPosition), new Color(0.25f, 0.95f, 0.35f, 0.9f), 3f);
+        if (IsAir)
+        {
+            DrawLine(new Vector2(-20f, 10f), new Vector2(20f, 10f), new Color(0.15f, 0.15f, 0.2f, 0.35f), 8f);
+            DrawColoredPolygon(new[] { new Vector2(-18f, 0f), new Vector2(18f, 0f), new Vector2(0f, -8f) }, new Color(0.8f, 0.82f, 0.86f));
+        }
+        if (Definition.Archetype == EnemyArchetype.Support)
+        {
+            DrawRect(new Rect2(-15f, -10f, 30f, 20f), new Color(0.42f, 0.54f, 0.58f));
+            DrawLine(new Vector2(0f, -10f), new Vector2(10f, -22f), new Color(0.75f, 0.78f, 0.68f), 3f);
+        }
+        if (Definition.Archetype == EnemyArchetype.Escort)
+        {
+            DrawRect(new Rect2(-17f, -11f, 34f, 22f), new Color(0.48f, 0.5f, 0.58f));
+            DrawLine(new Vector2(-12f, -15f), new Vector2(-6f, 15f), new Color(0.75f, 0.78f, 0.84f), 3f);
+            DrawLine(new Vector2(12f, -15f), new Vector2(6f, 15f), new Color(0.75f, 0.78f, 0.84f), 3f);
+        }
+        if (Definition.Archetype == EnemyArchetype.Recon)
+        {
+            DrawCircle(Vector2.Zero, 8f, new Color(0.65f, 0.7f, 0.72f, 0.45f));
+            for (int i = 0; i < 8; i += 2)
+                DrawArc(Vector2.Zero, 12f, i * Mathf.Tau / 8f, (i + 1) * Mathf.Tau / 8f, 4, new Color(0.75f, 0.8f, 0.82f, 0.7f), 2f);
+        }
     }
 
     // Deliberately distinct shapes, not just colors (Soft: square, Hardened:

@@ -15,6 +15,17 @@ public class TowerManager
     public void Register(TowerController tower) => _towers.Add(tower);
     public void Unregister(TowerController tower) => _towers.Remove(tower);
 
+    public void ResetSignatureModifiers()
+    {
+        foreach (var tower in _towers)
+        {
+            tower.SignatureRateOfFireMultiplier = 1f;
+            tower.SignatureProjectileVelocityMultiplier = 1f;
+            tower.SignatureTraverseSpeedMultiplier = 1f;
+            tower.SignatureIndirectDelayReductionSeconds = 0f;
+        }
+    }
+
     public void Tick(float tickDeltaSeconds, SpatialGrid grid, ProjectileManager projectileManager)
     {
         foreach (var tower in _towers)

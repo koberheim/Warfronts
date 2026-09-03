@@ -22,4 +22,4 @@ DisplayName = "Italy"
 Alliance = "Axis"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2")]
 BranchFlavorIds = ["mobile_screen", "field_command"]
-SignatureId = "rapid_redeployment"
+SignatureId = "bersaglieri_charge_post"

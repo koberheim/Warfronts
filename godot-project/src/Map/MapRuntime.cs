@@ -26,6 +26,9 @@ public partial class MapRuntime : Node2D, ISimTickable
     [Export] public NodePath CommandPostContainerPath;
     [Export] public NodePath FriendlyContainerPath;
     [Export] public NodePath ArsenalPath;
+    [Export] public NodePath SignatureContainerPath;
+    [Export] public NodePath MinefieldContainerPath;
+    [Export] public AirCorridorDefinition AirCorridor;
 
     // Dev-only: if set, this wave starts immediately on mission load. No
     // mission flow (briefing → build → wave sequence) uses the same debug
@@ -47,6 +50,8 @@ public partial class MapRuntime : Node2D, ISimTickable
     public AbilitySystem Abilities { get; private set; }
     public WaveRunner Waves { get; private set; }
     public FriendlyUnitManager FriendlyUnits { get; private set; }
+    public SignatureManager Signatures { get; } = new();
+    public MinefieldManager Minefields { get; } = new();
     public SeededRandom Random { get; private set; }
 
     private SpatialGrid _spatialGrid;
@@ -75,6 +80,7 @@ public partial class MapRuntime : Node2D, ISimTickable
         CommandPoints = new CommandPointLedger(config, () => CommandPosts.TotalCommandPointBonus());
         Abilities = new AbilitySystem(config);
         Waves = new WaveRunner(Enemies, Path, enemyContainer);
+        Enemies.AirCorridor = AirCorridor;
         Enemies.SiegeTargetsProvider = () => Towers.Towers.Select(tower => (ISiegeTarget)tower).ToArray();
         FriendlyUnits = new FriendlyUnitManager(friendlyContainer);
         EventBus.Instance?.Subscribe<BossAddsRequestedEvent>(OnBossAddsRequested);
@@ -112,6 +118,24 @@ public partial class MapRuntime : Node2D, ISimTickable
             _arsenal = GetNodeOrNull<ArsenalController>(ArsenalPath);
             _arsenal?.Initialize(FriendlyUnits, Path);
         }
+
+        if (SignatureContainerPath != null)
+        {
+            var signatureContainer = GetNodeOrNull<Node>(SignatureContainerPath);
+            if (signatureContainer != null)
+                foreach (var child in signatureContainer.GetChildren())
+                    if (child is SignatureControllerBase signature) Signatures.Register(signature);
+        }
+        Signatures.Initialize(Path, () => Enemies.GetTargetables(), () => Towers.Towers);
+
+        if (MinefieldContainerPath != null)
+        {
+            var minefieldContainer = GetNodeOrNull<Node>(MinefieldContainerPath);
+            if (minefieldContainer != null)
+                foreach (var child in minefieldContainer.GetChildren())
+                    if (child is MinefieldController field) Minefields.Register(field);
+        }
+        Minefields.Initialize(() => Enemies.GetTargetables());
 
         if (DebugLogEvents) _debugLogger = new DebugEventLogger();
         if (DebugWaveSequence?.Waves is { Length: > 0 } sequence)
@@ -165,7 +189,11 @@ public partial class MapRuntime : Node2D, ISimTickable
         FriendlyUnits.Tick(tickDeltaSeconds, Enemies);
         Enemies.Tick(tickDeltaSeconds);
         _spatialGrid.Rebuild(Enemies.GetTargetables());
+        CommandPosts.RevealTargets(Enemies.Enemies, config.TilePixelSize);
         CommandPosts.Tick(tickDeltaSeconds, Towers, config.TilePixelSize);
+        Towers.ResetSignatureModifiers();
+        Signatures.Tick(tickDeltaSeconds);
+        Minefields.Tick(tickDeltaSeconds);
         Towers.Tick(tickDeltaSeconds, _spatialGrid, Projectiles);
         Projectiles.Tick(tickDeltaSeconds, _spatialGrid);
         Abilities.Tick(tickDeltaSeconds, _spatialGrid);

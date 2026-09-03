@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_escort_shield.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e10_escort_shield_vehicle"
+Archetype = 9
+ArmorClass = 1
+BaseHp = 320.0
+MoveSpeedTilesPerSec = 1.4
+LeakCost = 3
+Bounty = 28
+SpecialAbilityId = "escort_shield"
+EscortShieldMaxHp = 400.0
+EscortShieldRadiusTiles = 3.5
+ControllerScene = ExtResource("2")

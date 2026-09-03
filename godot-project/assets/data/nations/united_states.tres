@@ -22,4 +22,4 @@ DisplayName = "United States"
 Alliance = "Allies"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2")]
 BranchFlavorIds = ["combined_arms", "logistics_depth"]
-SignatureId = "airborne_assault"
+SignatureId = "arsenal_of_democracy"

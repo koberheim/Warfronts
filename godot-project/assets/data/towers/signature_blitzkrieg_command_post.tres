@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/SignatureDefinition.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+Id = "blitzkrieg_command_post"
+DisplayName = "Blitzkrieg Command Post"
+NationId = "germany"
+Kind = 2
+LevelCosts = PackedInt32Array(650, 423, 748)
+ChargeCaps = PackedInt32Array(0, 0, 0)
+BlitzActiveDurations = PackedFloat32Array(12, 15, 15)
+BlitzRechargeDurations = PackedFloat32Array(30, 30, 22)
+BlitzRadiusTiles = PackedFloat32Array(7.5, 9, 9)
+BlitzRateOfFireMultiplier = 1.45
+BlitzProjectileVelocityMultiplier = 1.6
+BlitzTraverseSpeedMultiplier = 1.7
+BlitzIndirectDelayReductionSeconds = 0.3
+BlitzPassiveRateOfFireMultiplier = 1.08
+BlitzSpottedDurationSeconds = 4.0

@@ -28,4 +28,4 @@ DisplayName = "Soviet Union"
 Alliance = "Allies"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2"), SubResource("Lean3")]
 BranchFlavorIds = ["mass_assault", "fortified_depth"]
-SignatureId = "counterattack_reserve"
+SignatureId = "katyusha_storm_battery"

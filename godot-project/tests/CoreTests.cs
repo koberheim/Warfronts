@@ -324,6 +324,8 @@ public class CoreTests : TestClass
         public float PathProgress => 0f;
         public float CurrentHp => 100f;
         public bool IsAir => false;
+        public bool IsConcealed => false;
+        public bool IsRevealed => true;
         public bool IsAlive => true;
         public Vector2 Velocity => Vector2.Zero;
 

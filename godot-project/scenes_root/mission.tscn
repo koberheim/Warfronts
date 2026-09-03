@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://src/Map/MapRuntime.cs" id="1"]
 [ext_resource type="Script" path="res://src/Map/PathNetwork.cs" id="2"]
@@ -21,6 +21,7 @@
 [ext_resource type="Resource" path="res://assets/data/towers/arsenal_of_democracy.tres" id="20"]
 [ext_resource type="PackedScene" path="res://scenes/towers/arsenal_factory.tscn" id="21"]
 [ext_resource type="Script" path="res://src/UI/Flow/TutorialController.cs" id="22"]
+[ext_resource type="Resource" path="res://assets/data/map/air_corridor_default.tres" id="23"]
 
 [sub_resource type="Curve2D" id="Curve2D_1"]
 _data = {
@@ -38,6 +39,7 @@ FriendlyContainerPath = NodePath("FriendlyContainer")
 ArsenalPath = NodePath("ArsenalFactory")
 DebugWaveSequence = ExtResource("18")
 DebugLogEvents = true
+AirCorridor = ExtResource("23")
 
 [node name="PathNetwork" type="Node2D" parent="."]
 script = ExtResource("2")

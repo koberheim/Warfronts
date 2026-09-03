@@ -18,8 +18,13 @@ public class EnemyManager
 
     public IReadOnlyList<EnemyController> Enemies => _enemies;
     public Func<IEnumerable<ISiegeTarget>> SiegeTargetsProvider { get; set; }
+    public AirCorridorDefinition AirCorridor { get; set; }
 
-    public void Register(EnemyController enemy) => _enemies.Add(enemy);
+    public void Register(EnemyController enemy)
+    {
+        _enemies.Add(enemy);
+        enemy.SetEnemyProvider(() => _enemies);
+    }
 
     public void ResetSoftBlocks()
     {
@@ -31,7 +36,7 @@ public class EnemyManager
         var instance = definition.ControllerScene.Instantiate<EnemyController>();
         instance.Definition = definition;
         parent.AddChild(instance);
-        instance.Initialize(path, hpScale);
+        instance.Initialize(path, hpScale, AirCorridor);
         Register(instance);
         return instance;
     }

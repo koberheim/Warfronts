@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/SignatureDefinition.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+Id = "bersaglieri_charge_post"
+DisplayName = "Bersaglieri Charge Post"
+NationId = "italy"
+Kind = 3
+LevelCosts = PackedInt32Array(650, 423, 748)
+ChargeCaps = PackedInt32Array(0, 0, 0)
+BersaglieriDeploymentIntervals = PackedFloat32Array(18, 14, 11)
+BersaglieriSquadSizes = PackedInt32Array(4, 5, 5)
+BersaglieriSpeedMultiplier = 2.5
+BersaglieriGrenadeDamage = 35.0
+BersaglieriGrenadeBlastRadiusTiles = 1.4
+BersaglieriSuppressionRadiusTiles = 1.5
+BersaglieriLifetimeSeconds = 20.0
+BersaglieriMaxUnits = 8
+BersaglieriSpottedDurationSeconds = 4.0

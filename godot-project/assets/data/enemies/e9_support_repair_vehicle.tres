@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_support_repair.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e9_support_repair_vehicle"
+Archetype = 8
+ArmorClass = 1
+BaseHp = 260.0
+MoveSpeedTilesPerSec = 1.5
+LeakCost = 2
+Bounty = 24
+SpecialAbilityId = "field_repair"
+SupportRepairPercentMaxHpPerSecond = 0.04
+SupportRepairRangeTiles = 4.0
+ControllerScene = ExtResource("2")

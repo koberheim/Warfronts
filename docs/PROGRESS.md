@@ -188,13 +188,37 @@ were added and M4 remains unopened.
 30. [x] Wave Editor plugin with a GraphEdit timeline, Threat Value graph-like
     group blocks, pacing warnings, JSON export, and one-click mission
     playtest launch.
-31–45. Not started.
+31–35. [x] Five data-authored national signatures: RAF Scramble Command,
+    Katyusha Storm Battery, Blitzkrieg Command Post, Bersaglieri Charge Post,
+    and Special Attack Airfield. Each has its authored charge/cooldown model,
+    player activation, readable primitive telegraph, and named counterplay
+    mitigations.
+36. [x] Air corridors and E8 Air Unit. Air enemies use an authored straight
+    corridor, share the spatial targeting grid, and are only acquired by
+    air-capable tower domains; RAF interception and Flak both work through
+    the same target contract.
+37. [x] E9 Support repair, E10 Escort shared shield pool, and E11 Recon
+    concealment/speed aura. Command Posts and Spotted reveal concealed
+    enemies; minefields deliberately trigger them without target acquisition.
+38. [x] Balance Dashboard editor plugin. It reports each nation's
+    DPS-per-Supply value, envelope/parity errors, and includes an injected
+    violation check.
+39–45. Not started.
 
 **M4 prompts 28–30 verification:** the .NET build succeeds with 0
 warnings/errors. Mono Godot passes `M4TowerTests` 3/3, `M4NationEnemyWaveTests`
 3/3, and `CoreTests` 15/15. The Mono Godot editor scan initializes both
 editor plugins; only the machine's known editor-cache/IDE-metadata permission
-messages remain. M4 is complete; M5 signatures and air systems are next.
+messages remain. M4 is complete; M5 prompts 31–38 are implemented.
+
+**M5 prompts 31–38 verification:** the .NET build succeeds with 0 warnings
+and 0 errors. `M5SignatureAirTests` covers signature data, RAF three-pass and
+air interception, the remaining signature activation paths, air-corridor
+movement, E9/E10/E11 behavior, minefield-vs-concealed interaction, and Flak
+domain rules. The installed Godot executable is the known non-.NET build, so
+the GoDotTest suite and editor plugin scan cannot run on this machine; the
+source build is the available verification until a .NET-enabled Godot binary
+is installed.
 
 ## Post-M4 art preparation
 
@@ -211,9 +235,9 @@ messages remain. M4 is complete; M5 signatures and air systems are next.
 
 ## Historical blockers / current follow-up
 
-No current hard blockers. D17 is superseded by D25; M4 prompts 27–30 are
-complete. The next work is M5 signature towers and air systems, after review
-of the current M4 editor/runtime behavior.
+No design blockers. D17 is superseded by D25; M4 prompts 27–30 and M5
+prompts 31–34 are implemented. The next work is M6 doctrine and mode work,
+after a .NET-enabled Godot playtest pass and review of the signature balance.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is the active

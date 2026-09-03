@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/SignatureDefinition.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+Id = "katyusha_storm_battery"
+DisplayName = "Katyusha Storm Battery"
+NationId = "soviet_union"
+Kind = 1
+LevelCosts = PackedInt32Array(650, 423, 748)
+ChargeCaps = PackedInt32Array(0, 0, 0)
+KatyushaChargePerSecond = 1.0
+KatyushaChargePerKill = 3.0
+KatyushaFullCharge = PackedFloat32Array(240, 200, 170)
+KatyushaRocketCounts = PackedInt32Array(24, 30, 36)
+KatyushaRocketDamage = 60.0
+KatyushaBlastRadiusTiles = 1.8
+KatyushaImpactDurationSeconds = 3.5
+KatyushaCommandPointCost = 4
+KatyushaCommandPointCharge = 40.0

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/SignatureDefinition.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+Id = "raf_scramble_command"
+DisplayName = "RAF Scramble Command"
+NationId = "britain"
+Kind = 0
+LevelCosts = PackedInt32Array(650, 423, 748)
+ChargeCaps = PackedInt32Array(2, 3, 4)
+ChargeRegenSeconds = PackedFloat32Array(22, 18, 14)
+ElevatedExtraCharges = 1
+RafCorridorWidthTiles = 3.0
+RafCorridorLengthTiles = 8.0
+RafPassCount = 3
+RafStrikeDurationSeconds = 4.0
+RafSmallArmsDamagePerPass = PackedFloat32Array(55, 66, 77)
+RafExplosiveDamagePerPass = PackedFloat32Array(20, 24, 28)
+RafAntiAirDamage = PackedFloat32Array(200, 220, 240)
+RafAirTargetLimit = 3
+RafAutoScrambleRadiusTiles = 6.0

@@ -29,6 +29,14 @@ public partial class EnemyDefinition : Resource
     [Export] public float SiegeBombardIntervalSeconds = 8f;
     [Export] public float SiegeSuppressionDurationSeconds = 6f;
 
+    [ExportGroup("Support / Air")]
+    [Export] public float SupportRepairPercentMaxHpPerSecond = 0.04f;
+    [Export] public float SupportRepairRangeTiles = 4f;
+    [Export] public float EscortShieldMaxHp = 400f;
+    [Export] public float EscortShieldRadiusTiles = 3.5f;
+    [Export] public float ReconSpeedBonusMultiplier = 1.15f;
+    [Export] public float ReconAuraRadiusTiles = 4f;
+
     [ExportGroup("Boss Phase")]
     [Export] public bool IsBoss;
     [Export] public float SkirtHp;

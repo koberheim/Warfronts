@@ -14,6 +14,8 @@ public interface ITargetable
 
     float CurrentHp { get; }
     bool IsAir { get; }
+    bool IsConcealed { get; }
+    bool IsRevealed { get; }
     bool IsAlive { get; }
     Vector2 Velocity { get; }
 

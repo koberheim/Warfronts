@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_recon_concealed.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e11_recon_concealed"
+Archetype = 10
+ArmorClass = 0
+BaseHp = 90.0
+MoveSpeedTilesPerSec = 2.8
+LeakCost = 1
+Bounty = 12
+SpecialAbilityId = "recon_concealment"
+ReconSpeedBonusMultiplier = 1.15
+ReconAuraRadiusTiles = 4.0
+ControllerScene = ExtResource("2")

@@ -1,5 +1,7 @@
 using Godot;
 using FrontsOfWar.Core;
+using FrontsOfWar.Enemies;
+using System.Collections.Generic;
 
 namespace FrontsOfWar.Towers;
 
@@ -23,6 +25,15 @@ public partial class CommandPostController : Node2D
 
     public int CurrentCommandPointsPerWave => Upgrade.CurrentStats().CommandPointsPerWave;
     public int CurrentSupplyPerWave => Upgrade.CurrentStats().SupplyPerWave;
+
+    public void RevealTargets(IReadOnlyList<EnemyController> enemies, float tilePixelSize)
+    {
+        float multiplier = Definition?.DisplayName?.Contains("Radar", System.StringComparison.OrdinalIgnoreCase) == true ? 2f : 1f;
+        float radius = Mathf.Max(0f, Upgrade.CurrentStats().AuraRadiusTiles) * tilePixelSize * multiplier;
+        foreach (var enemy in enemies ?? System.Array.Empty<EnemyController>())
+            if (enemy != null && enemy.IsConcealed && enemy.GlobalPosition.DistanceTo(GlobalPosition) <= radius)
+                enemy.SetRevealed(true);
+    }
 
     // Sets (never adds — auras from multiple posts don't stack, GDD §6 T9)
     // this post's bonus on every tower within its radius, but only if it's

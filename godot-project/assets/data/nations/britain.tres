@@ -22,4 +22,4 @@ DisplayName = "Britain"
 Alliance = "Allies"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2")]
 BranchFlavorIds = ["layered_defense", "signals"]
-SignatureId = "barrage_coordination"
+SignatureId = "raf_scramble_command"

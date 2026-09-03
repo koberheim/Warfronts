@@ -119,3 +119,10 @@ tagged **[X]**, if an architecture principle above would have to be broken
 to do what's asked, or if you're about to make a call with no clear answer
 in the GDD and no obvious "right" default — stop and ask rather than
 guessing. Log the resolution in `docs/DECISIONS.md` either way.
+
+## 9. End-of-step recap
+
+At the end of every development step, provide a brief plain-English recap
+that covers: what was done, any review or decisions needed from the User, and
+the next development step. Keep it concise and include it in the final
+handoff after verification and any commit/push work.

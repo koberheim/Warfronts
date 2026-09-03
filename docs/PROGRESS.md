@@ -136,9 +136,39 @@ all active M2 systems without gameplay exceptions.
     live systems in sequence, and resumes after the final prompt.
 
 **M3 verification:** C# build succeeds with 0 warnings/errors; the Mono
-Godot GoDotTest suite passes 14/14 tests, including the boss phase and Arsenal
-resource checks. M3 remains primitive-art only; visual playtest and orphan-node
+Godot GoDotTest suite passes the M3 boss phase, Arsenal resource, and mission
+flow checks. M3 remains primitive-art only; visual playtest and orphan-node
 reporting are still manual editor checks.
+
+## M3.5 — Design-time Map Planner
+
+- [x] Catalog foundation: the 100-entry layout catalog loads into typed
+    template data from `godot-project/assets/data/map_layout_templates/`.
+- [x] Authored `MapPlanDefinition` data model with normalized 100 x 56.25
+    coordinates, paths, entries, objective, pads, zones, air-corridor data,
+    staged hooks, metrics, validation, status, and JSON save/load.
+- [x] Planner geometry and diagnostics: pure C# path lengths, bends,
+    connectivity checks, accidental/intentional crossing checks, separation,
+    pad exposure metrics, weighted score components, and deterministic pad
+    suggestions.
+- [x] Candidate generation: deterministic seeded geometry for all ten
+    catalog families, including merge, split/merge, dual-lane, crossing, hub,
+    gauntlet, and asymmetric topology hooks. Candidate diversity filtering is
+    stable and human-reviewable.
+- [x] Editor dock: catalog browser, normalized canvas, manual path/pad input,
+    score and diagnostics inspector, overlay selector, candidate list, seed,
+    regenerate, draft save, and accepted-plan export. Export writes ordinary
+    authored JSON under `assets/data/maps/plans/`; the mission never calls the
+    planner or generated data.
+- [x] Automated checks cover all 100 catalog records, unique IDs, objective
+    declarations, deterministic generation, 1,000 generated candidates,
+    crossing intent, advanced topology validity, pad limits, score stability,
+    diversity, and save/load round trips.
+
+**M3.5 verification:** the Mono Godot test runner passes the map-planning
+suite and the existing core suite; the editor-only plugin is scanned by the
+Mono Godot editor without runtime map-generation hooks. No new shipping maps
+were added and M4 remains unopened.
 
 ## M4 through M8
 
@@ -149,8 +179,8 @@ reporting are still manual editor checks.
 ## Historical blockers / current follow-up
 
 No current hard blockers. D17 is superseded by D25; M4 is intentionally not
-started. The next work is visual playtest/art insertion and iteration of the
-M3 slice, not new content.
+started. The next work is review of the planner output and visual playtest/art
+insertion for the M3 slice, not runtime procedural maps or new content.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is now the active
@@ -159,6 +189,7 @@ M3 slice, not new content.
 - **Standalone .NET restore:** `dotnet build` cannot resolve
   `Godot.NET.Sdk/4.7.2` without access to NuGet; the Mono Godot build can
   still run the current project and smoke scene.
-- **Map planner specification:** `docs/fronts_of_war_map_planner_design_spec.md`
-  and the 100-template catalog are present as design-time tooling input. The
-  planner itself is intentionally not implemented before the M3 gate closes.
+- **Map planner:** `docs/fronts_of_war_map_planner_design_spec.md`, the 100-
+  template catalog, and the `map_planner` editor dock implement the M3.5
+  design-time workflow. Accepted exports remain authored review artifacts;
+  runtime procedural generation is still out of scope.

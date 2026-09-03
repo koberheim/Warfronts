@@ -40,9 +40,10 @@ godot --headless --path . --run-tests=CoreTests --quit-after 1200
 
 M3 vertical-slice systems are implemented in primitive grey-box form: Arsenal
 friendlies, the Breakthrough Panzer boss, briefing/loadout/mission/results
-flow, and the integrated tutorial. The Mono Godot 4.7.2 build passes 14 core
-tests. M4 has not started; visual playtest and placeholder-art insertion are
-the next steps. See
+flow, and the integrated tutorial. M3.5 adds the editor-only Map Planner:
+catalog browsing, authored plan editing, validation, scoring, deterministic
+candidate generation, and accepted-plan export. M4 has not started; visual
+playtest and placeholder-art insertion remain the next gate. See
 [docs/PROGRESS.md](docs/PROGRESS.md).
 
 The standalone `dotnet build` command requires an online restore of

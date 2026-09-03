@@ -444,6 +444,19 @@ revisited — worth preserving before it's lost to editing history.
   makes the project ready for the user's planned placeholder-art pass.
 - **Status:** Active.
 
+### D31 - Map Planner is an editor-only M3.5 interstitial
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-02
+- **Decision:** Implement the catalog browser, authored plan model, geometry
+  validation, scoring, deterministic candidate generation, manual editing,
+  and accepted-plan export as a Godot EditorPlugin between M3 and M4. Keep
+  generated candidates out of runtime mission code and require human review
+  before an accepted plan becomes ordinary authored map data.
+- **Rationale:** This follows the user's map-planner brief and GDD §§15.6,
+  17.1, 18.1, and 19 while preserving fixed authored routes, the eight-map
+  launch scope, and the post-M3 one-in-one-out rule.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

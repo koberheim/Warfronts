@@ -1598,7 +1598,7 @@ The recognizability comes entirely from these channels, and they are more than s
   /addons
     /wave_editor          (EditorPlugin: wave timeline + Threat Value graph)
     /balance_dashboard     (EditorPlugin: DPS-per-Supply parity checker)
-    /map_pad_tool          (EditorPlugin: build-pad placement/tagging, path splines)
+    /map_planner           (EditorPlugin: catalog browser, plan editing, scoring, assisted generation)
     /data_validator        (EditorPlugin menu command: broken-reference scan)
   /assets
     /art            /sprites /vfx /ui /fonts
@@ -1708,7 +1708,7 @@ Godot's built-in 2D scene editor already covers a meaningful slice of what the o
 
 1. **Wave Editor plugin** (`EditorPlugin` with a `Control`-based dock; the timeline itself built on Godot's `GraphEdit`/`GraphNode` nodes, which are a strong native fit for "spawn groups as blocks on a time axis"). Shows the Threat Value graph, pacing-rule warnings, and a one-click "playtest from wave N." This tool is worth roughly three weeks of saved balancing time and should be built at Milestone 5, not later.
 2. **Balance Dashboard plugin** (`EditorPlugin` dock). Reads all `TowerDefinition` resources and computes DPS-per-Supply per damage type per nation, asserts the ±3% national parity rule, and lists every violated hard floor (e.g. artillery fire delay). Run it before every content commit.
-3. **Map Pad Tool.** A thin `EditorPlugin` (or, where sufficient, just well-authored `Marker2D`/`Area2D` scenes with an `@tool`-script gizmo) for placing build pads, tagging them, drawing paths as `Path2D` splines, and setting air corridors directly in the normal 2D viewport.
+3. **Map Planner.** A design-time `EditorPlugin` for browsing the 100-layout catalog, editing normalized authored plans, validating paths/pads, scoring route strategy, generating deterministic candidate geometry for review, and exporting an accepted candidate as ordinary authored map data. This expands the earlier Map Pad Tool; it never runs in a mission and never generates shipping routes at runtime.
 4. **Data Validator.** An `EditorPlugin` menu command — and, importantly, also a **headless CLI entry point** (`godot --headless --script res://tools/validate.cs` or a `Godot.SceneTree`-driven equivalent) — that walks all `Resource` assets and reports missing references, duplicate IDs, out-of-envelope stat leanings, and enemies with no listed counters. The headless path matters specifically because it lets a validation pass run in a GUI-less remote agent session or a CI job, not only inside an open editor window.
 
 ### 15.7 Testing
@@ -1779,6 +1779,7 @@ Each tower needs **two art states**, not four: L1–L2 share a base sprite (with
 | **M1** | Core loop grey-box | 3 wks | One map, path following, build pads, T1 Automatic Gun, T4 Anti-Tank Gun, E1/E6 enemies, Supply economy, one wave. Primitives-only art. **It should already feel like a game.** |
 | **M2** | Full slice systems | 4 wks | 4 archetypes, 4-level upgrades with branch fork, Command Points, one ability, 4 enemies, 12 waves, wave preview, speed controls, pause-with-build, post-mortem panel |
 | **M3** | **Vertical slice** | 3 wks | Bocage Crossroads at final art quality, US nation, Arsenal of Democracy signature, B1 boss, victory/defeat, integrated tutorial. **External playtest gate: three strangers finish it and one asks to replay.** |
+| **M3.5** | **Map Planner tooling** | 2 wks | Design-time catalog browser, authored-plan data model, validation/scoring, deterministic candidate generation, and editor export; no runtime generation |
 | **M4** | Content systems | 4 wks | Remaining 5 archetypes, E3/E7/E12, `NationProfile` system, all 6 nations' archetype variants as data, Wave Editor plugin |
 | **M5** | Signatures & support enemies | 4 wks | All 6 signature towers, E8–E11, Flak/air systems, Heavy Artillery, Balance Dashboard plugin |
 | **M6** | Doctrines, meta, maps | 6 wks | 18 doctrines, maps 2–5, mastery, unlocks, achievements plumbing, Codex |
@@ -1810,7 +1811,12 @@ Add a **20% buffer** and plan for **13 months**. A solo schedule without buffer 
 
 ### 18.1 Explicitly out of scope [X]
 
-Multiplayer or co-op · procedural map generation · destructible terrain · dynamic pathfinding or maze-building · fog of war · a strategic/campaign map layer with resource management · hero units with abilities and inventories · persistent meta stat upgrades · tower "research trees" between missions · unit micromanagement of any kind · crafting · loot or randomized tower stats · a cosmetic store or any monetization beyond the base price · daily/weekly live challenges · mod support at launch · console or mobile ports at launch · localization at launch · a custom engine · Unity · Unreal · full voice acting · cutscenes or animated story sequences · a branching narrative · naval or air-superiority sub-games · a level editor · Steam Workshop · replays or spectator features · seasonal events.
+Multiplayer or co-op · **runtime procedural map generation or generated shipping maps without author approval** · destructible terrain · dynamic pathfinding or maze-building · fog of war · a strategic/campaign map layer with resource management · hero units with abilities and inventories · persistent meta stat upgrades · tower "research trees" between missions · unit micromanagement of any kind · crafting · loot or randomized tower stats · a cosmetic store or any monetization beyond the base price · daily/weekly live challenges · mod support at launch · console or mobile ports at launch · localization at launch · a custom engine · Unity · Unreal · full voice acting · cutscenes or animated story sequences · a branching narrative · naval or air-superiority sub-games · a level editor · Steam Workshop · replays or spectator features · seasonal events.
+
+**Permitted tooling clarification:** design-time, human-in-the-loop assisted
+generation is permitted as editor tooling. It produces deterministic
+candidates only; a human must accept/export a candidate, and missions use
+only the resulting authored data. Launch scope remains eight authored maps.
 
 ### 18.2 The one-in-one-out rule
 
@@ -1868,6 +1874,15 @@ Each item below is one focused Claude Code / Codex session with a stated accepta
 24. Implement `BossPhaseController` and B1 Breakthrough Panzer (armor skirt, HE 3× rate, post-break speed, adds). *Accept: skirt breaks correctly and the transition is telegraphed.*
 25. Implement mission flow: briefing → loadout → mission → post-mortem → results, using Godot's `SceneTree.ChangeSceneToFile`/packed-scene flow, with retry-in-one-click. *Accept: full loop, no orphaned nodes (verify with Godot's orphan-node debug report).*
 26. Implement the integrated 8-prompt tutorial with pause-and-highlight. *Accept: a first-time player completes Mission 1 without external help.*
+
+**M3.5 — Design-time map planner interstitial**
+
+Implement the Map Planner & Assisted Map Generator as editor-only tooling. It
+may generate deterministic candidate plans from the catalog, but accepted
+plans must be explicitly exported as ordinary authored map data. *Accept: the
+catalog loads, a plan validates/saves/loads, the initial five topology
+families generate deterministically, and no runtime mission path depends on
+the generator.*
 
 **M4 — Content systems**
 27. Implement the remaining archetypes T2, T5, T6, T7, T8 with both branches each. *Accept: each behaves per §6 and passes the Balance Dashboard hard-floor checks.* (Split into 3–5 sessions, one or two archetypes each.)

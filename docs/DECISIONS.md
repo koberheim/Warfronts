@@ -505,6 +505,20 @@ revisited — worth preserving before it's lost to editing history.
   changing gameplay.
 - **Status:** Active.
 
+### D36 - Initial art pass is environment-only and review-gated
+- **Decided by:** User
+- **Date:** 2026-09-03
+- **Decision:** After M4, organize the art workspace and generate an initial
+  ten-asset review set focused on theater, terrain, flavor props, and shared
+  presentation. Hold nation-specific units and all enemy art until the user
+  reviews that those implementations are correct.
+- **Rationale:** This establishes the visual direction and reusable theater
+  kit without prematurely locking unit silhouettes or national variants.
+  Generated images remain review references until they pass the art spec's
+  native-scale, silhouette, contrast, blur, grayscale, and gameplay screenshot
+  checks.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

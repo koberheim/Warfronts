@@ -196,6 +196,17 @@ warnings/errors. Mono Godot passes `M4TowerTests` 3/3, `M4NationEnemyWaveTests`
 editor plugins; only the machine's known editor-cache/IDE-metadata permission
 messages remain. M4 is complete; M5 signatures and air systems are next.
 
+## Post-M4 art preparation
+
+- [x] Created the reusable art-kit folder structure under
+  `godot-project/assets/art/`, with theater, shared, miscellaneous, and
+  explicitly held unit/enemy categories.
+- [x] Created the art inventory and generation log. Ten initial
+  theater/terrain/flavor/UI assets are generated and marked `REVIEW`.
+- [x] Deliberately held nation-specific units, enemies, enemy wrecks,
+  national insignia, and tower/unit identity art pending implementation
+  review, per the user's request.
+
 ---
 
 ## Historical blockers / current follow-up
@@ -205,9 +216,9 @@ complete. The next work is M5 signature towers and air systems, after review
 of the current M4 editor/runtime behavior.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
-- **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is now the active
-  visual-direction reference. Placeholder art generation is intentionally
-  deferred until the M3 art pass; request it when that gate is ready.
+- **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is the active
+  visual-direction reference. The post-M4 environment-only generation pass
+  created ten review assets; nation-specific units and enemies remain held.
 - **Standalone .NET restore:** `dotnet build` cannot resolve
   `Godot.NET.Sdk/4.7.2` without access to NuGet; the Mono Godot build can
   still run the current project and smoke scene.

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=8 format=3]
+[gd_resource type="Resource" load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://src/Waves/WaveSequence.cs" id="1"]
 [ext_resource type="Script" path="res://src/Waves/WaveDefinition.cs" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" path="res://assets/data/enemies/e4_armored_infantry.tres" id="5"]
 [ext_resource type="Resource" path="res://assets/data/enemies/e5_light_vehicle.tres" id="6"]
 [ext_resource type="Resource" path="res://assets/data/enemies/e6_medium_armor.tres" id="7"]
+[ext_resource type="Resource" path="res://assets/data/enemies/e_b1_breakthrough_panzer.tres" id="8"]
 
 [sub_resource type="Resource" id="W1G1"]
 script = ExtResource("3")
@@ -183,6 +184,13 @@ Count = 3
 StartDelaySeconds = 8.0
 IntervalSeconds = 2.0
 
+[sub_resource type="Resource" id="W12Boss"]
+script = ExtResource("3")
+Enemy = ExtResource("8")
+Count = 1
+StartDelaySeconds = 12.0
+IntervalSeconds = 1.0
+
 [sub_resource type="Resource" id="Wave1"]
 script = ExtResource("2")
 WaveNumber = 1
@@ -241,7 +249,9 @@ Groups = [SubResource("W11G1"), SubResource("W11G2")]
 [sub_resource type="Resource" id="Wave12"]
 script = ExtResource("2")
 WaveNumber = 12
-Groups = [SubResource("W12G1"), SubResource("W12G2"), SubResource("W12G3")]
+IsBossWave = true
+BuildTimeSeconds = 40.0
+Groups = [SubResource("W12G1"), SubResource("W12G2"), SubResource("W12G3"), SubResource("W12Boss")]
 
 [resource]
 script = ExtResource("1")

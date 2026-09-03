@@ -430,6 +430,20 @@ revisited — worth preserving before it's lost to editing history.
   art strategy.
 - **Status:** Active.
 
+### D30 - M3 uses a primitive-art vertical slice with scene-based flow
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-02
+- **Decision:** Complete M3 with data-authored Arsenal and B1 boss systems,
+  a reusable MapRuntime build/wave progression, separate briefing/loadout/
+  results scenes, a post-mortem navigation handoff, and an eight-step
+  pause-and-highlight tutorial. Keep the existing `--mission`/headless path
+  for direct debugging and leave M4 content work untouched.
+- **Rationale:** This satisfies the GDD §19 M3 acceptance checks while
+  preserving the GDD's fixed-path, no-micromanagement, data-over-code rules.
+  Primitive rendering remains consistent with the existing prototype and
+  makes the project ready for the user's planned placeholder-art pass.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

@@ -8,5 +8,7 @@ namespace FrontsOfWar.Waves;
 public partial class WaveDefinition : Resource
 {
     [Export] public int WaveNumber = 1;
+    [Export] public float BuildTimeSeconds = 25f;
+    [Export] public bool IsBossWave;
     [Export] public SpawnGroup[] Groups = System.Array.Empty<SpawnGroup>();
 }

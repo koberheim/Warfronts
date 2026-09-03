@@ -23,6 +23,8 @@ public partial class HudController : CanvasLayer
     private Label _defenseLineLabel;
     private Label _waveLabel;
     private Label _speedLabel;
+    private Label _buildLabel;
+    private Button _callWaveButton;
     private AbilityHotbar _abilityHotbar;
 
     public override void _Ready()
@@ -74,6 +76,13 @@ public partial class HudController : CanvasLayer
         pauseButton.Pressed += OnPauseButtonPressed;
         topRight.AddChild(pauseButton);
 
+        _buildLabel = new Label();
+        AddChild(_buildLabel);
+        _buildLabel.Position = new Vector2(16, 540);
+        _callWaveButton = new Button { Text = "Call Wave Early", Position = new Vector2(180, 532), Visible = false };
+        _callWaveButton.Pressed += () => _mission.CallNextWaveEarly();
+        AddChild(_callWaveButton);
+
         _abilityHotbar = new AbilityHotbar
         {
             Mission = _mission,
@@ -112,7 +121,8 @@ public partial class HudController : CanvasLayer
         RefreshCommandPoints();
         RefreshDefenseLine();
         RefreshSpeed();
-        _waveLabel.Text = "Wave: —";
+        RefreshWave(_mission.Waves?.CurrentWaveNumber ?? 0);
+        RefreshBuildPhase();
     }
 
     private void RefreshSupply() => _supplyLabel.Text = $"Supply: {_mission.Supply.Balance}";
@@ -122,6 +132,17 @@ public partial class HudController : CanvasLayer
         => _defenseLineLabel.Text = $"Defense Line: {_mission.DefenseLine.Integrity} / {_mission.DefenseLine.MaxIntegrity}";
 
     private void RefreshWave(int waveNumber) => _waveLabel.Text = $"Wave: {waveNumber}";
+
+    private void RefreshBuildPhase()
+    {
+        bool isBuild = _mission.IsBuildPhase;
+        _buildLabel.Text = isBuild
+            ? $"BUILD PHASE  /  next wave in {_mission.BuildTimeRemaining:0.0}s"
+            : "ENGAGED";
+        _callWaveButton.Visible = isBuild;
+    }
+
+    public override void _Process(double delta) => RefreshBuildPhase();
 
     private void RefreshSpeed()
     {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://src/Map/MapRuntime.cs" id="1"]
 [ext_resource type="Script" path="res://src/Map/PathNetwork.cs" id="2"]
@@ -17,6 +17,10 @@
 [ext_resource type="Resource" path="res://assets/data/towers/t3_field_mortar.tres" id="16"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_field_mortar.tscn" id="17"]
 [ext_resource type="Resource" path="res://assets/data/missions/m2_wave_sequence.tres" id="18"]
+[ext_resource type="Script" path="res://src/Towers/ArsenalController.cs" id="19"]
+[ext_resource type="Resource" path="res://assets/data/towers/arsenal_of_democracy.tres" id="20"]
+[ext_resource type="PackedScene" path="res://scenes/towers/arsenal_factory.tscn" id="21"]
+[ext_resource type="Script" path="res://src/UI/Flow/TutorialController.cs" id="22"]
 
 [sub_resource type="Curve2D" id="Curve2D_1"]
 _data = {
@@ -30,6 +34,8 @@ EnemyContainerPath = NodePath("EnemyContainer")
 ProjectileContainerPath = NodePath("ProjectileContainer")
 TowerContainerPath = NodePath("TowerContainer")
 CommandPostContainerPath = NodePath("CommandPostContainer")
+FriendlyContainerPath = NodePath("FriendlyContainer")
+ArsenalPath = NodePath("ArsenalFactory")
 DebugWaveSequence = ExtResource("18")
 DebugLogEvents = true
 
@@ -43,6 +49,8 @@ curve = SubResource("Curve2D_1")
 [node name="EnemyContainer" type="Node2D" parent="."]
 
 [node name="ProjectileContainer" type="Node2D" parent="."]
+
+[node name="FriendlyContainer" type="Node2D" parent="."]
 
 [node name="TowerContainer" type="Node2D" parent="."]
 
@@ -59,6 +67,10 @@ position = Vector2(560, 350)
 Definition = ExtResource("16")
 
 [node name="CommandPostContainer" type="Node2D" parent="."]
+
+[node name="ArsenalFactory" parent="." instance=ExtResource("21")]
+position = Vector2(300, 400)
+Definition = ExtResource("20")
 
 [node name="CommandPost1" parent="CommandPostContainer" instance=ExtResource("15")]
 position = Vector2(220, 300)
@@ -85,3 +97,6 @@ MissionPath = NodePath("..")
 [node name="PostMortemPanel" type="CanvasLayer" parent="."]
 script = ExtResource("12")
 MissionPath = NodePath("..")
+
+[node name="Tutorial" type="CanvasLayer" parent="."]
+script = ExtResource("22")

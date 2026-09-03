@@ -28,6 +28,7 @@ public class WaveRunner
     private bool _isRunning;
 
     public bool IsRunning => _isRunning;
+    public int CurrentWaveNumber => _currentWaveNumber;
 
     public WaveRunner(EnemyManager enemyManager, PathNetwork path, Node enemyParent)
     {
@@ -36,10 +37,8 @@ public class WaveRunner
         _enemyParent = enemyParent;
     }
 
-    // Queues a mission's wave list for the preview strip (GDD §10.7) to
-    // read from. No auto-advance yet — calling StartWave/StartNextWave is
-    // still the caller's job (the build-timer/"call wave early" flow is
-    // mission-flow scope, M3).
+    // Queues a mission's wave list for the preview strip (GDD §10.7). The
+    // MapRuntime owns the build timer and calls StartNextWave between waves.
     public void QueueWaves(IEnumerable<WaveDefinition> waves)
     {
         foreach (var wave in waves) _upcoming.Enqueue(wave);

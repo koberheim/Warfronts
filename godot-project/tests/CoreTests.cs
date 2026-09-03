@@ -4,6 +4,7 @@ using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
 using FrontsOfWar.Economy;
+using FrontsOfWar.Enemies;
 using FrontsOfWar.Towers;
 using FrontsOfWar.Waves;
 using System.Collections.Generic;
@@ -236,11 +237,12 @@ public class CoreTests : TestClass
             foreach (var group in sequence.Waves[i].Groups) enemyIds.Add(group.Enemy.Id);
         }
 
-        Require(enemyIds.SetEquals(new[]
+        Require(new HashSet<string>(enemyIds).IsSupersetOf(new[]
         {
             "e1_basic_infantry", "e4_armored_infantry",
             "e5_light_vehicle", "e6_medium_armor",
-        }), "M2 enemy roster");
+        }), "M2 ground enemy roster");
+        Require(enemyIds.Contains("b1_breakthrough_panzer"), "M3 boss is authored in the finale wave");
     }
 
     [Test]
@@ -282,6 +284,38 @@ public class CoreTests : TestClass
         };
         var point = TargetingService.SelectDensestClusterPoint(candidates, 16f);
         Require(point == new Vector2(110f, 100f), "Densest cluster point selection");
+    }
+
+    [Test]
+    public void BreakthroughPanzerSkirtRequiresExplosivePhaseTransition()
+    {
+        var boss = GD.Load<EnemyDefinition>("res://assets/data/enemies/e_b1_breakthrough_panzer.tres");
+        Require(boss != null && boss.IsBoss, "B1 boss resource loads");
+        var phase = new BossPhaseController(boss);
+
+        for (int i = 0; i < 40; i++) phase.ResolveDamage(100f, DamageType.Explosive, false);
+        Require(!phase.IsSkirtIntact, "Explosive damage breaks the armor skirt");
+        RequireApproximately(150f, phase.ResolveDamage(100f, DamageType.ArmorPiercing, false), "Post-skirt AP damage");
+    }
+
+    [Test]
+    public void ArsenalDefinitionContainsThreeProgressiveUnitUnlocks()
+    {
+        var arsenal = GD.Load<ArsenalDefinition>("res://assets/data/towers/arsenal_of_democracy.tres");
+        Require(arsenal != null && arsenal.Units.Length == 3, "Arsenal resource loads three units");
+        Require(arsenal.UnlockLevels[0] == 1 && arsenal.UnlockLevels[1] == 2 && arsenal.UnlockLevels[2] == 3,
+            "Arsenal unlock levels");
+        Require(arsenal.ProductionIntervals[0] == 14f && arsenal.ProductionIntervals[1] == 10f && arsenal.ProductionIntervals[2] == 7f,
+            "Arsenal production intervals");
+    }
+
+    [Test]
+    public void M3FlowScenesAndMissionSceneLoad()
+    {
+        Require(GD.Load<PackedScene>("res://scenes_root/briefing.tscn") != null, "Briefing scene loads");
+        Require(GD.Load<PackedScene>("res://scenes_root/loadout.tscn") != null, "Loadout scene loads");
+        Require(GD.Load<PackedScene>("res://scenes_root/mission.tscn") != null, "Mission scene loads");
+        Require(GD.Load<PackedScene>("res://scenes_root/results.tscn") != null, "Results scene loads");
     }
 
     private sealed class FakeTargetable : ITargetable

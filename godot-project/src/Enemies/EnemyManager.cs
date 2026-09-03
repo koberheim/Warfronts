@@ -1,6 +1,7 @@
 using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
+using FrontsOfWar.Map;
 using System.Collections.Generic;
 
 namespace FrontsOfWar.Enemies;
@@ -18,6 +19,21 @@ public class EnemyManager
 
     public void Register(EnemyController enemy) => _enemies.Add(enemy);
 
+    public void ResetSoftBlocks()
+    {
+        foreach (var enemy in _enemies) enemy.SetSoftBlocked(false);
+    }
+
+    public EnemyController Spawn(EnemyDefinition definition, PathNetwork path, Node parent, float hpScale = 1f)
+    {
+        var instance = definition.ControllerScene.Instantiate<EnemyController>();
+        instance.Definition = definition;
+        parent.AddChild(instance);
+        instance.Initialize(path, hpScale);
+        Register(instance);
+        return instance;
+    }
+
     public void Tick(float tickDeltaSeconds)
     {
         for (int i = _enemies.Count - 1; i >= 0; i--)
@@ -27,7 +43,10 @@ public class EnemyManager
 
             if (enemy.ReachedEnd)
             {
-                EventBus.Instance?.Publish(new EnemyLeakedEvent(enemy, enemy.Definition.LeakCost));
+                if (enemy.Definition.IsBoss)
+                    EventBus.Instance?.Publish(new BossReachedObjectiveEvent(enemy));
+                else
+                    EventBus.Instance?.Publish(new EnemyLeakedEvent(enemy, enemy.Definition.LeakCost));
                 enemy.QueueFree();
                 _enemies.RemoveAt(i);
             }
@@ -36,6 +55,10 @@ public class EnemyManager
                 enemy.QueueFree();
                 _enemies.RemoveAt(i);
             }
+
+            int addCount = enemy.ConsumeBossAddRequest();
+            if (addCount > 0)
+                EventBus.Instance?.Publish(new BossAddsRequestedEvent(enemy, addCount));
         }
     }
 

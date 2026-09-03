@@ -18,6 +18,10 @@ public partial class EnemyController : Node2D, ITargetable
     private float _maxHp;
     private float _hpScaleMultiplier = 1f;
     private Vector2 _previousPosition;
+    private bool _softBlocked;
+    private CanvasItem _bossSkirtVisual;
+
+    public BossPhaseController BossPhase { get; private set; }
 
     public StatusController Status { get; } = new();
 
@@ -34,6 +38,8 @@ public partial class EnemyController : Node2D, ITargetable
         _hpScaleMultiplier = hpScaleMultiplier;
         _maxHp = Definition.BaseHp * hpScaleMultiplier;
         _currentHp = _maxHp;
+        BossPhase = Definition.IsBoss ? new BossPhaseController(Definition) : null;
+        _bossSkirtVisual = GetNodeOrNull<CanvasItem>("Skirt");
         GlobalPosition = path.GetPositionAtDistance(0f);
     }
 
@@ -42,11 +48,13 @@ public partial class EnemyController : Node2D, ITargetable
         if (_pathFollower == null || !IsAlive) return;
 
         Status.Tick(tickDeltaSeconds);
+        BossPhase?.Tick(tickDeltaSeconds);
 
         _previousPosition = GlobalPosition;
         var config = GameBalanceConfigAutoload.Config;
         float speedMultiplier = Status.IsSuppressed ? config.SuppressedMoveSpeedMultiplier : 1f;
-        _pathFollower.Advance(Definition.MoveSpeedTilesPerSec, speedMultiplier, tickDeltaSeconds, config.TilePixelSize);
+        if (!_softBlocked)
+            _pathFollower.Advance(Definition.MoveSpeedTilesPerSec * (BossPhase?.SpeedMultiplier ?? 1f), speedMultiplier, tickDeltaSeconds, config.TilePixelSize);
         GlobalPosition = _pathFollower.CurrentPosition;
         Velocity = tickDeltaSeconds > 0f ? (GlobalPosition - _previousPosition) / tickDeltaSeconds : Vector2.Zero;
 
@@ -64,7 +72,10 @@ public partial class EnemyController : Node2D, ITargetable
         if (!IsAlive) return;
 
         float multiplier = DamageTable.Default.Multiplier(type, Definition.ArmorClass);
-        float dealt = DamageResolver.ResolveDamage(baseDamage, type, Definition.ArmorClass, Status.IsSpotted, DamageTable.Default);
+        float dealt = BossPhase?.ResolveDamage(baseDamage, type, Status.IsSpotted)
+            ?? DamageResolver.ResolveDamage(baseDamage, type, Definition.ArmorClass, Status.IsSpotted, DamageTable.Default);
+        if (BossPhase is { IsSkirtIntact: false } && _bossSkirtVisual != null)
+            _bossSkirtVisual.Visible = false;
         _currentHp = Mathf.Max(0f, _currentHp - dealt);
 
         EventBus.Instance?.Publish(new EnemyDamagedEvent(this, dealt, multiplier, type, source));
@@ -72,6 +83,10 @@ public partial class EnemyController : Node2D, ITargetable
         if (_currentHp <= 0f)
             EventBus.Instance?.Publish(new EnemyKilledEvent(this, Definition.Bounty));
     }
+
+    public void SetSoftBlocked(bool blocked) => _softBlocked = blocked;
+
+    public int ConsumeBossAddRequest() => BossPhase?.ConsumePendingAdds() ?? 0;
 
     public void ApplySuppressed(float durationSeconds, float hardCapSeconds) => Status.ApplySuppressed(durationSeconds, hardCapSeconds);
     public void ApplySpotted(float durationSeconds) => Status.ApplySpotted(durationSeconds);
@@ -82,15 +97,22 @@ public partial class EnemyController : Node2D, ITargetable
     // differ by armor class, matching the accessibility rule in §13.9.
     public override void _Draw()
     {
-        if (!IsAlive || _currentHp >= _maxHp || _maxHp <= 0f) return;
+        if (!IsAlive || (!Definition.IsBoss && _currentHp >= _maxHp) || _maxHp <= 0f) return;
 
-        const float barWidth = 28f;
+        const float barWidth = 42f;
         const float barHeight = 4f;
         const float yOffset = -30f;
         float fraction = _currentHp / _maxHp;
 
         DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth, barHeight), new Color(0.15f, 0.15f, 0.15f, 0.9f));
         DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth * fraction, barHeight), new Color(0.75f, 0.15f, 0.15f, 1f));
+
+        if (BossPhase is { IsSkirtIntact: true })
+        {
+            float skirtFraction = BossPhase.SkirtMaxHp > 0f ? BossPhase.SkirtHp / BossPhase.SkirtMaxHp : 0f;
+            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth, barHeight), new Color(0.1f, 0.1f, 0.1f, 0.9f));
+            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth * skirtFraction, barHeight), new Color(0.85f, 0.65f, 0.2f, 1f));
+        }
 
         DrawArmorGlyph(new Vector2(-barWidth / 2f - 7f, yOffset + barHeight / 2f));
 

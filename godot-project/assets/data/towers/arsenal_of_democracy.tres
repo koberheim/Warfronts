@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/ArsenalDefinition.cs" id="1"]
+[ext_resource type="Resource" path="res://assets/data/enemies/friendly_rifle_squad.tres" id="2"]
+[ext_resource type="Resource" path="res://assets/data/enemies/friendly_jeep.tres" id="3"]
+[ext_resource type="Resource" path="res://assets/data/enemies/friendly_light_tank.tres" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/friendly_unit.tscn" id="5"]
+
+[resource]
+script = ExtResource("1")
+Id = "us_arsenal_of_democracy"
+DisplayName = "Arsenal of Democracy Factory"
+LevelCosts = PackedInt32Array(650, 423, 748)
+ProductionIntervals = PackedFloat32Array(14, 10, 7)
+UnlockLevels = PackedInt32Array(1, 2, 3)
+Units = Array[ExtResource("2")]([ExtResource("2"), ExtResource("3"), ExtResource("4")])
+UnitScene = ExtResource("5")

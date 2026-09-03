@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/FriendlyUnitDefinition.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+Id = "jeep"
+DisplayName = "Jeep"
+MaxHp = 90.0
+DamagePerSecond = 22.0
+DamageType = 0
+MoveSpeedTilesPerSec = 2.6
+DodgeChance = 0.3
+LifetimeSeconds = 45.0

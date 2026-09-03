@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/FriendlyUnitDefinition.cs" id="1"]
+
+[resource]
+script = ExtResource("1")
+Id = "light_tank"
+DisplayName = "Light Tank"
+MaxHp = 280.0
+DamagePerSecond = 30.0
+DamageType = 2
+MoveSpeedTilesPerSec = 1.4
+LifetimeSeconds = 45.0

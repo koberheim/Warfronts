@@ -23,13 +23,17 @@ public partial class MapRuntime : Node2D, ISimTickable
     [Export] public NodePath ProjectileContainerPath;
     [Export] public NodePath TowerContainerPath;
     [Export] public NodePath CommandPostContainerPath;
+    [Export] public NodePath FriendlyContainerPath;
+    [Export] public NodePath ArsenalPath;
 
     // Dev-only: if set, this wave starts immediately on mission load. No
-    // mission flow (briefing → build → wave sequence) exists yet — that's
-    // M3 — so this is how M1/M2 test scenes exercise WaveRunner end to end.
+    // mission flow (briefing → build → wave sequence) uses the same debug
+    // hooks; DebugSingleWave remains useful for fast system checks.
     [Export] public WaveDefinition DebugStartWave;
     [Export] public WaveSequence DebugWaveSequence;
     [Export] public bool DebugLogEvents;
+    [Export] public bool DebugSingleWave;
+    [Export] public float MissionBuildTimeSeconds = 25f;
 
     public PathNetwork Path { get; private set; }
     public EnemyManager Enemies { get; } = new();
@@ -41,16 +45,25 @@ public partial class MapRuntime : Node2D, ISimTickable
     public CommandPointLedger CommandPoints { get; private set; }
     public AbilitySystem Abilities { get; private set; }
     public WaveRunner Waves { get; private set; }
+    public FriendlyUnitManager FriendlyUnits { get; private set; }
     public SeededRandom Random { get; private set; }
 
     private SpatialGrid _spatialGrid;
     private DebugEventLogger _debugLogger;
+    private ArsenalController _arsenal;
+    private float _buildTimeRemaining;
+    private bool _waitingForBuild;
+    private bool _missionOver;
+    private bool _victoryPublished;
 
     public override void _Ready()
     {
         Path = GetNode<PathNetwork>(PathNetworkPath);
         var enemyContainer = GetNode<Node>(EnemyContainerPath);
         var projectileContainer = GetNode<Node>(ProjectileContainerPath);
+        var friendlyContainer = FriendlyContainerPath == null
+            ? this
+            : GetNode<Node>(FriendlyContainerPath);
 
         var config = GameBalanceConfigAutoload.Config;
         Random = new SeededRandom(unchecked((ulong)(uint)MissionSeed));
@@ -61,6 +74,10 @@ public partial class MapRuntime : Node2D, ISimTickable
         CommandPoints = new CommandPointLedger(config, () => CommandPosts.TotalCommandPointBonus());
         Abilities = new AbilitySystem(config);
         Waves = new WaveRunner(Enemies, Path, enemyContainer);
+        FriendlyUnits = new FriendlyUnitManager(friendlyContainer);
+        EventBus.Instance?.Subscribe<BossAddsRequestedEvent>(OnBossAddsRequested);
+        EventBus.Instance?.Subscribe<BossReachedObjectiveEvent>(OnBossReachedObjective);
+        EventBus.Instance?.Subscribe<DefenseLineDepletedEvent>(OnDefenseLineDepleted);
 
         float cellSizePixels = config.SpatialGridCellSizeTiles * config.TilePixelSize;
         _spatialGrid = new SpatialGrid(cellSizePixels);
@@ -88,11 +105,18 @@ public partial class MapRuntime : Node2D, ISimTickable
                         CommandPosts.Register(post);
         }
 
+        if (ArsenalPath != null)
+        {
+            _arsenal = GetNodeOrNull<ArsenalController>(ArsenalPath);
+            _arsenal?.Initialize(FriendlyUnits, Path);
+        }
+
         if (DebugLogEvents) _debugLogger = new DebugEventLogger();
         if (DebugWaveSequence?.Waves is { Length: > 0 } sequence)
         {
             Waves.StartWave(sequence[0]);
-            for (int i = 1; i < sequence.Length; i++) Waves.QueueWaves(new[] { sequence[i] });
+            if (!DebugSingleWave)
+                for (int i = 1; i < sequence.Length; i++) Waves.QueueWaves(new[] { sequence[i] });
         }
         else if (DebugStartWave != null)
         {
@@ -108,26 +132,95 @@ public partial class MapRuntime : Node2D, ISimTickable
         DefenseLine?.Dispose();
         CommandPoints?.Dispose();
         _debugLogger?.Dispose();
+        EventBus.Instance?.Unsubscribe<BossAddsRequestedEvent>(OnBossAddsRequested);
+        EventBus.Instance?.Unsubscribe<BossReachedObjectiveEvent>(OnBossReachedObjective);
+        EventBus.Instance?.Unsubscribe<DefenseLineDepletedEvent>(OnDefenseLineDepleted);
         if (GameLoop.Instance != null && GameLoop.Instance.CurrentMission == (ISimTickable)this)
             GameLoop.Instance.CurrentMission = null;
     }
 
     public void SimTick(float tickDeltaSeconds)
     {
+        if (_missionOver) return;
         var config = GameBalanceConfigAutoload.Config;
 
         Waves.Tick(tickDeltaSeconds);
+        FriendlyUnits.Tick(tickDeltaSeconds, Enemies);
         Enemies.Tick(tickDeltaSeconds);
         _spatialGrid.Rebuild(Enemies.GetTargetables());
         CommandPosts.Tick(tickDeltaSeconds, Towers, config.TilePixelSize);
         Towers.Tick(tickDeltaSeconds, _spatialGrid, Projectiles);
         Projectiles.Tick(tickDeltaSeconds, _spatialGrid);
         Abilities.Tick(tickDeltaSeconds, _spatialGrid);
+
+        if (!_victoryPublished && !_waitingForBuild && !Waves.IsRunning && Enemies.Enemies.Count == 0
+            && Waves.PeekUpcoming(1).Count > 0)
+        {
+            Supply.Credit(Supply.EndOfWaveIncome(Waves.CurrentWaveNumber));
+            _waitingForBuild = true;
+            var nextWave = Waves.PeekUpcoming(1)[0];
+            _buildTimeRemaining = nextWave.IsBossWave ? 40f : MissionBuildTimeSeconds;
+            EventBus.Instance?.Publish(new BuildPhaseStartedEvent(Waves.CurrentWaveNumber + 1, _buildTimeRemaining));
+        }
+
+        if (_waitingForBuild)
+        {
+            _buildTimeRemaining -= tickDeltaSeconds;
+            if (_buildTimeRemaining <= 0f)
+            {
+                _waitingForBuild = false;
+                Waves.StartNextWave();
+            }
+        }
+
+        if (!_victoryPublished && !_waitingForBuild && !Waves.IsRunning && Enemies.Enemies.Count == 0
+            && Waves.PeekUpcoming(1).Count == 0 && Waves.CurrentWaveNumber > 0)
+        {
+            Supply.Credit(Supply.EndOfWaveIncome(Waves.CurrentWaveNumber));
+            _victoryPublished = true;
+            _missionOver = true;
+            MissionSession.LastMissionWon = true;
+            MissionSession.LastWaveReached = Waves.CurrentWaveNumber;
+            EventBus.Instance?.Publish(new MissionCompletedEvent(true));
+        }
     }
 
     public void RegisterTower(TowerController tower) => Towers.Register(tower);
     public void StartWave(WaveDefinition wave) => Waves.StartWave(wave);
 
+    public float BuildTimeRemaining => Mathf.Max(0f, _buildTimeRemaining);
+    public bool IsBuildPhase => _waitingForBuild;
+
+    public void CallNextWaveEarly()
+    {
+        if (!_waitingForBuild) return;
+        float fraction = Mathf.Clamp(_buildTimeRemaining / Mathf.Max(1f, MissionBuildTimeSeconds), 0f, 1f);
+        Supply.Credit(Supply.EarlyCallBonus(Waves.CurrentWaveNumber, fraction));
+        _waitingForBuild = false;
+        Waves.StartNextWave();
+    }
+
     public bool ActivateAbility(Economy.AbilityType type, Vector2 targetPoint)
         => Abilities.TryActivate(type, targetPoint, CommandPoints, Towers, DefenseLine);
+
+    private void OnBossAddsRequested(BossAddsRequestedEvent evt)
+    {
+        if (evt.Boss?.BossPhase == null || evt.Boss.Definition.AddDefinition == null) return;
+        for (int i = 0; i < evt.Count; i++)
+            Enemies.Spawn(evt.Boss.Definition.AddDefinition, Path, evt.Boss.GetParent(), 1f);
+    }
+
+    private void OnBossReachedObjective(BossReachedObjectiveEvent evt)
+    {
+        if (!_missionOver) DefenseLine.ForceDeplete();
+    }
+
+    private void OnDefenseLineDepleted(DefenseLineDepletedEvent evt)
+    {
+        if (_missionOver) return;
+        _missionOver = true;
+        MissionSession.LastMissionWon = false;
+        MissionSession.LastWaveReached = Waves?.CurrentWaveNumber ?? 0;
+        EventBus.Instance?.Publish(new MissionCompletedEvent(false));
+    }
 }

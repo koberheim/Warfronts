@@ -36,5 +36,18 @@ public partial class Boot : Node2D
 #endif
 
     private void StartMission()
-        => GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
+    {
+        if (OS.HasFeature("headless"))
+        {
+            GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
+            return;
+        }
+        foreach (string arg in OS.GetCmdlineArgs())
+            if (arg == "--mission")
+            {
+                GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
+                return;
+            }
+        GetTree().ChangeSceneToFile("res://scenes_root/briefing.tscn");
+    }
 }

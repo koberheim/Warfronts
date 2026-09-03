@@ -29,4 +29,19 @@ public partial class PathNetwork : Node2D
 
     public Vector2 GetPositionAtProgress(float progress01)
         => GetPositionAtDistance(Mathf.Clamp(progress01, 0f, 1f) * LengthPixels);
+
+    public float GetClosestDistance(Vector2 worldPosition)
+    {
+        if (_route?.Curve == null || LengthPixels <= 0f) return 0f;
+        float bestDistance = 0f;
+        float bestSquared = float.MaxValue;
+        const int samples = 128;
+        for (int i = 0; i <= samples; i++)
+        {
+            float distance = LengthPixels * i / samples;
+            float squared = worldPosition.DistanceSquaredTo(GetPositionAtDistance(distance));
+            if (squared < bestSquared) { bestSquared = squared; bestDistance = distance; }
+        }
+        return bestDistance;
+    }
 }

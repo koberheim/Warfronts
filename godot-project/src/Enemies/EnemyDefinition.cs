@@ -19,6 +19,16 @@ public partial class EnemyDefinition : Resource
     [Export] public int LeakCost;
     [Export] public int Bounty;
 
+    [ExportGroup("Boss Phase")]
+    [Export] public bool IsBoss;
+    [Export] public float SkirtHp;
+    [Export] public float SkirtDamageReduction = 0.5f;
+    [Export] public float SkirtExplosiveMultiplier = 3f;
+    [Export] public float PostSkirtSpeedMultiplier = 1.3f;
+    [Export] public EnemyDefinition AddDefinition;
+    [Export] public int AddCount = 2;
+    [Export] public float AddIntervalSeconds = 12f;
+
     // Deviation from GDD §15.3's schema (Claude decision, see
     // docs/DECISIONS.md): the full NationalSkin[] system is M4+ scope. Until
     // then, each EnemyDefinition points directly at the scene it spawns.

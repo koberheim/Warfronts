@@ -11,6 +11,7 @@ source of truth for scope, mechanics, and the production plan.
   - `docs/DECISIONS.md` — the project's decision log, with who decided what.
   - `docs/PROGRESS.md` — live tracker against GDD §19's implementation ladder.
   - [`docs/FRONTS OF WAR ART DESIGN.md`](docs/FRONTS%20OF%20WAR%20ART%20DESIGN.md) — visual direction and placeholder-art reference.
+  - `docs/fronts_of_war_map_planner_design_spec.md` and `maps/` — design-time map planning specification and 100-template catalog.
   - `docs/archive/` — four documents superseded by GDD v1.1 (an old Unity
     migration guide, and the pre-GDD tower/enemy design docs). Kept for
     history, not for implementation — see `docs/archive/README.md`.
@@ -37,10 +38,11 @@ godot --headless --path . --run-tests=CoreTests --quit-after 1200
 
 ## Status
 
-M2 slice systems are implemented and the reusable mission scene runs through
-a headless smoke test with the Mono build of Godot 4.7.2. M3 (the
-vertical-slice gate) has not started. The M0 core test suite passes headlessly;
-M2 is now complete against its grey-box acceptance criteria. See
+M3 vertical-slice systems are implemented in primitive grey-box form: Arsenal
+friendlies, the Breakthrough Panzer boss, briefing/loadout/mission/results
+flow, and the integrated tutorial. The Mono Godot 4.7.2 build passes 14 core
+tests. M4 has not started; visual playtest and placeholder-art insertion are
+the next steps. See
 [docs/PROGRESS.md](docs/PROGRESS.md).
 
 The standalone `dotnet build` command requires an online restore of

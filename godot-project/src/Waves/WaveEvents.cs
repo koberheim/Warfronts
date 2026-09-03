@@ -14,3 +14,14 @@ public readonly struct WaveSpawningCompleteEvent
     public readonly int WaveNumber;
     public WaveSpawningCompleteEvent(int waveNumber) => WaveNumber = waveNumber;
 }
+
+public readonly struct BuildPhaseStartedEvent
+{
+    public readonly int NextWaveNumber;
+    public readonly float DurationSeconds;
+    public BuildPhaseStartedEvent(int nextWaveNumber, float durationSeconds)
+    {
+        NextWaveNumber = nextWaveNumber;
+        DurationSeconds = durationSeconds;
+    }
+}

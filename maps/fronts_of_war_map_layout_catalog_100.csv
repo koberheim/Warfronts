@@ -1,0 +1,101 @@
+id,rank_group,template_name,family,family_name,genre_prevalence,ground_entries,logical_route_count,split_count,merge_count,crossing_count,loop_count,path_length_class,min_path_tiles,max_path_tiles,shared_coverage,recommended_pad_min,recommended_pad_max,primary_design_lesson,difficulty_band,launch_candidate,best_use
+TDL-001,A,Classic S,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,long,48,66,medium,24,28,balanced,Tutorial,True,campaign
+TDL-002,A,Wide S,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,long,48,66,low,25,29,long_range,Easy,True,campaign
+TDL-003,A,Tight S,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,medium,34,48,high,21,25,aoe,Tutorial,True,campaign
+TDL-004,A,Reverse S,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,medium,34,48,medium,21,25,balanced,Tutorial,True,campaign
+TDL-005,A,Triple Bend,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,medium,34,48,medium,21,25,direct_fire,Tutorial,True,campaign
+TDL-006,A,Five-Bend Snake,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,long,48,66,high,24,28,mixed,Tutorial,True,campaign
+TDL-007,A,Edge Snake,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,medium,34,48,low,22,26,central_range,Easy,True,campaign
+TDL-008,A,Center Snake,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,long,48,66,high,24,28,shared_coverage,Tutorial,True,campaign
+TDL-009,A,Diagonal Snake,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,medium,34,48,medium,21,25,mixed,Tutorial,True,campaign
+TDL-010,A,Uneven Snake,SERPENTINE,Single-path serpentine,Very common,1,1,0,0,0,0,medium,34,48,medium,21,25,adaptive,Tutorial,True,campaign
+TDL-011,A,Single Ring,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,1,long,48,66,high,24,28,center_killzone,Tutorial,True,campaign
+TDL-012,A,Double Ring,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,2,long,48,66,high,24,28,center_killzone,Tutorial,True,campaign
+TDL-013,A,Triple Ring,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,3,very_long,66,88,high,27,31,persistent_dps,Tutorial,True,campaign
+TDL-014,A,Lollipop Loop,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,1,medium,34,48,medium,21,25,late_killzone,Tutorial,True,campaign
+TDL-015,A,Teardrop Loop,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,1,medium,34,48,high,21,25,aoe,Tutorial,True,campaign
+TDL-016,A,Nested Loop,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,2,very_long,66,88,very_high,27,31,range,Tutorial,True,campaign
+TDL-017,A,Offset Loop,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,1,long,48,66,medium,24,28,adaptive,Tutorial,True,campaign
+TDL-018,A,Loop-and-Tail,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,1,long,48,66,high,24,28,final_defense,Tutorial,True,campaign
+TDL-019,A,Figure Eight,LOOP,Loop / repeated exposure,Very common,1,1,0,0,2,2,long,48,66,very_high,24,28,intersection,Tutorial,True,campaign
+TDL-020,A,Clover Loop,LOOP,Loop / repeated exposure,Very common,1,1,0,0,0,3,very_long,66,88,very_high,27,31,central_range,Tutorial,True,campaign
+TDL-021,A,Single Hairpin,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,medium,34,48,high,21,25,shared_coverage,Tutorial,True,campaign
+TDL-022,A,Double Hairpin,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,long,48,66,very_high,24,28,shared_coverage,Tutorial,True,campaign
+TDL-023,A,Triple Switchback,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,very_long,66,88,very_high,27,31,artillery,Tutorial,True,campaign
+TDL-024,A,Tight U,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,short,24,34,very_high,18,22,aoe,Tutorial,True,campaign
+TDL-025,A,Wide U,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,medium,34,48,medium,21,25,range,Tutorial,True,campaign
+TDL-026,A,Staggered U,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,medium,34,48,high,21,25,mixed,Tutorial,True,campaign
+TDL-027,A,Edge Switchback,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,long,48,66,medium,24,28,range,Tutorial,True,campaign
+TDL-028,A,Central Switchback,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,long,48,66,very_high,24,28,killzone,Tutorial,True,campaign
+TDL-029,A,Offset Hairpins,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,long,48,66,high,24,28,adaptive,Tutorial,True,campaign
+TDL-030,A,Descending Switchbacks,HAIRPIN,Hairpin / switchback,Very common,1,1,0,0,0,0,very_long,66,88,high,27,31,layered_defense,Tutorial,True,campaign
+TDL-031,B,Two-to-One Y,MERGE,Multi-entry merge,Very common,2,2,0,1,0,0,medium,34,48,high,23,27,merge_killzone,Easy,True,campaign
+TDL-032,B,Wide Y,MERGE,Multi-entry merge,Very common,2,2,0,1,0,0,long,48,66,medium,26,30,distributed_then_shared,Easy,True,campaign
+TDL-033,B,Late Merge,MERGE,Multi-entry merge,Very common,2,2,0,1,0,0,medium,34,48,low,24,28,distributed,Medium,True,campaign
+TDL-034,B,Early Merge,MERGE,Multi-entry merge,Very common,2,2,0,1,0,0,long,48,66,high,26,30,shared,Easy,True,campaign
+TDL-035,B,Three-to-One Trident,MERGE,Multi-entry merge,Very common,3,3,0,1,0,0,medium,34,48,high,25,29,central,Medium,True,campaign
+TDL-036,B,Unequal Y,MERGE,Multi-entry merge,Very common,2,2,0,1,0,0,medium,34,48,medium,23,27,adaptive,Easy,True,campaign
+TDL-037,B,Opposed Entries Merge,MERGE,Multi-entry merge,Very common,2,2,0,1,0,0,long,48,66,very_high,26,30,center_control,Easy,True,campaign
+TDL-038,B,Parallel Merge,MERGE,Multi-entry merge,Very common,2,2,0,1,0,0,long,48,66,high,26,30,shared_finale,Easy,True,campaign
+TDL-039,B,Staggered Three-Entry Merge,MERGE,Multi-entry merge,Very common,3,3,0,1,0,0,long,48,66,high,28,32,wave_planning,Medium,True,campaign
+TDL-040,B,Merge Funnel,MERGE,Multi-entry merge,Very common,3,3,0,1,0,0,short,24,34,very_high,22,26,burst,Medium,True,campaign
+TDL-041,B,Diamond,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,medium,34,48,high,21,25,branch_balance,Easy,False,campaign
+TDL-042,B,Long Diamond,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,long,48,66,medium,24,28,branch_balance,Easy,False,campaign
+TDL-043,B,Short Diamond,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,short,24,34,high,18,22,burst,Easy,False,campaign
+TDL-044,B,Double Diamond,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,long,48,66,very_high,24,28,repeated_choice,Easy,False,campaign
+TDL-045,B,Asymmetric Diamond,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,medium,34,48,medium,21,25,adaptive,Easy,False,campaign
+TDL-046,B,Fork Around Island,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,long,48,66,high,24,28,central_range,Easy,False,campaign
+TDL-047,B,Fork with Short/Long Branch,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,medium,34,48,medium,21,25,wave_assignment,Easy,False,campaign
+TDL-048,B,Three-Way Split Merge,SPLIT_MERGE,Split then re-merge,Common,1,3,1,1,0,0,long,48,66,high,24,28,coverage,Easy,False,campaign
+TDL-049,B,Split-Merge-Split,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,very_long,66,88,very_high,27,31,advanced,Easy,False,campaign
+TDL-050,B,Braided Route,SPLIT_MERGE,Split then re-merge,Common,1,2,1,1,0,0,very_long,66,88,very_high,27,31,advanced,Easy,False,campaign
+TDL-051,B,Parallel Twins,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,medium,34,48,low,24,28,distributed,Medium,False,campaign
+TDL-052,B,Close Parallel,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,medium,34,48,high,23,27,shared_range,Easy,False,campaign
+TDL-053,B,Far Parallel,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,medium,34,48,very_low,24,28,distributed,Medium,False,campaign
+TDL-054,B,Opposed Curves,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,long,48,66,medium,26,30,adaptive,Easy,False,campaign
+TDL-055,B,Mirror Lanes,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,long,48,66,medium,26,30,symmetry,Easy,False,campaign
+TDL-056,B,Unequal Twins,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,medium,34,48,low,24,28,priority,Medium,False,campaign
+TDL-057,B,Braided-but-Separate,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,long,48,66,high,26,30,timing,Easy,False,campaign
+TDL-058,B,Outer/Inner Lanes,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,medium,34,48,high,23,27,range,Easy,False,campaign
+TDL-059,B,Two Bridges,DUAL_LANE,Parallel / independent lanes,Common,2,2,0,0,0,0,short,24,34,medium,20,24,chokes,Easy,False,campaign
+TDL-060,B,Three Independent Lanes,DUAL_LANE,Parallel / independent lanes,Common,3,3,0,0,0,0,medium,34,48,very_low,26,30,distributed,Hard,False,skirmish/late_campaign
+TDL-061,B,X Crossing,CROSSING,Crossing / intersection,Common,2,2,0,0,1,0,medium,34,48,very_high,23,27,intersection,Medium,False,campaign
+TDL-062,B,Plus Crossing,CROSSING,Crossing / intersection,Common,2,2,0,0,1,0,medium,34,48,very_high,23,27,intersection,Medium,False,campaign
+TDL-063,B,Offset X,CROSSING,Crossing / intersection,Common,2,2,0,0,1,0,long,48,66,high,26,30,timing,Medium,False,campaign
+TDL-064,B,Double Crossing,CROSSING,Crossing / intersection,Common,2,2,0,0,1,0,long,48,66,very_high,26,30,intersection,Medium,False,campaign
+TDL-065,B,Cross-and-Merge,CROSSING,Crossing / intersection,Common,2,2,0,1,1,0,long,48,66,very_high,26,30,central_then_shared,Medium,False,campaign
+TDL-066,B,Cross-and-Diverge,CROSSING,Crossing / intersection,Common,2,2,0,0,1,0,medium,34,48,high,23,27,central_then_distributed,Medium,False,campaign
+TDL-067,B,Interleaved Curves,CROSSING,Crossing / intersection,Common,2,2,0,0,1,0,long,48,66,high,26,30,range,Medium,False,campaign
+TDL-068,B,Central Bridge Crossing,CROSSING,Crossing / intersection,Common,2,2,0,0,1,0,medium,34,48,very_high,23,27,choke,Medium,False,campaign
+TDL-069,B,Four-Corner Cross,CROSSING,Crossing / intersection,Common,3,3,0,0,1,0,medium,34,48,very_high,25,29,central,Hard,False,skirmish/late_campaign
+TDL-070,B,Rotating Active Cross,CROSSING,Crossing / intersection,Common,3,3,0,0,1,0,medium,34,48,very_high,25,29,wave_planning,Hard,False,skirmish/late_campaign
+TDL-071,C,Three-Spoke Hub,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,0,medium,34,48,very_high,25,29,central,Hard,False,skirmish/late_campaign
+TDL-072,C,Two-Spoke Hub,HUB,Hub-and-spoke convergence,Common,2,2,0,1,0,0,long,48,66,very_high,26,30,central,Medium,False,campaign
+TDL-073,C,Ring Hub,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,1,long,48,66,very_high,28,32,central,Hard,False,skirmish/late_campaign
+TDL-074,C,Hub with Final Tail,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,0,long,48,66,high,28,32,final_defense,Hard,False,skirmish/late_campaign
+TDL-075,C,Off-Center Hub,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,0,medium,34,48,high,25,29,adaptive,Hard,False,skirmish/late_campaign
+TDL-076,C,Hub-and-Loop,HUB,Hub-and-spoke convergence,Common,2,2,0,1,0,1,long,48,66,very_high,26,30,persistent_dps,Medium,False,campaign
+TDL-077,C,Hub with Bypass,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,0,medium,34,48,medium,25,29,coverage,Hard,False,skirmish/late_campaign
+TDL-078,C,Double Hub,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,0,very_long,66,88,very_high,31,34,advanced,Hard,False,skirmish/late_campaign
+TDL-079,C,Hub Funnel,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,0,short,24,34,very_high,22,26,burst,Hard,False,skirmish/late_campaign
+TDL-080,C,Hub with Safe Backline,HUB,Hub-and-spoke convergence,Common,3,3,0,1,0,0,medium,34,48,high,25,29,layered_defense,Hard,False,skirmish/late_campaign
+TDL-081,C,Straight Sprint,GAUNTLET,Short / compressed gauntlet,Common,1,1,0,0,0,0,very_short,18,24,low,18,21,dps_check,Medium,False,campaign
+TDL-082,C,Short Zigzag,GAUNTLET,Short / compressed gauntlet,Common,1,1,0,0,0,0,short,24,34,medium,18,22,early_efficiency,Easy,False,campaign
+TDL-083,C,Short U,GAUNTLET,Short / compressed gauntlet,Common,1,1,0,0,0,0,short,24,34,high,18,22,aoe,Easy,False,campaign
+TDL-084,C,Narrow Corridor,GAUNTLET,Short / compressed gauntlet,Common,1,1,0,0,0,0,short,24,34,low,19,23,range,Medium,False,campaign
+TDL-085,C,Two-Entry Sprint,GAUNTLET,Short / compressed gauntlet,Common,2,1,0,0,0,0,short,24,34,medium,20,24,distributed,Medium,False,campaign
+TDL-086,C,Three-Entry Sprint,GAUNTLET,Short / compressed gauntlet,Common,3,1,0,0,0,0,short,24,34,medium,22,26,burst,Hard,False,skirmish/late_campaign
+TDL-087,C,Late-Choke Sprint,GAUNTLET,Short / compressed gauntlet,Common,2,1,0,0,0,0,short,24,34,high,20,24,final_killzone,Medium,False,campaign
+TDL-088,C,Early-Choke Sprint,GAUNTLET,Short / compressed gauntlet,Common,2,1,0,0,0,0,short,24,34,high,20,24,frontload,Medium,False,campaign
+TDL-089,C,Sparse-Pad Gauntlet,GAUNTLET,Short / compressed gauntlet,Common,1,1,0,0,0,0,medium,34,48,low,22,26,pad_efficiency,Medium,False,campaign
+TDL-090,C,Boss Run,GAUNTLET,Short / compressed gauntlet,Common,1,1,0,0,0,0,short,24,34,medium,18,22,anti_heavy,Easy,False,campaign
+TDL-091,C,Long Lane + Short Lane Merge,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,2,2,0,1,0,0,medium,34,48,high,23,27,priority,Medium,False,campaign
+TDL-092,C,Shortcut + Main Road,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,2,2,0,0,0,0,medium,34,48,medium,23,27,shortcut_response,Medium,False,campaign
+TDL-093,C,Staged Third Entry,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,3,3,0,0,0,0,long,48,66,high,28,32,reserve_supply,Hard,False,skirmish/late_campaign
+TDL-094,C,Main Road + Tunnel Bypass,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,2,2,0,0,0,0,medium,34,48,medium,23,27,coverage,Medium,False,campaign
+TDL-095,C,Outer Loop + Inner Sprint,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,2,2,0,0,0,1,long,48,66,high,26,30,adaptive,Medium,False,campaign
+TDL-096,C,Split Start + Crossing + Merge,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,2,2,0,1,0,0,very_long,66,88,very_high,29,33,advanced,Medium,False,campaign
+TDL-097,C,Alternating Entry Sides,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,3,3,0,0,0,0,medium,34,48,high,25,29,wave_planning,Hard,False,skirmish/late_campaign
+TDL-098,C,Reverse-Route Variant,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,1,1,0,0,0,0,long,48,66,high,24,28,relearning,Easy,False,campaign
+TDL-099,C,Timed Route Closure,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,2,2,0,0,0,0,medium,34,48,high,23,27,topology_change,Medium,False,campaign
+TDL-100,C,Multi-Phase Finale Network,ASYMMETRIC,Asymmetric hybrid,Common-to-advanced,3,3,0,0,0,0,very_long,66,88,very_high,31,34,full_exam,Hard,False,skirmish/late_campaign

@@ -15,7 +15,7 @@ namespace FrontsOfWar.UI.Panels;
 // unspent resources, tower effectiveness, and the one suggestion rule GDD
 // gives as its worked example (armor leaked heavily + low AP damage share →
 // suggest AP). Currently triggers only on defeat (DefenseLineDepleted) since
-// there's no victory/mission-complete flow yet — that's M3.
+// victory and defeat both route through the M3 mission flow.
 public partial class PostMortemPanel : CanvasLayer
 {
     [Export] public NodePath MissionPath;
@@ -23,6 +23,8 @@ public partial class PostMortemPanel : CanvasLayer
     private MapRuntime _mission;
     private PanelContainer _panel;
     private Label _bodyLabel;
+    private VBoxContainer _content;
+    private bool _victory;
 
     private readonly Dictionary<string, int> _leaksByEnemyId = new();
     private readonly Dictionary<string, ArmorClass> _armorClassByEnemyId = new();
@@ -34,14 +36,17 @@ public partial class PostMortemPanel : CanvasLayer
     {
         _mission = GetNode<MapRuntime>(MissionPath);
 
-        _panel = new PanelContainer { Position = new Vector2(300, 150), CustomMinimumSize = new Vector2(420, 260), Visible = false };
+        _panel = new PanelContainer { Position = new Vector2(300, 120), CustomMinimumSize = new Vector2(520, 420), Visible = false };
         AddChild(_panel);
+        _content = new VBoxContainer();
+        _panel.AddChild(_content);
         _bodyLabel = new Label { AutowrapMode = TextServer.AutowrapMode.WordSmart };
-        _panel.AddChild(_bodyLabel);
+        _content.AddChild(_bodyLabel);
 
         EventBus.Instance?.Subscribe<EnemyLeakedEvent>(OnEnemyLeaked);
         EventBus.Instance?.Subscribe<EnemyDamagedEvent>(OnEnemyDamaged);
         EventBus.Instance?.Subscribe<DefenseLineDepletedEvent>(OnDefenseLineDepleted);
+        EventBus.Instance?.Subscribe<MissionCompletedEvent>(OnMissionCompleted);
     }
 
     public override void _ExitTree()
@@ -49,6 +54,7 @@ public partial class PostMortemPanel : CanvasLayer
         EventBus.Instance?.Unsubscribe<EnemyLeakedEvent>(OnEnemyLeaked);
         EventBus.Instance?.Unsubscribe<EnemyDamagedEvent>(OnEnemyDamaged);
         EventBus.Instance?.Unsubscribe<DefenseLineDepletedEvent>(OnDefenseLineDepleted);
+        EventBus.Instance?.Unsubscribe<MissionCompletedEvent>(OnMissionCompleted);
     }
 
     private void OnEnemyLeaked(EnemyLeakedEvent evt)
@@ -69,17 +75,20 @@ public partial class PostMortemPanel : CanvasLayer
             _investedByTower[id] = tower.Upgrade.TotalInvested;
     }
 
-    private void OnDefenseLineDepleted(DefenseLineDepletedEvent evt) => Show();
+    private void OnDefenseLineDepleted(DefenseLineDepletedEvent evt) => Show(false);
+    private void OnMissionCompleted(MissionCompletedEvent evt) => Show(evt.Victory);
 
-    public new void Show()
+    public void Show(bool victory)
     {
+        _victory = victory;
         _panel.Visible = true;
         _bodyLabel.Text = BuildReport();
+        AddNavigationButtons();
     }
 
     private string BuildReport()
     {
-        var lines = new List<string> { "MISSION FAILED — Post-mortem", "" };
+        var lines = new List<string> { _victory ? "MISSION COMPLETE — Post-mortem" : "MISSION FAILED — Post-mortem", "" };
 
         lines.Add("Leaked:");
         if (_leaksByEnemyId.Count == 0) lines.Add("  (nothing leaked)");
@@ -119,6 +128,21 @@ public partial class PostMortemPanel : CanvasLayer
         lines.Add(BuildSuggestion(totalDamage));
 
         return string.Join("\n", lines);
+    }
+
+    private void AddNavigationButtons()
+    {
+        foreach (Node child in _content.GetChildren())
+            if (child is HBoxContainer) child.QueueFree();
+
+        var row = new HBoxContainer();
+        _content.AddChild(row);
+        var retry = new Button { Text = "Retry Mission", CustomMinimumSize = new Vector2(170, 42) };
+        retry.Pressed += () => GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
+        row.AddChild(retry);
+        var results = new Button { Text = "Results", CustomMinimumSize = new Vector2(140, 42) };
+        results.Pressed += () => GetTree().ChangeSceneToFile("res://scenes_root/results.tscn");
+        row.AddChild(results);
     }
 
     // The exact worked example from GDD §12.9: "IF leaked_armor_share > 0.4

@@ -1,0 +1,5008 @@
+{
+  "schema_version": "1.0",
+  "catalog_title": "Fronts of War \u2014 100 Tower Defense Map Layout Templates",
+  "intent": "Design-time reference and input data for a human-in-the-loop map planner/generator. Not a runtime procedural-map system.",
+  "ranking_note": "IDs are catalog order grouped from foundational/common patterns toward more specialized/advanced patterns. They are not an empirical sales/popularity ranking.",
+  "records": [
+    {
+      "id": "TDL-001",
+      "rank_group": "A",
+      "template_name": "Classic S",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "balanced",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-002",
+      "rank_group": "A",
+      "template_name": "Wide S",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "long_range",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-003",
+      "rank_group": "A",
+      "template_name": "Tight S",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "aoe",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-004",
+      "rank_group": "A",
+      "template_name": "Reverse S",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "balanced",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-005",
+      "rank_group": "A",
+      "template_name": "Triple Bend",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "direct_fire",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-006",
+      "rank_group": "A",
+      "template_name": "Five-Bend Snake",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "mixed",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-007",
+      "rank_group": "A",
+      "template_name": "Edge Snake",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          22,
+          26
+        ],
+        "primary_design_lesson": "central_range",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-008",
+      "rank_group": "A",
+      "template_name": "Center Snake",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "shared_coverage",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-009",
+      "rank_group": "A",
+      "template_name": "Diagonal Snake",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "mixed",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-010",
+      "rank_group": "A",
+      "template_name": "Uneven Snake",
+      "family": "SERPENTINE",
+      "family_name": "Single-path serpentine",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected ground route",
+          "no self-intersection unless variant explicitly requests it"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-011",
+      "rank_group": "A",
+      "template_name": "Single Ring",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "center_killzone",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-012",
+      "rank_group": "A",
+      "template_name": "Double Ring",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 2,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "center_killzone",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-013",
+      "rank_group": "A",
+      "template_name": "Triple Ring",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 3,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          27,
+          31
+        ],
+        "primary_design_lesson": "persistent_dps",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-014",
+      "rank_group": "A",
+      "template_name": "Lollipop Loop",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "late_killzone",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-015",
+      "rank_group": "A",
+      "template_name": "Teardrop Loop",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "aoe",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-016",
+      "rank_group": "A",
+      "template_name": "Nested Loop",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 2,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          27,
+          31
+        ],
+        "primary_design_lesson": "range",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-017",
+      "rank_group": "A",
+      "template_name": "Offset Loop",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-018",
+      "rank_group": "A",
+      "template_name": "Loop-and-Tail",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "final_defense",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-019",
+      "rank_group": "A",
+      "template_name": "Figure Eight",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 2,
+        "loop_count": 2,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "intersection",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-020",
+      "rank_group": "A",
+      "template_name": "Clover Loop",
+      "family": "LOOP",
+      "family_name": "Loop / repeated exposure",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 3,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          27,
+          31
+        ],
+        "primary_design_lesson": "central_range",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "single connected route",
+          "central or inner placement zone must remain visually clear"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-021",
+      "rank_group": "A",
+      "template_name": "Single Hairpin",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "shared_coverage",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-022",
+      "rank_group": "A",
+      "template_name": "Double Hairpin",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "shared_coverage",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-023",
+      "rank_group": "A",
+      "template_name": "Triple Switchback",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          27,
+          31
+        ],
+        "primary_design_lesson": "artillery",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-024",
+      "rank_group": "A",
+      "template_name": "Tight U",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          18,
+          22
+        ],
+        "primary_design_lesson": "aoe",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-025",
+      "rank_group": "A",
+      "template_name": "Wide U",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "range",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-026",
+      "rank_group": "A",
+      "template_name": "Staggered U",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "mixed",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-027",
+      "rank_group": "A",
+      "template_name": "Edge Switchback",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "range",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-028",
+      "rank_group": "A",
+      "template_name": "Central Switchback",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "killzone",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-029",
+      "rank_group": "A",
+      "template_name": "Offset Hairpins",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-030",
+      "rank_group": "A",
+      "template_name": "Descending Switchbacks",
+      "family": "HAIRPIN",
+      "family_name": "Hairpin / switchback",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          27,
+          31
+        ],
+        "primary_design_lesson": "layered_defense",
+        "difficulty_band": "Tutorial",
+        "must_have_constraints": [
+          "adjacent route passes must be within useful tower-range bands",
+          "route must not visually merge"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-031",
+      "rank_group": "B",
+      "template_name": "Two-to-One Y",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "merge_killzone",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-032",
+      "rank_group": "B",
+      "template_name": "Wide Y",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "distributed_then_shared",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-033",
+      "rank_group": "B",
+      "template_name": "Late Merge",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "distributed",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-034",
+      "rank_group": "B",
+      "template_name": "Early Merge",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "shared",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-035",
+      "rank_group": "B",
+      "template_name": "Three-to-One Trident",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "central",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-036",
+      "rank_group": "B",
+      "template_name": "Unequal Y",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-037",
+      "rank_group": "B",
+      "template_name": "Opposed Entries Merge",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "center_control",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-038",
+      "rank_group": "B",
+      "template_name": "Parallel Merge",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "shared_finale",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-039",
+      "rank_group": "B",
+      "template_name": "Staggered Three-Entry Merge",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          28,
+          32
+        ],
+        "primary_design_lesson": "wave_planning",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-040",
+      "rank_group": "B",
+      "template_name": "Merge Funnel",
+      "family": "MERGE",
+      "family_name": "Multi-entry merge",
+      "genre_prevalence": "Very common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          22,
+          26
+        ],
+        "primary_design_lesson": "burst",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "all ground paths share a final segment before the objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": true,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-041",
+      "rank_group": "B",
+      "template_name": "Diamond",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "branch_balance",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-042",
+      "rank_group": "B",
+      "template_name": "Long Diamond",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "branch_balance",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-043",
+      "rank_group": "B",
+      "template_name": "Short Diamond",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          18,
+          22
+        ],
+        "primary_design_lesson": "burst",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-044",
+      "rank_group": "B",
+      "template_name": "Double Diamond",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "repeated_choice",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-045",
+      "rank_group": "B",
+      "template_name": "Asymmetric Diamond",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-046",
+      "rank_group": "B",
+      "template_name": "Fork Around Island",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "central_range",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-047",
+      "rank_group": "B",
+      "template_name": "Fork with Short/Long Branch",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          21,
+          25
+        ],
+        "primary_design_lesson": "wave_assignment",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-048",
+      "rank_group": "B",
+      "template_name": "Three-Way Split Merge",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "coverage",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-049",
+      "rank_group": "B",
+      "template_name": "Split-Merge-Split",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          27,
+          31
+        ],
+        "primary_design_lesson": "advanced",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-050",
+      "rank_group": "B",
+      "template_name": "Braided Route",
+      "family": "SPLIT_MERGE",
+      "family_name": "Split then re-merge",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 1,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          27,
+          31
+        ],
+        "primary_design_lesson": "advanced",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "branch assignment deterministic",
+          "branches reconnect before objective"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-051",
+      "rank_group": "B",
+      "template_name": "Parallel Twins",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "distributed",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-052",
+      "rank_group": "B",
+      "template_name": "Close Parallel",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "shared_range",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-053",
+      "rank_group": "B",
+      "template_name": "Far Parallel",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "distributed",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-054",
+      "rank_group": "B",
+      "template_name": "Opposed Curves",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-055",
+      "rank_group": "B",
+      "template_name": "Mirror Lanes",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "symmetry",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-056",
+      "rank_group": "B",
+      "template_name": "Unequal Twins",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "priority",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-057",
+      "rank_group": "B",
+      "template_name": "Braided-but-Separate",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "timing",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-058",
+      "rank_group": "B",
+      "template_name": "Outer/Inner Lanes",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "range",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-059",
+      "rank_group": "B",
+      "template_name": "Two Bridges",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          20,
+          24
+        ],
+        "primary_design_lesson": "chokes",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-060",
+      "rank_group": "B",
+      "template_name": "Three Independent Lanes",
+      "family": "DUAL_LANE",
+      "family_name": "Parallel / independent lanes",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "distributed",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "lanes remain mechanically independent until objective approach",
+          "shared coverage intentionally limited"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-061",
+      "rank_group": "B",
+      "template_name": "X Crossing",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "intersection",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-062",
+      "rank_group": "B",
+      "template_name": "Plus Crossing",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "intersection",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-063",
+      "rank_group": "B",
+      "template_name": "Offset X",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "timing",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-064",
+      "rank_group": "B",
+      "template_name": "Double Crossing",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "intersection",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-065",
+      "rank_group": "B",
+      "template_name": "Cross-and-Merge",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "central_then_shared",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-066",
+      "rank_group": "B",
+      "template_name": "Cross-and-Diverge",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "central_then_distributed",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-067",
+      "rank_group": "B",
+      "template_name": "Interleaved Curves",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "range",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-068",
+      "rank_group": "B",
+      "template_name": "Central Bridge Crossing",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "choke",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-069",
+      "rank_group": "B",
+      "template_name": "Four-Corner Cross",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "central",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-070",
+      "rank_group": "B",
+      "template_name": "Rotating Active Cross",
+      "family": "CROSSING",
+      "family_name": "Crossing / intersection",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 1,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "wave_planning",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "crossing must be visually unambiguous",
+          "crossing does not imply route switching unless authored"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-071",
+      "rank_group": "C",
+      "template_name": "Three-Spoke Hub",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "central",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-072",
+      "rank_group": "C",
+      "template_name": "Two-Spoke Hub",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "central",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-073",
+      "rank_group": "C",
+      "template_name": "Ring Hub",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          28,
+          32
+        ],
+        "primary_design_lesson": "central",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-074",
+      "rank_group": "C",
+      "template_name": "Hub with Final Tail",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          28,
+          32
+        ],
+        "primary_design_lesson": "final_defense",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-075",
+      "rank_group": "C",
+      "template_name": "Off-Center Hub",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-076",
+      "rank_group": "C",
+      "template_name": "Hub-and-Loop",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "persistent_dps",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-077",
+      "rank_group": "C",
+      "template_name": "Hub with Bypass",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "coverage",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-078",
+      "rank_group": "C",
+      "template_name": "Double Hub",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          31,
+          34
+        ],
+        "primary_design_lesson": "advanced",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-079",
+      "rank_group": "C",
+      "template_name": "Hub Funnel",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          22,
+          26
+        ],
+        "primary_design_lesson": "burst",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-080",
+      "rank_group": "C",
+      "template_name": "Hub with Safe Backline",
+      "family": "HUB",
+      "family_name": "Hub-and-spoke convergence",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "layered_defense",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "2\u20133 entrances",
+          "hub is the dominant shared coverage zone"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-081",
+      "rank_group": "C",
+      "template_name": "Straight Sprint",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_short",
+        "target_path_length_tiles": [
+          18,
+          24
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          18,
+          21
+        ],
+        "primary_design_lesson": "dps_check",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-082",
+      "rank_group": "C",
+      "template_name": "Short Zigzag",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          18,
+          22
+        ],
+        "primary_design_lesson": "early_efficiency",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-083",
+      "rank_group": "C",
+      "template_name": "Short U",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          18,
+          22
+        ],
+        "primary_design_lesson": "aoe",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-084",
+      "rank_group": "C",
+      "template_name": "Narrow Corridor",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          19,
+          23
+        ],
+        "primary_design_lesson": "range",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-085",
+      "rank_group": "C",
+      "template_name": "Two-Entry Sprint",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          20,
+          24
+        ],
+        "primary_design_lesson": "distributed",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-086",
+      "rank_group": "C",
+      "template_name": "Three-Entry Sprint",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          22,
+          26
+        ],
+        "primary_design_lesson": "burst",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-087",
+      "rank_group": "C",
+      "template_name": "Late-Choke Sprint",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          20,
+          24
+        ],
+        "primary_design_lesson": "final_killzone",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-088",
+      "rank_group": "C",
+      "template_name": "Early-Choke Sprint",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          20,
+          24
+        ],
+        "primary_design_lesson": "frontload",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-089",
+      "rank_group": "C",
+      "template_name": "Sparse-Pad Gauntlet",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "low"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          22,
+          26
+        ],
+        "primary_design_lesson": "pad_efficiency",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-090",
+      "rank_group": "C",
+      "template_name": "Boss Run",
+      "family": "GAUNTLET",
+      "family_name": "Short / compressed gauntlet",
+      "genre_prevalence": "Common",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "short",
+        "target_path_length_tiles": [
+          24,
+          34
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          18,
+          22
+        ],
+        "primary_design_lesson": "anti_heavy",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "compressed travel time",
+          "pads must still support at least three viable tower archetypes"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-091",
+      "rank_group": "C",
+      "template_name": "Long Lane + Short Lane Merge",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "priority",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-092",
+      "rank_group": "C",
+      "template_name": "Shortcut + Main Road",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "shortcut_response",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-093",
+      "rank_group": "C",
+      "template_name": "Staged Third Entry",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          28,
+          32
+        ],
+        "primary_design_lesson": "reserve_supply",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-094",
+      "rank_group": "C",
+      "template_name": "Main Road + Tunnel Bypass",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "medium"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "coverage",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-095",
+      "rank_group": "C",
+      "template_name": "Outer Loop + Inner Sprint",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 1,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          26,
+          30
+        ],
+        "primary_design_lesson": "adaptive",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-096",
+      "rank_group": "C",
+      "template_name": "Split Start + Crossing + Merge",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 1,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          29,
+          33
+        ],
+        "primary_design_lesson": "advanced",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-097",
+      "rank_group": "C",
+      "template_name": "Alternating Entry Sides",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          25,
+          29
+        ],
+        "primary_design_lesson": "wave_planning",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-098",
+      "rank_group": "C",
+      "template_name": "Reverse-Route Variant",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 1,
+        "objectives": 1,
+        "logical_route_count": 1,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "long",
+        "target_path_length_tiles": [
+          48,
+          66
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          24,
+          28
+        ],
+        "primary_design_lesson": "relearning",
+        "difficulty_band": "Easy",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-099",
+      "rank_group": "C",
+      "template_name": "Timed Route Closure",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 2,
+        "objectives": 1,
+        "logical_route_count": 2,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "medium",
+        "target_path_length_tiles": [
+          34,
+          48
+        ],
+        "shared_coverage": "high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          23,
+          27
+        ],
+        "primary_design_lesson": "topology_change",
+        "difficulty_band": "Medium",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    },
+    {
+      "id": "TDL-100",
+      "rank_group": "C",
+      "template_name": "Multi-Phase Finale Network",
+      "family": "ASYMMETRIC",
+      "family_name": "Asymmetric hybrid",
+      "genre_prevalence": "Common-to-advanced",
+      "source_basis": "Derived genre topology template; not copied from a specific commercial map.",
+      "topology": {
+        "ground_entries": 3,
+        "objectives": 1,
+        "logical_route_count": 3,
+        "split_count": 0,
+        "merge_count": 0,
+        "crossing_count": 0,
+        "loop_count": 0,
+        "path_length_class": "very_long",
+        "target_path_length_tiles": [
+          66,
+          88
+        ],
+        "shared_coverage": "very_high"
+      },
+      "planner": {
+        "recommended_pad_count": [
+          31,
+          34
+        ],
+        "primary_design_lesson": "full_exam",
+        "difficulty_band": "Hard",
+        "must_have_constraints": [
+          "one deliberate topology complication only for standard maps",
+          "all route state changes telegraphed"
+        ],
+        "avoid": [
+          "ambiguous path crossings",
+          "decor blocking road readability",
+          "single dominant pad with no meaningful alternatives"
+        ],
+        "air_corridor_hint": "Add 1 authored straight/diagonal air corridor that crosses at least two viable AA pad zones on air-enabled missions."
+      },
+      "fronts_of_war": {
+        "compatible": true,
+        "launch_candidate": false,
+        "best_use": "skirmish/late_campaign",
+        "fixed_build_pads": true,
+        "deterministic_routes": true,
+        "runtime_procedural": false
+      }
+    }
+  ]
+}

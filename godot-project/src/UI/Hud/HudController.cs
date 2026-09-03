@@ -23,6 +23,7 @@ public partial class HudController : CanvasLayer
     private Label _defenseLineLabel;
     private Label _waveLabel;
     private Label _speedLabel;
+    private AbilityHotbar _abilityHotbar;
 
     public override void _Ready()
     {
@@ -72,6 +73,13 @@ public partial class HudController : CanvasLayer
         var pauseButton = new Button { Text = "Pause" };
         pauseButton.Pressed += OnPauseButtonPressed;
         topRight.AddChild(pauseButton);
+
+        _abilityHotbar = new AbilityHotbar
+        {
+            Mission = _mission,
+            Position = new Vector2(750, 535),
+        };
+        AddChild(_abilityHotbar);
     }
 
     private static Label MakeLabel(Container parent)

@@ -381,6 +381,19 @@ revisited — worth preserving before it's lost to editing history.
   project or a separate engine/runtime.
 - **Status:** Active.
 
+### D26 - Universal ability hotbar uses a text-first prototype control
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Implement the three universal abilities in one programmatic
+  bottom-right `AbilityHotbar` control. Buttons show the CP cost and live
+  cooldown, keys 1–3 select or activate abilities, point abilities resolve
+  on the next battlefield click, and Emergency Repair activates immediately.
+- **Rationale:** This satisfies the current GDD hotbar interaction while the
+  prototype still uses geometric placeholders. Keeping the control text-first
+  preserves readability and avoids inventing icon art before the M3 visual
+  language pass.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

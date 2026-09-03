@@ -80,9 +80,10 @@ for the mission scene.
 17. [x] `CommandPointLedger` and the three universal abilities (Artillery
     Strike, Rally, Emergency Repair) with cooldowns and CP cost checks.
     Implemented as `AbilitySystem`; callable via
-    `MapRuntime.ActivateAbility(...)`. **Not yet wired to a hotbar UI** —
-    the code path exists and compiles but has no on-screen button yet, so
-    it's untested end-to-end. Near-term follow-up.
+    `MapRuntime.ActivateAbility(...)`. `AbilityHotbar` now provides bottom-
+    right buttons, CP shortfall feedback, cooldown state, keys 1–3, and
+    click-to-target for the point abilities. Paused-mode input is enabled;
+    automated input coverage remains a follow-up.
 18. [x] In-mission HUD (Supply, Command Points, Defense Line, wave counter,
     speed/pause control) — `HudController`, built as Control nodes on a
     `CanvasLayer`, live-updating from the same events the smoke-test logger

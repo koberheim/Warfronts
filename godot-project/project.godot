@@ -12,8 +12,8 @@ config_version=5
 
 config/name="Fronts of War"
 config/description="A stylized, fictionalized WWII top-down tower defense game."
-run/main_scene="res://scenes_root/mission.tscn"
-config/features=PackedStringArray("4.7", "Forward Plus")
+run/main_scene="res://scenes_root/boot.tscn"
+config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]

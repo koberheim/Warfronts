@@ -17,6 +17,7 @@ namespace FrontsOfWar.Map;
 public partial class MapRuntime : Node2D, ISimTickable
 {
     [Export] public Difficulty Difficulty = Difficulty.Regular;
+    [Export] public int MissionSeed = 1;
     [Export] public NodePath PathNetworkPath;
     [Export] public NodePath EnemyContainerPath;
     [Export] public NodePath ProjectileContainerPath;
@@ -39,6 +40,7 @@ public partial class MapRuntime : Node2D, ISimTickable
     public CommandPointLedger CommandPoints { get; private set; }
     public AbilitySystem Abilities { get; private set; }
     public WaveRunner Waves { get; private set; }
+    public SeededRandom Random { get; private set; }
 
     private SpatialGrid _spatialGrid;
     private DebugEventLogger _debugLogger;
@@ -50,6 +52,7 @@ public partial class MapRuntime : Node2D, ISimTickable
         var projectileContainer = GetNode<Node>(ProjectileContainerPath);
 
         var config = GameBalanceConfigAutoload.Config;
+        Random = new SeededRandom(unchecked((ulong)(uint)MissionSeed));
 
         Projectiles = new ProjectileManager(projectileContainer);
         Supply = new SupplyLedger(Difficulty, config);

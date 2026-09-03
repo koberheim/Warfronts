@@ -31,6 +31,7 @@ Requires [Godot 4.7+ (.NET/C# build)](https://godotengine.org/) and the
 cd godot-project
 dotnet build FrontsOfWar.csproj   # verify the C# build
 godot --path .                    # open in the editor
+godot --headless --path . --run-tests=CoreTests --quit-after 1200
 ```
 
 ## Status

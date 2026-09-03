@@ -65,6 +65,18 @@ revisited — worth preserving before it's lost to editing history.
   fully independent towers per nation.
 - **Status:** Active.
 
+### D25 - GoDotTest selected for the C# unit-test suite
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Use Chickensoft GoDotTest in the existing Godot project,
+  pinned to package version 2.0.42. The boot scene routes
+  `--run-tests=CoreTests` into the headless test runner and normal launches
+  continue to the mission scene.
+- **Rationale:** It is C#-first, runs inside the Mono Godot process, and
+  supports headless command-line execution without introducing a second test
+  project or a separate engine/runtime.
+- **Status:** Active.
+
 ### D6 — No persistent meta-progression, no monetization beyond base price
 - **Decided by:** User
 - **Reference:** GDD §12.2, §18.1
@@ -344,7 +356,7 @@ revisited — worth preserving before it's lost to editing history.
   resolver) haven't been written yet — blocked on D13 (need a working C#
   Godot editor to add the NuGet package and confirm the headless test
   runner works) before committing to one.
-- **Status:** Open, next decision needed once D13 resolves.
+- **Status:** Superseded by D25.
 
 ### D24 - Initial repository commit excludes machine-local agent settings
 - **Decided by:** Codex under standing delegation
@@ -355,6 +367,18 @@ revisited — worth preserving before it's lost to editing history.
   The file is now ignored at the repository root.
 - **Rationale:** It contains local tool allow-lists for the superseded Phaser
   workflow and is not part of the game or its reproducible build.
+- **Status:** Active.
+
+### D25 - GoDotTest selected for the C# unit-test suite
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Use Chickensoft GoDotTest in the existing Godot project,
+  pinned to package version 2.0.42. The boot scene routes
+  `--run-tests=CoreTests` into the headless test runner and normal launches
+  continue to the mission scene.
+- **Rationale:** It is C#-first, runs inside the Mono Godot process, and
+  supports headless command-line execution without introducing a second test
+  project or a separate engine/runtime.
 - **Status:** Active.
 
 ---

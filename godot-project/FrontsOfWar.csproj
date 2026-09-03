@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Chickensoft.GoDotTest" Version="2.0.42" />
+  </ItemGroup>
 </Project>

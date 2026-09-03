@@ -7,24 +7,24 @@ numbered prompts. Milestone exit criteria are GDD §17.1.
 
 1. [x] Godot 4.x project structure per §15.2, `.gitignore`, Git LFS config,
    C# `.csproj` with namespace folders. **Partial:** structure, gitignore,
-   LFS, and csproj exist; the Mono Godot build loads the project and the
-   headless smoke run starts successfully. Standalone `dotnet build` still
-   needs an online restore of `Godot.NET.Sdk/4.7.2` in this environment.
+   LFS, and csproj exist; the Mono Godot build loads the project and
+   `dotnet build --no-restore` succeeds. The headless smoke run also
+   starts successfully.
 2. [x] `GameLoop` autoload, fixed 60Hz tick via `_PhysicsProcess`,
    `TimeController` for 1×/2×/3×/pause. Written and exercised by the
    headless smoke run.
 3. [x] `EventBus` (typed pub/sub) and `ObjectPool<T>`. Written; unit tests
-   not yet written (blocked on D17 — test framework choice).
+   passing in `CoreTests`.
 4. [x] `GameBalanceConfig`, `DamageTable`, `ArmorClass`/`DamageType` enums,
-   pure `ResolveDamage`. Written; unit tests not yet written (D17).
-5. [ ] `SeededRandom` wired to a per-mission seed. `SeededRandom` class is
-   written; per-mission seeding isn't wired to anything yet since there's no
-   mission flow (that's M3).
+   pure `ResolveDamage`. All 16 table cells and the Spotted modifier pass in
+   `CoreTests`.
+5. [x] `SeededRandom` wired to the per-mission `MapRuntime.MissionSeed`.
+   Repeatable integer, float, and boolean sequences pass in `CoreTests`;
+   randomized gameplay consumers will arrive with later mission content.
 
 **M0 exit criteria (§17.1):** project structure, autoloads, damage resolver
-with unit tests. **Not yet met** — automated unit tests are the remaining
-gap (D17); Godot-side headless verification is now available via the Mono
-build.
+with unit tests. **Met:** the Mono Godot headless test run passes all five
+current `CoreTests`.
 
 ## M1 — Core loop grey-box
 
@@ -47,10 +47,10 @@ build.
 13. [x] `WaveRunner` + `WaveDefinition`/`SpawnGroup`, single-wave playback —
     verified: authored spawn groups fire on their exact schedule.
 
-**M0/M1 gap carried forward:** formal automated unit tests (D17) still
-don't exist. Correctness so far is demonstrated by a live smoke run
-(D19), which is real evidence but not a substitute for tests that catch
-regressions automatically. Worth prioritizing early in M2.
+**M0/M1 gap closed:** formal automated unit tests now exist and pass.
+**M0 closeout:** formal automated core tests now exist and pass through the
+Mono Godot headless runner. The live smoke run remains the integration check
+for the mission scene.
 
 ## M2 — Slice systems
 
@@ -135,8 +135,10 @@ content work before M1/M2 are solid and playable.
 
 ---
 
-## Known blockers
+## Historical blockers / current follow-up
 
+No current hard blockers. D17 is superseded by D25; the remaining work is
+M2 follow-up validation before the M3 vertical-slice gate.
 - **D17:** test framework (GoDotTest vs. GUT) not yet chosen — blocked on
   D13 resolving first, since evaluating either requires a working C# Godot
   instance. D13 is now resolved, so choosing and wiring the framework is

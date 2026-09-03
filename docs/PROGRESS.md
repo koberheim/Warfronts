@@ -118,11 +118,10 @@ to carry a reference to whatever dealt the damage. Scoped out of this pass
 to avoid touching the core damage pipeline again this late — worth doing
 early in M3.
 
-**Also carried forward:** formal automated unit tests (D17) still don't
-exist. Everything above is verified by a live headless smoke run
-(`scenes_root/mission.tscn`, `--headless --quit-after N`), which is real
-evidence of correctness but doesn't run in CI or catch regressions
-automatically.
+**Also carried forward:** the M2 follow-up checks above remain open. The
+formal automated core suite now exists and passes through the Mono Godot
+headless runner (`--run-tests=CoreTests`); the live mission smoke run remains
+the integration check.
 
 ## M3 — Vertical slice
 
@@ -139,10 +138,8 @@ content work before M1/M2 are solid and playable.
 
 No current hard blockers. D17 is superseded by D25; the remaining work is
 M2 follow-up validation before the M3 vertical-slice gate.
-- **D17:** test framework (GoDotTest vs. GUT) not yet chosen — blocked on
-  D13 resolving first, since evaluating either requires a working C# Godot
-  instance. D13 is now resolved, so choosing and wiring the framework is
-  actionable.
+- **D17:** test framework selection is historical; D25 records the active
+  GoDotTest choice and working headless command.
 - **Standalone .NET restore:** `dotnet build` cannot resolve
   `Godot.NET.Sdk/4.7.2` without access to NuGet; the Mono Godot build can
   still run the current project and smoke scene.

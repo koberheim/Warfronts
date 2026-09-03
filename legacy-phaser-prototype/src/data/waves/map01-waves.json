@@ -1,0 +1,88 @@
+{
+  "waves": [
+    {
+      "waveNumber": 1,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 10,
+          "interval": 1000,
+          "delay": 500
+        }
+      ],
+      "reward": 50
+    },
+    {
+      "waveNumber": 2,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 15,
+          "interval": 800,
+          "delay": 500
+        }
+      ],
+      "reward": 75
+    },
+    {
+      "waveNumber": 3,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 8,
+          "interval": 1000,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 3,
+          "interval": 2000,
+          "delay": 3000
+        }
+      ],
+      "reward": 100
+    },
+    {
+      "waveNumber": 4,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 12,
+          "interval": 700,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 5,
+          "interval": 1500,
+          "delay": 2000
+        }
+      ],
+      "reward": 125
+    },
+    {
+      "waveNumber": 5,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 10,
+          "interval": 600,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 5,
+          "interval": 1200,
+          "delay": 2000
+        },
+        {
+          "enemyType": "japan_heavytank",
+          "count": 2,
+          "interval": 3000,
+          "delay": 5000
+        }
+      ],
+      "reward": 200
+    }
+  ]
+}

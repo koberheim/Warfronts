@@ -1,0 +1,81 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://src/Map/MapRuntime.cs" id="1"]
+[ext_resource type="Script" path="res://src/Map/PathNetwork.cs" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/map/build_pad.tscn" id="3"]
+[ext_resource type="Resource" path="res://assets/data/towers/t1_automatic_gun.tres" id="4"]
+[ext_resource type="Resource" path="res://assets/data/towers/t4_anti_tank_gun.tres" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/towers/tower_automatic_gun.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/towers/tower_anti_tank_gun.tscn" id="7"]
+[ext_resource type="Resource" path="res://assets/data/missions/test_wave_01.tres" id="8"]
+[ext_resource type="Script" path="res://src/UI/Hud/HudController.cs" id="9"]
+[ext_resource type="Script" path="res://src/UI/Hud/WavePreviewPanel.cs" id="10"]
+[ext_resource type="Script" path="res://src/UI/Panels/TowerInspectionPanel.cs" id="11"]
+[ext_resource type="Script" path="res://src/UI/Panels/PostMortemPanel.cs" id="12"]
+[ext_resource type="Script" path="res://src/UI/DamageNumberSpawner.cs" id="13"]
+[ext_resource type="Resource" path="res://assets/data/towers/t9_command_post.tres" id="14"]
+[ext_resource type="PackedScene" path="res://scenes/towers/tower_command_post.tscn" id="15"]
+
+[sub_resource type="Curve2D" id="Curve2D_1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300, 0, 0, 0, 0, 0, 300, -150, 0, 0, 0, 0, 700, -150)
+}
+
+[node name="Mission" type="Node2D"]
+script = ExtResource("1")
+PathNetworkPath = NodePath("PathNetwork")
+EnemyContainerPath = NodePath("EnemyContainer")
+ProjectileContainerPath = NodePath("ProjectileContainer")
+TowerContainerPath = NodePath("TowerContainer")
+CommandPostContainerPath = NodePath("CommandPostContainer")
+DebugStartWave = ExtResource("8")
+DebugLogEvents = true
+
+[node name="PathNetwork" type="Node2D" parent="."]
+script = ExtResource("2")
+position = Vector2(100, 400)
+
+[node name="Route" type="Path2D" parent="PathNetwork"]
+curve = SubResource("Curve2D_1")
+
+[node name="EnemyContainer" type="Node2D" parent="."]
+
+[node name="ProjectileContainer" type="Node2D" parent="."]
+
+[node name="TowerContainer" type="Node2D" parent="."]
+
+[node name="Tower1" parent="TowerContainer" instance=ExtResource("6")]
+position = Vector2(250, 350)
+Definition = ExtResource("4")
+
+[node name="Tower2" parent="TowerContainer" instance=ExtResource("7")]
+position = Vector2(400, 250)
+Definition = ExtResource("5")
+
+[node name="CommandPostContainer" type="Node2D" parent="."]
+
+[node name="CommandPost1" parent="CommandPostContainer" instance=ExtResource("15")]
+position = Vector2(220, 300)
+Definition = ExtResource("14")
+
+[node name="BuildPad1" parent="." instance=ExtResource("3")]
+position = Vector2(550, 300)
+
+[node name="DamageNumberSpawner" type="Node2D" parent="."]
+script = ExtResource("13")
+
+[node name="Hud" type="CanvasLayer" parent="."]
+script = ExtResource("9")
+MissionPath = NodePath("..")
+
+[node name="WavePreview" type="CanvasLayer" parent="."]
+script = ExtResource("10")
+MissionPath = NodePath("..")
+
+[node name="TowerInspectionPanel" type="CanvasLayer" parent="."]
+script = ExtResource("11")
+MissionPath = NodePath("..")
+
+[node name="PostMortemPanel" type="CanvasLayer" parent="."]
+script = ExtResource("12")
+MissionPath = NodePath("..")

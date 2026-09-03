@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_medium_armor.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e6_medium_armor"
+Archetype = 5
+ArmorClass = 2
+IsAir = false
+BaseHp = 520.0
+MoveSpeedTilesPerSec = 1.5
+LeakCost = 3
+Bounty = 18
+ControllerScene = ExtResource("2")

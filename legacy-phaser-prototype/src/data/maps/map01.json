@@ -1,0 +1,22 @@
+{
+  "id": "normandy_beach",
+  "name": "Normandy Beach",
+  "gridWidth": 20,
+  "gridHeight": 12,
+  "startingMoney": 500,
+  "startingLives": 20,
+  "path": [
+    { "x": 0, "y": 6 },
+    { "x": 4, "y": 6 },
+    { "x": 4, "y": 3 },
+    { "x": 8, "y": 3 },
+    { "x": 8, "y": 8 },
+    { "x": 12, "y": 8 },
+    { "x": 12, "y": 5 },
+    { "x": 16, "y": 5 },
+    { "x": 16, "y": 9 },
+    { "x": 19, "y": 9 }
+  ],
+  "blockedTiles": [],
+  "decorations": []
+}

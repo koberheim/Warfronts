@@ -1,0 +1,20 @@
+{
+  "id": "north_africa",
+  "name": "North Africa Campaign",
+  "gridWidth": 22,
+  "gridHeight": 14,
+  "startingMoney": 450,
+  "startingLives": 15,
+  "path": [
+    { "x": 0, "y": 7 },
+    { "x": 6, "y": 7 },
+    { "x": 6, "y": 4 },
+    { "x": 10, "y": 4 },
+    { "x": 10, "y": 10 },
+    { "x": 16, "y": 10 },
+    { "x": 16, "y": 6 },
+    { "x": 21, "y": 6 }
+  ],
+  "blockedTiles": [],
+  "decorations": []
+}

@@ -1,0 +1,40 @@
+{
+  "enemies": [
+    {
+      "id": "german_infantry",
+      "name": "Wehrmacht Infantry",
+      "nation": "GERMANY",
+      "description": "Standard infantry unit",
+      "health": 50,
+      "speed": 50,
+      "armor": 0,
+      "reward": 10,
+      "isArmored": false,
+      "spriteKey": "enemy_german"
+    },
+    {
+      "id": "italian_lighttank",
+      "name": "Italian Light Tank",
+      "nation": "ITALY",
+      "description": "Faster armored unit with moderate health",
+      "health": 100,
+      "speed": 40,
+      "armor": 5,
+      "reward": 20,
+      "isArmored": true,
+      "spriteKey": "enemy_italian"
+    },
+    {
+      "id": "japan_heavytank",
+      "name": "Japanese Heavy Tank",
+      "nation": "JAPAN",
+      "description": "Slow but heavily armored with high health",
+      "health": 200,
+      "speed": 25,
+      "armor": 10,
+      "reward": 40,
+      "isArmored": true,
+      "spriteKey": "enemy_japan"
+    }
+  ]
+}

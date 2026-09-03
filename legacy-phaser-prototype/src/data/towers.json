@@ -1,0 +1,149 @@
+{
+  "towers": [
+    {
+      "id": "british_rifleman",
+      "name": "Lee-Enfield Rifleman",
+      "nation": "BRITAIN",
+      "description": "Standard infantry with reliable rifles - backbone of the British Army",
+      "cost": 100,
+      "damage": 12,
+      "range": 160,
+      "fireRate": 0.9,
+      "projectileSpeed": 420,
+      "projectileType": "bullet",
+      "spriteKey": "tower_british_rifleman",
+      "upgrades": [
+        {
+          "level": 2,
+          "cost": 120,
+          "damageBonus": 5,
+          "rangeBonus": 20,
+          "description": "Veteran Infantry - Improved marksmanship"
+        },
+        {
+          "level": 3,
+          "cost": 200,
+          "damageBonus": 10,
+          "fireRateBonus": 0.2,
+          "description": "Elite Commandos - Maximum efficiency"
+        }
+      ]
+    },
+    {
+      "id": "british_machinegun",
+      "name": "Vickers Machine Gun",
+      "nation": "BRITAIN",
+      "description": "Rapid-fire support weapon - excellent against infantry swarms",
+      "cost": 150,
+      "damage": 6,
+      "range": 140,
+      "fireRate": 3.5,
+      "projectileSpeed": 480,
+      "projectileType": "bullet",
+      "spriteKey": "tower_british_mg",
+      "upgrades": [
+        {
+          "level": 2,
+          "cost": 180,
+          "damageBonus": 3,
+          "fireRateBonus": 1.0,
+          "description": "Heavy Barrel - Sustained fire"
+        },
+        {
+          "level": 3,
+          "cost": 250,
+          "damageBonus": 5,
+          "rangeBonus": 30,
+          "fireRateBonus": 1.5,
+          "description": "Dual MG - Devastating suppression"
+        }
+      ]
+    },
+    {
+      "id": "british_antitank",
+      "name": "QF 6-pounder Anti-Tank Gun",
+      "nation": "BRITAIN",
+      "description": "Powerful anti-armor weapon - tears through tanks",
+      "cost": 200,
+      "damage": 45,
+      "range": 190,
+      "fireRate": 0.45,
+      "projectileSpeed": 520,
+      "projectileType": "shell",
+      "spriteKey": "tower_british_at",
+      "upgrades": [
+        {
+          "level": 2,
+          "cost": 300,
+          "damageBonus": 25,
+          "rangeBonus": 30,
+          "description": "17-pounder - Heavy AT gun"
+        },
+        {
+          "level": 3,
+          "cost": 450,
+          "damageBonus": 50,
+          "fireRateBonus": 0.1,
+          "description": "Elite Crew - Tank destroyer"
+        }
+      ]
+    },
+    {
+      "id": "british_mortar",
+      "name": "3-inch Mortar",
+      "nation": "BRITAIN",
+      "description": "Indirect fire support - good range and splash potential",
+      "cost": 250,
+      "damage": 30,
+      "range": 220,
+      "fireRate": 0.6,
+      "projectileSpeed": 280,
+      "projectileType": "shell",
+      "spriteKey": "tower_british_mortar",
+      "upgrades": [
+        {
+          "level": 2,
+          "cost": 300,
+          "damageBonus": 15,
+          "rangeBonus": 40,
+          "description": "Heavy Mortar - Increased blast"
+        },
+        {
+          "level": 3,
+          "cost": 400,
+          "damageBonus": 30,
+          "fireRateBonus": 0.2,
+          "description": "Elite Crew - Precision bombardment"
+        }
+      ]
+    },
+    {
+      "id": "british_artillery",
+      "name": "QF 25-pounder Field Gun",
+      "nation": "BRITAIN",
+      "description": "Long-range heavy artillery - devastating firepower",
+      "cost": 300,
+      "damage": 70,
+      "range": 280,
+      "fireRate": 0.25,
+      "projectileSpeed": 320,
+      "projectileType": "shell",
+      "spriteKey": "tower_british_artillery",
+      "upgrades": [
+        {
+          "level": 2,
+          "cost": 450,
+          "damageBonus": 40,
+          "rangeBonus": 50,
+          "description": "Heavy Artillery - Extreme range"
+        },
+        {
+          "level": 3,
+          "cost": 600,
+          "damageBonus": 80,
+          "description": "Master Gunners - Maximum destruction"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "waves": [
+    {
+      "waveNumber": 1,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 12,
+          "interval": 900,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 2,
+          "interval": 2000,
+          "delay": 3000
+        }
+      ],
+      "reward": 60
+    },
+    {
+      "waveNumber": 2,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 10,
+          "interval": 700,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 5,
+          "interval": 1500,
+          "delay": 2000
+        }
+      ],
+      "reward": 100
+    },
+    {
+      "waveNumber": 3,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 15,
+          "interval": 600,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 6,
+          "interval": 1200,
+          "delay": 2500
+        },
+        {
+          "enemyType": "japan_heavytank",
+          "count": 2,
+          "interval": 4000,
+          "delay": 5000
+        }
+      ],
+      "reward": 150
+    },
+    {
+      "waveNumber": 4,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 20,
+          "interval": 500,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 8,
+          "interval": 1000,
+          "delay": 3000
+        },
+        {
+          "enemyType": "japan_heavytank",
+          "count": 3,
+          "interval": 3500,
+          "delay": 6000
+        }
+      ],
+      "reward": 200
+    },
+    {
+      "waveNumber": 5,
+      "spawns": [
+        {
+          "enemyType": "german_infantry",
+          "count": 25,
+          "interval": 400,
+          "delay": 500
+        },
+        {
+          "enemyType": "italian_lighttank",
+          "count": 10,
+          "interval": 800,
+          "delay": 4000
+        },
+        {
+          "enemyType": "japan_heavytank",
+          "count": 5,
+          "interval": 3000,
+          "delay": 7000
+        }
+      ],
+      "reward": 300
+    }
+  ]
+}

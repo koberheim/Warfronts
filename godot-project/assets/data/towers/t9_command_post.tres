@@ -1,0 +1,30 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+
+[sub_resource type="Resource" id="StatBlock_L1"]
+script = ExtResource("2")
+Cost = 225
+DamagePerShot = 0.0
+RateOfFirePerSec = 0.0
+RangeTiles = 0.0
+MinRangeTiles = 0.0
+BlastRadiusTiles = 0.0
+TurnRateSeconds = 0.0
+AuraRadiusTiles = 6.0
+AuraRangeBonusPercent = 0.12
+AuraRateOfFireBonusPercent = 0.08
+CommandPointsPerWave = 2
+SupplyPerWave = 0
+
+[resource]
+script = ExtResource("1")
+Id = "t9_command_post"
+Archetype = 8
+DisplayName = "Command Post"
+DamageType = 0
+DefaultTargeting = 0
+Levels = [SubResource("StatBlock_L1")]
+GroundOnly = true
+AirOnly = false

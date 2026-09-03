@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/projectiles/projectile_at_shell.tscn" id="3"]
+
+[sub_resource type="Resource" id="StatBlock_L1"]
+script = ExtResource("2")
+Cost = 200
+DamagePerShot = 75.0
+RateOfFirePerSec = 0.8
+RangeTiles = 7.5
+MinRangeTiles = 0.0
+BlastRadiusTiles = 0.0
+TurnRateSeconds = 1.1
+
+[resource]
+script = ExtResource("1")
+Id = "t4_anti_tank_gun"
+Archetype = 3
+DisplayName = "Anti-Tank Gun"
+DamageType = 2
+DefaultTargeting = 2
+Levels = [SubResource("StatBlock_L1")]
+ProjectileScene = ExtResource("3")
+ProjectileSpeedTilesPerSec = 30.0
+GroundOnly = true
+AirOnly = false

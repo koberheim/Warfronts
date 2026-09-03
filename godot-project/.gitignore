@@ -1,0 +1,27 @@
+# Godot 4+ specific ignores
+.godot/
+.mono/
+data_*/
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+
+# System/tool-specific ignores
+.directory
+*.bak
+
+# .NET build output
+bin/
+obj/
+
+# Exported builds
+/export/

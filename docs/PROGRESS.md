@@ -7,12 +7,12 @@ numbered prompts. Milestone exit criteria are GDD §17.1.
 
 1. [x] Godot 4.x project structure per §15.2, `.gitignore`, Git LFS config,
    C# `.csproj` with namespace folders. **Partial:** structure, gitignore,
-   LFS, and csproj exist and `dotnet build` succeeds; the
-   `godot --headless --check-only` half of the acceptance check is blocked
-   by `docs/DECISIONS.md` D13 (no .NET-enabled Godot binary available yet).
+   LFS, and csproj exist; the Mono Godot build loads the project and the
+   headless smoke run starts successfully. Standalone `dotnet build` still
+   needs an online restore of `Godot.NET.Sdk/4.7.2` in this environment.
 2. [x] `GameLoop` autoload, fixed 60Hz tick via `_PhysicsProcess`,
-   `TimeController` for 1×/2×/3×/pause. Written; **not yet verified** in a
-   running Godot instance (blocked by D13).
+   `TimeController` for 1×/2×/3×/pause. Written and exercised by the
+   headless smoke run.
 3. [x] `EventBus` (typed pub/sub) and `ObjectPool<T>`. Written; unit tests
    not yet written (blocked on D17 — test framework choice).
 4. [x] `GameBalanceConfig`, `DamageTable`, `ArmorClass`/`DamageType` enums,
@@ -22,8 +22,9 @@ numbered prompts. Milestone exit criteria are GDD §17.1.
    mission flow (that's M3).
 
 **M0 exit criteria (§17.1):** project structure, autoloads, damage resolver
-with unit tests. **Not yet met** — unit tests and headless verification are
-the remaining gap, both blocked on D13/D17.
+with unit tests. **Not yet met** — automated unit tests are the remaining
+gap (D17); Godot-side headless verification is now available via the Mono
+build.
 
 ## M1 — Core loop grey-box
 
@@ -136,11 +137,10 @@ content work before M1/M2 are solid and playable.
 
 ## Known blockers
 
-- **D13** (see `docs/DECISIONS.md`): the installed Godot binary
-  (`E:\Godot\Godot_v4.7.2-stable_win64.exe`) is the standard GDScript-only
-  build, not the .NET-enabled build. Blocks any in-editor or headless
-  verification of the C# scripts written so far. Needs the .NET-enabled
-  Godot 4.7.x download.
 - **D17:** test framework (GoDotTest vs. GUT) not yet chosen — blocked on
   D13 resolving first, since evaluating either requires a working C# Godot
-  instance.
+  instance. D13 is now resolved, so choosing and wiring the framework is
+  actionable.
+- **Standalone .NET restore:** `dotnet build` cannot resolve
+  `Godot.NET.Sdk/4.7.2` without access to NuGet; the Mono Godot build can
+  still run the current project and smoke scene.

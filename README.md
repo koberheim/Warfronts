@@ -35,13 +35,12 @@ godot --path .                    # open in the editor
 
 ## Status
 
-Foundation (GDD Milestone M0) in progress: project structure, `GameLoop`
-fixed-tick autoload, `EventBus`, `ObjectPool<T>`, `GameBalanceConfig`,
-`SeededRandom`, and the damage resolver are scaffolded. See
-[docs/PROGRESS.md](docs/PROGRESS.md) for the live checklist and
-[docs/GDD.md §19](docs/GDD.md) for the full implementation prompt ladder.
+M2 slice systems are implemented and the reusable mission scene runs through
+a headless smoke test with the Mono build of Godot 4.7.2. M3 (the
+vertical-slice gate) has not started. Formal automated tests remain the main
+project gap; see [docs/PROGRESS.md](docs/PROGRESS.md).
 
-**Known blocker:** the Godot binary currently installed on this machine
-doesn't have C# support built in, so the C# scripts above compile
-(`dotnet build`) but haven't been verified running inside Godot yet. See
-`docs/DECISIONS.md` entry D13.
+The standalone `dotnet build` command requires an online restore of
+`Godot.NET.Sdk/4.7.2`; the Godot Mono installation can currently load and
+run the project using its bundled tooling. See `docs/DECISIONS.md` entries
+D13 and D17.

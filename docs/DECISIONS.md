@@ -406,6 +406,17 @@ revisited — worth preserving before it's lost to editing history.
   assumption that became visible as soon as the mortar was placed.
 - **Status:** Active.
 
+### D28 - User art-design document is the visual asset reference
+- **Decided by:** User
+- **Date:** 2026-09-02
+- **Decision:** Treat `docs/FRONTS OF WAR ART DESIGN.md` as the active visual
+  direction and placeholder-art reference for Fronts of War. Do not generate
+  or integrate placeholder art until the project reaches the M3 art pass;
+  notify the User when that gate is ready.
+- **Rationale:** The visual language should be established before assets are
+  generated, while the current prototype remains focused on readable systems.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

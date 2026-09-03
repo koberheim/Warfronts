@@ -10,6 +10,7 @@ source of truth for scope, mechanics, and the production plan.
 - `docs/` — design docs, led by `GDD.md`.
   - `docs/DECISIONS.md` — the project's decision log, with who decided what.
   - `docs/PROGRESS.md` — live tracker against GDD §19's implementation ladder.
+  - [`docs/FRONTS OF WAR ART DESIGN.md`](docs/FRONTS%20OF%20WAR%20ART%20DESIGN.md) — visual direction and placeholder-art reference.
   - `docs/archive/` — four documents superseded by GDD v1.1 (an old Unity
     migration guide, and the pre-GDD tower/enemy design docs). Kept for
     history, not for implementation — see `docs/archive/README.md`.

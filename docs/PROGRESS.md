@@ -138,6 +138,9 @@ No current hard blockers. D17 is superseded by D25; the remaining work is
 M2 follow-up validation before the M3 vertical-slice gate.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
+- **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is now the active
+  visual-direction reference. Placeholder art generation is intentionally
+  deferred until the M3 art pass; request it when that gate is ready.
 - **Standalone .NET restore:** `dotnet build` cannot resolve
   `Godot.NET.Sdk/4.7.2` without access to NuGet; the Mono Godot build can
   still run the current project and smoke scene.

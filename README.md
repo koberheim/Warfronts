@@ -40,7 +40,7 @@ godot --headless --path . --run-tests=CoreTests --quit-after 1200
 M2 slice systems are implemented and the reusable mission scene runs through
 a headless smoke test with the Mono build of Godot 4.7.2. M3 (the
 vertical-slice gate) has not started. The M0 core test suite passes headlessly;
-remaining work is M2 follow-up validation before M3. See
+M2 is now complete against its grey-box acceptance criteria. See
 [docs/PROGRESS.md](docs/PROGRESS.md).
 
 The standalone `dotnet build` command requires an online restore of

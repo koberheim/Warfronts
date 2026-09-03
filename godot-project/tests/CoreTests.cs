@@ -3,7 +3,10 @@ using Chickensoft.GoDotTest;
 using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
+using FrontsOfWar.Economy;
 using FrontsOfWar.Towers;
+using FrontsOfWar.Waves;
+using System.Collections.Generic;
 
 namespace FrontsOfWar.Tests;
 
@@ -128,6 +131,170 @@ public class CoreTests : TestClass
 
         tower.Free();
         post.Free();
+    }
+
+    [Test]
+    public void TowerUpgradesFollowCostCurveAndRefundWindow()
+    {
+        var definition = new TowerDefinition
+        {
+            Levels = new[]
+            {
+                new TowerStatBlock { Cost = 100, DamagePerShot = 10f },
+                new TowerStatBlock { Cost = 120, DamagePerShot = 12f },
+            },
+            BranchA = new TowerBranch
+            {
+                Levels = new[]
+                {
+                    new TowerStatBlock { Cost = 160, DamagePerShot = 20f },
+                    new TowerStatBlock { Cost = 220, DamagePerShot = 30f },
+                },
+            },
+            BranchB = new TowerBranch
+            {
+                Levels = new[]
+                {
+                    new TowerStatBlock { Cost = 140, DamagePerShot = 15f },
+                    new TowerStatBlock { Cost = 180, DamagePerShot = 18f },
+                },
+            },
+        };
+        var upgrades = new TowerUpgradeController(definition, new GameBalanceConfig());
+
+        Require(upgrades.TotalInvested == 100, "Initial tower investment");
+        Require(upgrades.UpgradeCost() == 65, "L2 upgrade cost");
+        upgrades.Upgrade(TowerBranchChoice.A);
+        Require(upgrades.Level == 2 && upgrades.TotalInvested == 165, "L2 upgrade");
+        Require(upgrades.UpgradeCost() == 115, "L3 upgrade cost");
+        upgrades.Upgrade(TowerBranchChoice.A);
+        Require(upgrades.Level == 3 && upgrades.Branch == TowerBranchChoice.A, "Branch A fork");
+        RequireApproximately(20f, upgrades.CurrentStats().DamagePerShot, "Branch A L3 stats");
+        upgrades.Upgrade(TowerBranchChoice.A);
+        Require(upgrades.Level == 4 && upgrades.TotalInvested == 490, "L4 upgrade");
+
+        upgrades.Tick(5f);
+        Require(upgrades.SellRefund() == 368, "Post-window sell refund");
+
+        var fresh = new TowerUpgradeController(definition, new GameBalanceConfig());
+        Require(fresh.SellRefund() == 100, "Full refund window");
+    }
+
+    [Test]
+    public void StatusControllerEnforcesSuppressionCapAndExpiration()
+    {
+        var status = new StatusController();
+        status.ApplySuppressed(3f, 4f);
+        status.Tick(1f);
+        status.ApplySuppressed(3f, 4f);
+        Require(status.IsSuppressed, "Suppression remains active after refresh");
+        status.Tick(3f);
+        Require(!status.IsSuppressed, "Suppression hard cap expires");
+
+        status.ApplySpotted(2f);
+        status.Tick(1f);
+        Require(status.IsSpotted, "Spotted remains active");
+        status.Tick(1f);
+        Require(!status.IsSpotted, "Spotted expires");
+    }
+
+    [Test]
+    public void AbilitiesSpendCommandPointsWhilePaused()
+    {
+        var config = new GameBalanceConfig();
+        var commandPoints = new CommandPointLedger(config, () => 0);
+        var defenseLine = new DefenseLineLedger(Difficulty.Regular, config);
+        var abilities = new AbilitySystem(config);
+        var time = new TimeController();
+        time.Pause();
+        commandPoints.Credit(5);
+        defenseLine.ForceDeplete();
+
+        bool activated = abilities.TryActivate(
+            AbilityType.EmergencyRepair, Vector2.Zero, commandPoints,
+            new TowerManager(), defenseLine);
+
+        Require(activated, "Emergency Repair activates while paused");
+        Require(commandPoints.Balance == 0, "Ability CP cost");
+        Require(defenseLine.Integrity == 3, "Emergency Repair restores Defense Line");
+        RequireApproximately(45f, abilities.CooldownRemaining(AbilityType.EmergencyRepair), "Ability cooldown");
+
+        commandPoints.Dispose();
+        defenseLine.Dispose();
+    }
+
+    [Test]
+    public void M2WaveSequenceContainsTwelveAuthoredWavesAndFourEnemies()
+    {
+        var sequence = GD.Load<WaveSequence>("res://assets/data/missions/m2_wave_sequence.tres");
+        Require(sequence != null && sequence.Waves.Length == 12, "M2 wave sequence length");
+
+        var enemyIds = new HashSet<string>();
+        for (int i = 0; i < sequence.Waves.Length; i++)
+        {
+            Require(sequence.Waves[i].WaveNumber == i + 1, "Sequential wave numbering");
+            foreach (var group in sequence.Waves[i].Groups) enemyIds.Add(group.Enemy.Id);
+        }
+
+        Require(enemyIds.SetEquals(new[]
+        {
+            "e1_basic_infantry", "e4_armored_infantry",
+            "e5_light_vehicle", "e6_medium_armor",
+        }), "M2 enemy roster");
+    }
+
+    [Test]
+    public void TowerTracksDamageAttributedThroughCombatEvents()
+    {
+        var tower = new TowerController
+        {
+            Name = "AttributionTower",
+            Definition = new TowerDefinition
+            {
+                Levels = new[] { new TowerStatBlock { Cost = 100 } },
+            },
+        };
+        tower._Ready();
+
+        EventBus.Instance.Publish(new FrontsOfWar.Enemies.EnemyDamagedEvent(
+            null, 42f, 1f, DamageType.Explosive, tower));
+
+        RequireApproximately(42f, tower.LifetimeDamage, "Tower lifetime damage attribution");
+        tower._ExitTree();
+        tower.Free();
+    }
+
+    [Test]
+    public void FieldMortarUsesAuthoredPointTargetingAndDensestCluster()
+    {
+        var mortar = GD.Load<TowerDefinition>("res://assets/data/towers/t3_field_mortar.tres");
+        Require(mortar != null, "Field Mortar resource loads");
+        Require(mortar.DefaultTargeting == TargetingProfile.DensestCluster, "Field Mortar targeting profile");
+        RequireApproximately(2f, mortar.Levels[0].MinRangeTiles, "Field Mortar minimum range");
+        RequireApproximately(1.6f, mortar.Levels[0].BlastRadiusTiles, "Field Mortar blast radius");
+
+        var candidates = new ITargetable[]
+        {
+            new FakeTargetable(new Vector2(100f, 100f)),
+            new FakeTargetable(new Vector2(110f, 100f)),
+            new FakeTargetable(new Vector2(120f, 100f)),
+            new FakeTargetable(new Vector2(300f, 300f)),
+        };
+        var point = TargetingService.SelectDensestClusterPoint(candidates, 16f);
+        Require(point == new Vector2(110f, 100f), "Densest cluster point selection");
+    }
+
+    private sealed class FakeTargetable : ITargetable
+    {
+        public Vector2 GlobalPosition { get; }
+        public float PathProgress => 0f;
+        public float CurrentHp => 100f;
+        public bool IsAir => false;
+        public bool IsAlive => true;
+        public Vector2 Velocity => Vector2.Zero;
+
+        public FakeTargetable(Vector2 position) => GlobalPosition = position;
+        public void ApplyDamage(float baseDamage, DamageType type) { }
     }
 
     private readonly struct TestEvent

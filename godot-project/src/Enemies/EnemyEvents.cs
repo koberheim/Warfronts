@@ -35,12 +35,15 @@ public readonly struct EnemyDamagedEvent
     public readonly float DamageDealt;
     public readonly float Multiplier;
     public readonly DamageType DamageType;
+    public readonly IDamageSource Source;
 
-    public EnemyDamagedEvent(EnemyController enemy, float damageDealt, float multiplier, DamageType damageType)
+    public EnemyDamagedEvent(EnemyController enemy, float damageDealt, float multiplier,
+                             DamageType damageType, IDamageSource source = null)
     {
         Enemy = enemy;
         DamageDealt = damageDealt;
         Multiplier = multiplier;
         DamageType = damageType;
+        Source = source;
     }
 }

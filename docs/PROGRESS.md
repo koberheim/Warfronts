@@ -23,7 +23,7 @@ numbered prompts. Milestone exit criteria are GDD §17.1.
    randomized gameplay consumers will arrive with later mission content.
 
 **M0 exit criteria (§17.1):** project structure, autoloads, damage resolver
-with unit tests. **Met:** the Mono Godot headless test run passes all five
+with unit tests. **Met:** the Mono Godot headless test run passes all twelve
 current `CoreTests`.
 
 ## M1 — Core loop grey-box
@@ -55,32 +55,32 @@ for the mission scene.
 ## M2 — Slice systems
 
 14. [x] `TowerUpgradeController`: 4 levels, branch fork at L3, GDD §7.4 cost
-    curve, sell with 4s full-refund window. Verified by code review against
-    the exact multipliers in the config; not yet exercised in the live
-    smoke run (no UI action has upgraded/sold a tower in an automated test
-    yet — the Tower Inspection Panel's buttons work when clicked by hand,
-    but nothing scripts a click for headless verification).
+    curve, sell with 4s full-refund window. Automated tests now cover the
+    exact cost curve, branch selection, four levels, 75% refund, and 4-second
+    full-refund window. The panel buttons remain a manual UI interaction.
 15. [x] T3 Field Mortar / T9 Command Post support systems: densest-cluster
     point-targeting (T3) and non-stacking aura + CP generation (T9) are both
     implemented and wired into a live test scene (one Command Post next to
     the machine gun and mortar). Verified: the smoke run includes mortar
     ground-point fire with zero gameplay exceptions, and `CoreTests` checks
     the exact +12% range / +8% rate-of-fire aura. The mortar uses authored
-    T3 data and a pooled mortar-shell scene; its full arc/miss behavior still
-    needs a dedicated gameplay check.
+    T3 data and a pooled mortar-shell scene; `CoreTests` verifies its
+    point-targeting profile, minimum range, blast radius, and densest-cluster
+    selection.
 16. [x] `StatusController` (Suppressed, Spotted) with the 4-second
     non-refreshing cap. Wired into `EnemyController` (movement speed
     penalty, Spotted damage bonus) and `TowerController` (a parallel
-    tower-suppression hook for the future Siege enemy). Not yet exercised
-    live — nothing in the current test scene applies either status (no
-    Siege enemy, no Marksman/Command Post Spotted source yet).
+    tower-suppression hook for the future Siege enemy). Automated tests now
+    cover application, refresh capping, and expiration; live Siege/Spotted
+    sources arrive with later enemy/tower content.
 17. [x] `CommandPointLedger` and the three universal abilities (Artillery
     Strike, Rally, Emergency Repair) with cooldowns and CP cost checks.
     Implemented as `AbilitySystem`; callable via
     `MapRuntime.ActivateAbility(...)`. `AbilityHotbar` now provides bottom-
     right buttons, CP shortfall feedback, cooldown state, keys 1–3, and
     click-to-target for the point abilities. Paused-mode input is enabled;
-    automated input coverage remains a follow-up.
+    paused-mode logic is covered by `CoreTests`; automated physical mouse/key
+    input coverage remains a UI follow-up.
 18. [x] In-mission HUD (Supply, Command Points, Defense Line, wave counter,
     speed/pause control) — `HudController`, built as Control nodes on a
     `CanvasLayer`, live-updating from the same events the smoke-test logger
@@ -89,37 +89,38 @@ for the mission scene.
     output, only headless logs).
 19. [x] Wave preview strip — `WavePreviewPanel`, three tiers of disclosure
     (full detail / archetypes-only / threat-badge-only) as specified.
-    **Simplified:** text-only, no icon art; only tested against the one
-    3-group test wave, so the "3 waves queued" case with real tier
-    differences isn't exercised yet.
+    **Simplified:** text-only, no icon art; the authored M2 sequence now
+    queues all 12 waves and the resource test verifies the three-wave preview
+    source data.
 20. [x] Tower inspection panel — `TowerInspectionPanel`. Click-to-open,
     live stats, upgrade (with cost/affordability check), sell (with
-    refund), all wired to the real ledgers. **Missing vs. full spec:**
-    "Strong vs / Weak vs" icon rows, and lifetime damage-per-Supply
-    tracking (needs per-tower damage attribution not yet threaded through
-    the combat pipeline — see below).
+    refund), all wired to the real ledgers. Prototype glyph rows show
+    "Strong vs / Weak vs" and lifetime damage-per-Supply now uses per-tower
+    damage attribution from the combat event pipeline.
 21. [x] Post-mortem panel — `PostMortemPanel`. Leak tally, damage-by-type
     breakdown, unspent resources, and the exact suggestion rule from GDD
     §12.9's worked example (heavy armor leaked + low AP damage share →
     suggests AP towers). **Simplified:** triggers only on defeat
     (`DefenseLineDepletedEvent`) since there's no victory/mission-complete
-    flow yet (that's M3's mission flow); doesn't identify most/least
-    effective tower (same per-tower attribution gap as #20).
+    flow yet (that's M3's mission flow). Most/least effective tower data is
+    included using the shared damage-source event data.
 22. [x] Enemy health bars, armor-class glyphs, status badges, and the
     ricochet/ineffective-damage floating number feedback. Verified in the
     smoke run (health bars only draw once damaged, glyphs differ by armor
     class shape not just color, damage numbers are color+prefix coded).
 
-**Known gap carried into M3:** per-tower lifetime damage attribution (for
-"most/least effective tower" and damage-per-Supply) needs `EnemyDamagedEvent`
-to carry a reference to whatever dealt the damage. Scoped out of this pass
-to avoid touching the core damage pipeline again this late — worth doing
-early in M3.
+**M2 verification note:** the formal automated core suite now covers the
+upgrade/refund math, Command Post aura, status lifecycle, paused ability
+activation, authored 12-wave/four-enemy content, Field Mortar targeting, and
+per-tower damage attribution. The live mission smoke run remains the
+integration check; visual screenshot review and physical UI input remain
+manual checks.
 
-**Also carried forward:** the M2 follow-up checks above remain open. The
-formal automated core suite now exists and passes through the Mono Godot
-headless runner (`--run-tests=CoreTests`); the live mission smoke run remains
-the integration check.
+**M2 exit criteria (§17.1):** four tower archetypes, four ground enemies,
+12 authored waves, upgrades, Command Points, abilities, HUD, wave preview,
+speed/pause controls, and post-mortem reporting. **Met:** all twelve
+`CoreTests` pass the M2 checks and the Mono Godot mission smoke run includes
+all active M2 systems without gameplay exceptions.
 
 ## M3 — Vertical slice
 
@@ -134,8 +135,8 @@ content work before M1/M2 are solid and playable.
 
 ## Historical blockers / current follow-up
 
-No current hard blockers. D17 is superseded by D25; the remaining work is
-M2 follow-up validation before the M3 vertical-slice gate.
+No current hard blockers. D17 is superseded by D25; M3's vertical-slice gate
+is the next development milestone.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is now the active

@@ -20,7 +20,8 @@ public class ProjectileManager
         _poolParent = poolParent;
     }
 
-    public void Spawn(TowerDefinition definition, TowerStatBlock stats, Vector2 origin, ITargetable target)
+    public void Spawn(TowerDefinition definition, TowerStatBlock stats, Vector2 origin,
+                      ITargetable target, IDamageSource source)
     {
         var pool = GetOrCreatePool(definition.ProjectileScene);
         var projectile = pool.Rent();
@@ -29,7 +30,8 @@ public class ProjectileManager
         float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
 
-        projectile.Launch(target, stats.DamagePerShot, definition.DamageType, speedPixelsPerSec, blastRadiusPixels, origin);
+        projectile.Launch(target, stats.DamagePerShot, definition.DamageType,
+            speedPixelsPerSec, blastRadiusPixels, origin, source);
         _active.Add((projectile, pool));
     }
 
@@ -38,7 +40,8 @@ public class ProjectileManager
     // is still approximated as constant-speed straight-line travel (a
     // simplification vs. GDD's described shell arc — acceptable for now,
     // since only the flight *duration* is mechanically load-bearing).
-    public void SpawnAtPoint(TowerDefinition definition, TowerStatBlock stats, Vector2 origin, Vector2 impactPoint)
+    public void SpawnAtPoint(TowerDefinition definition, TowerStatBlock stats, Vector2 origin,
+                             Vector2 impactPoint, IDamageSource source)
     {
         var pool = GetOrCreatePool(definition.ProjectileScene);
         var projectile = pool.Rent();
@@ -47,7 +50,8 @@ public class ProjectileManager
         float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
 
-        projectile.LaunchAtPoint(impactPoint, stats.DamagePerShot, definition.DamageType, speedPixelsPerSec, blastRadiusPixels, origin);
+        projectile.LaunchAtPoint(impactPoint, stats.DamagePerShot, definition.DamageType,
+            speedPixelsPerSec, blastRadiusPixels, origin, source);
         _active.Add((projectile, pool));
     }
 

@@ -1,6 +1,7 @@
 using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
+using FrontsOfWar.Enemies;
 using System.Linq;
 
 namespace FrontsOfWar.Towers;
@@ -11,12 +12,14 @@ namespace FrontsOfWar.Towers;
 // bookkeeping is delegated to TowerUpgradeController; the Supply
 // transaction itself (checking/spending balance) is the caller's job — this
 // class only tracks what upgrading or selling would cost/refund.
-public partial class TowerController : Node2D
+public partial class TowerController : Node2D, IDamageSource
 {
     [Export] public TowerDefinition Definition;
 
     public TargetingProfile CurrentTargeting { get; set; }
     public TowerUpgradeController Upgrade { get; private set; }
+    public float LifetimeDamage { get; private set; }
+    public string SourceId => Name;
 
     // Set each tick by CommandPostManager before towers fire (GDD §7.5,
     // T9's aura); reset to 1 (no bonus) at the top of every tick. Multiple
@@ -46,6 +49,12 @@ public partial class TowerController : Node2D
         CurrentTargeting = Definition.DefaultTargeting;
         Upgrade = new TowerUpgradeController(Definition, GameBalanceConfigAutoload.Config);
         SetupClickArea();
+        EventBus.Instance?.Subscribe<EnemyDamagedEvent>(OnEnemyDamaged);
+    }
+
+    public override void _ExitTree()
+    {
+        EventBus.Instance?.Unsubscribe<EnemyDamagedEvent>(OnEnemyDamaged);
     }
 
     // Built in code rather than hand-added to each tower's .tscn (GDD §13.5:
@@ -119,7 +128,7 @@ public partial class TowerController : Node2D
         var point = TargetingService.SelectDensestClusterPoint(candidates, clusterRadiusPixels);
         if (point == null) return;
 
-        projectileManager.SpawnAtPoint(Definition, stats, GlobalPosition, point.Value);
+        projectileManager.SpawnAtPoint(Definition, stats, GlobalPosition, point.Value, this);
         EventBus.Instance?.Publish(new TowerFiredEvent(this, null));
     }
 
@@ -144,11 +153,14 @@ public partial class TowerController : Node2D
         if (Definition.ProjectileScene == null)
         {
             // Hitscan (T1 Automatic Gun): damage applies instantly.
-            target.ApplyDamage(stats.DamagePerShot, Definition.DamageType);
+            if (target is EnemyController enemy)
+                enemy.ApplyDamage(stats.DamagePerShot, Definition.DamageType, this);
+            else
+                target.ApplyDamage(stats.DamagePerShot, Definition.DamageType);
         }
         else
         {
-            projectileManager.Spawn(Definition, stats, GlobalPosition, target);
+            projectileManager.Spawn(Definition, stats, GlobalPosition, target, this);
         }
 
         EventBus.Instance?.Publish(new TowerFiredEvent(this, target));
@@ -161,6 +173,11 @@ public partial class TowerController : Node2D
     {
         _rallyRemaining = Mathf.Max(_rallyRemaining, durationSeconds);
         _rallyRateOfFireMultiplier = rateOfFireMultiplier;
+    }
+
+    private void OnEnemyDamaged(EnemyDamagedEvent evt)
+    {
+        if (ReferenceEquals(evt.Source, this)) LifetimeDamage += evt.DamageDealt;
     }
 
     // Computes the refund and announces the sale; the caller (the tower

@@ -324,7 +324,7 @@ revisited — worth preserving before it's lost to editing history.
   supplied parameter, once to add `DamageType` to the event) — a third
   pass late in an already very large session raised the odds of a subtle
   regression more than the missing feature was worth right now.
-- **Status:** Open. Flagged as the first thing worth doing in M3, since
+- **Status:** Superseded by D29. Flagged as the first thing worth doing in M3, since
   it's a small, well-understood change (add a nullable `object Source` to
   `EnemyDamagedEvent` and `ITargetable.ApplyDamage`, have `TowerController`
   pass `this`, have each panel accumulate `Dictionary<TowerController,
@@ -345,7 +345,7 @@ revisited — worth preserving before it's lost to editing history.
   eye), and does **not** exercise the three abilities at all — nothing in
   the test scene triggers them yet, since there's no hotbar UI wired to
   `MapRuntime.ActivateAbility(...)` (see `docs/PROGRESS.md` #17).
-- **Status:** Open follow-ups: (1) a targeted check of the Command Post's
+- **Status:** Superseded by D29. Its follow-ups: (1) a targeted check of the Command Post's
   numeric effect, (2) wiring the ability hotbar and confirming all three
   abilities actually fire.
 
@@ -415,6 +415,19 @@ revisited — worth preserving before it's lost to editing history.
   notify the User when that gate is ready.
 - **Rationale:** The visual language should be established before assets are
   generated, while the current prototype remains focused on readable systems.
+- **Status:** Active.
+
+### D29 - M2 closes with authored grey-box content and event-based attribution
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-02
+- **Decision:** Close M2 after adding four ground enemy definitions, a
+  12-wave authored sequence, formal tests for upgrades/statuses/abilities/
+  targeting/content, and per-tower damage attribution through
+  `EnemyDamagedEvent.Source`. The post-mortem remains defeat-only until M3
+  implements victory and full mission flow.
+- **Rationale:** These additions satisfy the M2 grey-box acceptance criteria
+  without introducing M3 content or replacing the GDD's primitive prototype
+  art strategy.
 - **Status:** Active.
 
 ---

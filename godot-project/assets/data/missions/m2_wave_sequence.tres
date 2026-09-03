@@ -1,0 +1,248 @@
+[gd_resource type="Resource" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/Waves/WaveSequence.cs" id="1"]
+[ext_resource type="Script" path="res://src/Waves/WaveDefinition.cs" id="2"]
+[ext_resource type="Script" path="res://src/Waves/SpawnGroup.cs" id="3"]
+[ext_resource type="Resource" path="res://assets/data/enemies/e1_basic_infantry.tres" id="4"]
+[ext_resource type="Resource" path="res://assets/data/enemies/e4_armored_infantry.tres" id="5"]
+[ext_resource type="Resource" path="res://assets/data/enemies/e5_light_vehicle.tres" id="6"]
+[ext_resource type="Resource" path="res://assets/data/enemies/e6_medium_armor.tres" id="7"]
+
+[sub_resource type="Resource" id="W1G1"]
+script = ExtResource("3")
+Enemy = ExtResource("4")
+Count = 6
+StartDelaySeconds = 0.5
+IntervalSeconds = 1.2
+
+[sub_resource type="Resource" id="W1G2"]
+script = ExtResource("3")
+Enemy = ExtResource("7")
+Count = 2
+StartDelaySeconds = 10.0
+IntervalSeconds = 3.0
+
+[sub_resource type="Resource" id="W2G1"]
+script = ExtResource("3")
+Enemy = ExtResource("5")
+Count = 8
+StartDelaySeconds = 0.5
+IntervalSeconds = 0.9
+
+[sub_resource type="Resource" id="W2G2"]
+script = ExtResource("3")
+Enemy = ExtResource("4")
+Count = 3
+StartDelaySeconds = 7.0
+IntervalSeconds = 2.2
+
+[sub_resource type="Resource" id="W3G1"]
+script = ExtResource("3")
+Enemy = ExtResource("4")
+Count = 10
+StartDelaySeconds = 0.5
+IntervalSeconds = 0.75
+
+[sub_resource type="Resource" id="W3G2"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 3
+StartDelaySeconds = 8.0
+IntervalSeconds = 2.0
+
+[sub_resource type="Resource" id="W4G1"]
+script = ExtResource("3")
+Enemy = ExtResource("5")
+Count = 6
+StartDelaySeconds = 0.5
+IntervalSeconds = 1.4
+
+[sub_resource type="Resource" id="W4G2"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 4
+StartDelaySeconds = 5.0
+IntervalSeconds = 2.5
+
+[sub_resource type="Resource" id="W5G1"]
+script = ExtResource("3")
+Enemy = ExtResource("4")
+Count = 12
+StartDelaySeconds = 0.5
+IntervalSeconds = 0.65
+
+[sub_resource type="Resource" id="W5G2"]
+script = ExtResource("3")
+Enemy = ExtResource("7")
+Count = 3
+StartDelaySeconds = 8.0
+IntervalSeconds = 2.2
+
+[sub_resource type="Resource" id="W6G1"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 8
+StartDelaySeconds = 0.5
+IntervalSeconds = 1.1
+
+[sub_resource type="Resource" id="W6G2"]
+script = ExtResource("3")
+Enemy = ExtResource("5")
+Count = 8
+StartDelaySeconds = 6.0
+IntervalSeconds = 0.8
+
+[sub_resource type="Resource" id="W7G1"]
+script = ExtResource("3")
+Enemy = ExtResource("4")
+Count = 16
+StartDelaySeconds = 0.5
+IntervalSeconds = 0.55
+
+[sub_resource type="Resource" id="W7G2"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 6
+StartDelaySeconds = 7.0
+IntervalSeconds = 1.2
+
+[sub_resource type="Resource" id="W8G1"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 8
+StartDelaySeconds = 0.5
+IntervalSeconds = 1.0
+
+[sub_resource type="Resource" id="W8G2"]
+script = ExtResource("3")
+Enemy = ExtResource("7")
+Count = 4
+StartDelaySeconds = 6.0
+IntervalSeconds = 2.0
+
+[sub_resource type="Resource" id="W9G1"]
+script = ExtResource("3")
+Enemy = ExtResource("5")
+Count = 10
+StartDelaySeconds = 0.5
+IntervalSeconds = 0.65
+
+[sub_resource type="Resource" id="W9G2"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 8
+StartDelaySeconds = 5.0
+IntervalSeconds = 0.9
+
+[sub_resource type="Resource" id="W10G1"]
+script = ExtResource("3")
+Enemy = ExtResource("7")
+Count = 5
+StartDelaySeconds = 0.5
+IntervalSeconds = 2.0
+
+[sub_resource type="Resource" id="W10G2"]
+script = ExtResource("3")
+Enemy = ExtResource("4")
+Count = 10
+StartDelaySeconds = 5.0
+IntervalSeconds = 0.65
+
+[sub_resource type="Resource" id="W11G1"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 10
+StartDelaySeconds = 0.5
+IntervalSeconds = 0.9
+
+[sub_resource type="Resource" id="W11G2"]
+script = ExtResource("3")
+Enemy = ExtResource("7")
+Count = 6
+StartDelaySeconds = 6.0
+IntervalSeconds = 1.8
+
+[sub_resource type="Resource" id="W12G1"]
+script = ExtResource("3")
+Enemy = ExtResource("4")
+Count = 18
+StartDelaySeconds = 0.5
+IntervalSeconds = 0.5
+
+[sub_resource type="Resource" id="W12G2"]
+script = ExtResource("3")
+Enemy = ExtResource("6")
+Count = 6
+StartDelaySeconds = 5.0
+IntervalSeconds = 0.9
+
+[sub_resource type="Resource" id="W12G3"]
+script = ExtResource("3")
+Enemy = ExtResource("7")
+Count = 3
+StartDelaySeconds = 8.0
+IntervalSeconds = 2.0
+
+[sub_resource type="Resource" id="Wave1"]
+script = ExtResource("2")
+WaveNumber = 1
+Groups = [SubResource("W1G1"), SubResource("W1G2")]
+
+[sub_resource type="Resource" id="Wave2"]
+script = ExtResource("2")
+WaveNumber = 2
+Groups = [SubResource("W2G1"), SubResource("W2G2")]
+
+[sub_resource type="Resource" id="Wave3"]
+script = ExtResource("2")
+WaveNumber = 3
+Groups = [SubResource("W3G1"), SubResource("W3G2")]
+
+[sub_resource type="Resource" id="Wave4"]
+script = ExtResource("2")
+WaveNumber = 4
+Groups = [SubResource("W4G1"), SubResource("W4G2")]
+
+[sub_resource type="Resource" id="Wave5"]
+script = ExtResource("2")
+WaveNumber = 5
+Groups = [SubResource("W5G1"), SubResource("W5G2")]
+
+[sub_resource type="Resource" id="Wave6"]
+script = ExtResource("2")
+WaveNumber = 6
+Groups = [SubResource("W6G1"), SubResource("W6G2")]
+
+[sub_resource type="Resource" id="Wave7"]
+script = ExtResource("2")
+WaveNumber = 7
+Groups = [SubResource("W7G1"), SubResource("W7G2")]
+
+[sub_resource type="Resource" id="Wave8"]
+script = ExtResource("2")
+WaveNumber = 8
+Groups = [SubResource("W8G1"), SubResource("W8G2")]
+
+[sub_resource type="Resource" id="Wave9"]
+script = ExtResource("2")
+WaveNumber = 9
+Groups = [SubResource("W9G1"), SubResource("W9G2")]
+
+[sub_resource type="Resource" id="Wave10"]
+script = ExtResource("2")
+WaveNumber = 10
+Groups = [SubResource("W10G1"), SubResource("W10G2")]
+
+[sub_resource type="Resource" id="Wave11"]
+script = ExtResource("2")
+WaveNumber = 11
+Groups = [SubResource("W11G1"), SubResource("W11G2")]
+
+[sub_resource type="Resource" id="Wave12"]
+script = ExtResource("2")
+WaveNumber = 12
+Groups = [SubResource("W12G1"), SubResource("W12G2"), SubResource("W12G3")]
+
+[resource]
+script = ExtResource("1")
+Waves = [SubResource("Wave1"), SubResource("Wave2"), SubResource("Wave3"), SubResource("Wave4"), SubResource("Wave5"), SubResource("Wave6"), SubResource("Wave7"), SubResource("Wave8"), SubResource("Wave9"), SubResource("Wave10"), SubResource("Wave11"), SubResource("Wave12")]

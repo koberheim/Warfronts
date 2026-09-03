@@ -4,6 +4,7 @@ using FrontsOfWar.Core;
 using FrontsOfWar.Economy;
 using FrontsOfWar.Enemies;
 using FrontsOfWar.Map;
+using FrontsOfWar.Towers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,12 +12,10 @@ namespace FrontsOfWar.UI.Panels;
 
 // The post-mortem panel (GDD §12.9, §19 prompt 21) — "the game's teaching
 // system." Simplified vs. the full spec: shows leaks, damage dealt by type,
-// and unspent resources, plus the one suggestion rule GDD gives as its
-// worked example (armor leaked heavily + low AP damage share → suggest AP
-// towers). Doesn't yet identify "most/least effective tower by damage-per-
-// Supply" — that needs per-tower damage attribution, deferred (see
-// docs/PROGRESS.md). Currently triggers only on defeat (DefenseLineDepleted)
-// since there's no victory/mission-complete flow yet — that's M3.
+// unspent resources, tower effectiveness, and the one suggestion rule GDD
+// gives as its worked example (armor leaked heavily + low AP damage share →
+// suggest AP). Currently triggers only on defeat (DefenseLineDepleted) since
+// there's no victory/mission-complete flow yet — that's M3.
 public partial class PostMortemPanel : CanvasLayer
 {
     [Export] public NodePath MissionPath;
@@ -28,6 +27,8 @@ public partial class PostMortemPanel : CanvasLayer
     private readonly Dictionary<string, int> _leaksByEnemyId = new();
     private readonly Dictionary<string, ArmorClass> _armorClassByEnemyId = new();
     private readonly Dictionary<DamageType, float> _damageByType = new();
+    private readonly Dictionary<string, float> _damageByTower = new();
+    private readonly Dictionary<string, int> _investedByTower = new();
 
     public override void _Ready()
     {
@@ -58,7 +59,15 @@ public partial class PostMortemPanel : CanvasLayer
     }
 
     private void OnEnemyDamaged(EnemyDamagedEvent evt)
-        => _damageByType[evt.DamageType] = _damageByType.GetValueOrDefault(evt.DamageType) + evt.DamageDealt;
+    {
+        _damageByType[evt.DamageType] = _damageByType.GetValueOrDefault(evt.DamageType) + evt.DamageDealt;
+        if (evt.Source == null) return;
+
+        string id = evt.Source.SourceId;
+        _damageByTower[id] = _damageByTower.GetValueOrDefault(id) + evt.DamageDealt;
+        if (evt.Source is TowerController tower)
+            _investedByTower[id] = tower.Upgrade.TotalInvested;
+    }
 
     private void OnDefenseLineDepleted(DefenseLineDepletedEvent evt) => Show();
 
@@ -84,6 +93,22 @@ public partial class PostMortemPanel : CanvasLayer
             float dealt = _damageByType.GetValueOrDefault(type);
             float share = totalDamage > 0f ? dealt / totalDamage : 0f;
             lines.Add($"  {type}: {dealt:F0} ({share:P0})");
+        }
+
+        lines.Add("");
+        lines.Add("Tower effectiveness:");
+        if (_damageByTower.Count == 0)
+        {
+            lines.Add("  (no tower damage recorded)");
+        }
+        else
+        {
+            foreach (var entry in _damageByTower.OrderByDescending(pair => pair.Value))
+            {
+                int invested = _investedByTower.GetValueOrDefault(entry.Key);
+                float efficiency = invested > 0 ? entry.Value / invested : 0f;
+                lines.Add($"  {entry.Key}: {entry.Value:F0} damage ({efficiency:F2}/Supply)");
+            }
         }
 
         lines.Add("");

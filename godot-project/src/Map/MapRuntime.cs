@@ -28,6 +28,7 @@ public partial class MapRuntime : Node2D, ISimTickable
     // mission flow (briefing → build → wave sequence) exists yet — that's
     // M3 — so this is how M1/M2 test scenes exercise WaveRunner end to end.
     [Export] public WaveDefinition DebugStartWave;
+    [Export] public WaveSequence DebugWaveSequence;
     [Export] public bool DebugLogEvents;
 
     public PathNetwork Path { get; private set; }
@@ -88,7 +89,15 @@ public partial class MapRuntime : Node2D, ISimTickable
         }
 
         if (DebugLogEvents) _debugLogger = new DebugEventLogger();
-        if (DebugStartWave != null) Waves.StartWave(DebugStartWave);
+        if (DebugWaveSequence?.Waves is { Length: > 0 } sequence)
+        {
+            Waves.StartWave(sequence[0]);
+            for (int i = 1; i < sequence.Length; i++) Waves.QueueWaves(new[] { sequence[i] });
+        }
+        else if (DebugStartWave != null)
+        {
+            Waves.StartWave(DebugStartWave);
+        }
 
         GameLoop.Instance.CurrentMission = this;
     }

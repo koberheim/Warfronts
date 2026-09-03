@@ -1,4 +1,5 @@
 using Godot;
+using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
 using FrontsOfWar.Map;
 using FrontsOfWar.Towers;
@@ -6,11 +7,9 @@ using FrontsOfWar.Towers;
 namespace FrontsOfWar.UI.Panels;
 
 // The tower inspection panel (GDD §13.5, §19 prompt 20). Opens on
-// TowerClickedEvent, anchored near the tower. Simplified vs. the full spec:
-// shows live stats, upgrade (with branch choice at the fork), and sell —
-// does not yet show "Strong vs / Weak vs" icon rows or lifetime
-// damage-per-Supply (that needs damage-source attribution threaded through
-// the combat pipeline, deferred — see docs/PROGRESS.md).
+// TowerClickedEvent, anchored near the tower. Uses prototype glyph rows for
+// Strong vs / Weak vs and live lifetime damage-per-Supply attribution while
+// the project still uses placeholder art.
 public partial class TowerInspectionPanel : CanvasLayer
 {
     [Export] public NodePath MissionPath;
@@ -89,7 +88,10 @@ public partial class TowerInspectionPanel : CanvasLayer
         _statsLabel.Text =
             $"Damage: {stats.DamagePerShot:F0} {_selected.Definition.DamageType}\n" +
             $"Rate of fire: {stats.RateOfFirePerSec:F2}/s\n" +
-            $"Range: {stats.RangeTiles:F1} tiles";
+            $"Range: {stats.RangeTiles:F1} tiles\n" +
+            $"{MatchupRows(_selected.Definition.DamageType)}\n" +
+            $"Lifetime damage: {_selected.LifetimeDamage:F0}\n" +
+            $"Damage / Supply: {DamagePerSupply(_selected):F2}";
 
         if (_selected.Upgrade.CanUpgrade)
         {
@@ -127,4 +129,18 @@ public partial class TowerInspectionPanel : CanvasLayer
         _selected.QueueFree();
         Close();
     }
+
+    private static float DamagePerSupply(TowerController tower)
+        => tower.Upgrade.TotalInvested > 0
+            ? tower.LifetimeDamage / tower.Upgrade.TotalInvested
+            : 0f;
+
+    private static string MatchupRows(DamageType damageType) => damageType switch
+    {
+        DamageType.SmallArms => "Strong vs: [cloth] Soft\nWeak vs: [shield] Armored, Heavy",
+        DamageType.Explosive => "Strong vs: [half-shield] Hardened\nWeak vs: [double-shield] Heavy",
+        DamageType.ArmorPiercing => "Strong vs: [shield] Armored, Heavy\nWeak vs: [cloth] Soft",
+        DamageType.AntiAir => "Strong vs: [wing] Air\nWeak vs: [ground] Ground",
+        _ => "Strong vs: —\nWeak vs: —",
+    };
 }

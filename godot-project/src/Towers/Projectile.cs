@@ -1,5 +1,6 @@
 using Godot;
 using FrontsOfWar.Combat;
+using FrontsOfWar.Enemies;
 
 namespace FrontsOfWar.Towers;
 
@@ -14,6 +15,7 @@ public partial class Projectile : Node2D
     private float _damage;
     private float _blastRadiusPixels;
     private float _hitTolerancePixels;
+    private IDamageSource _source;
 
     private Vector2 _startPoint;
     private Vector2 _impactPoint;
@@ -23,13 +25,15 @@ public partial class Projectile : Node2D
     public bool IsDone { get; private set; }
 
     public void Launch(ITargetable target, float damage, DamageType damageType,
-                        float speedPixelsPerSec, float blastRadiusPixels, Vector2 origin)
+                        float speedPixelsPerSec, float blastRadiusPixels, Vector2 origin,
+                        IDamageSource source = null)
     {
         _target = target;
         _damage = damage;
         _damageType = damageType;
         _blastRadiusPixels = blastRadiusPixels;
         _hitTolerancePixels = 24f;
+        _source = source;
 
         _startPoint = origin;
         GlobalPosition = origin;
@@ -48,12 +52,14 @@ public partial class Projectile : Node2D
     // a fixed ground point, not a live unit — no interception math needed,
     // and always resolves as an area hit (see ResolveImpact's blast branch).
     public void LaunchAtPoint(Vector2 impactPoint, float damage, DamageType damageType,
-                               float speedPixelsPerSec, float blastRadiusPixels, Vector2 origin)
+                               float speedPixelsPerSec, float blastRadiusPixels, Vector2 origin,
+                               IDamageSource source = null)
     {
         _target = null;
         _damage = damage;
         _damageType = damageType;
         _blastRadiusPixels = blastRadiusPixels;
+        _source = source;
 
         _startPoint = origin;
         _impactPoint = impactPoint;
@@ -89,12 +95,20 @@ public partial class Projectile : Node2D
         if (_blastRadiusPixels > 0f)
         {
             foreach (var hit in grid.QueryRadius(_impactPoint, _blastRadiusPixels))
-                hit.ApplyDamage(_damage, _damageType);
+            {
+                if (hit is EnemyController enemy)
+                    enemy.ApplyDamage(_damage, _damageType, _source);
+                else
+                    hit.ApplyDamage(_damage, _damageType);
+            }
         }
         else if (_target != null && _target.IsAlive
                  && _target.GlobalPosition.DistanceSquaredTo(_impactPoint) <= _hitTolerancePixels * _hitTolerancePixels)
         {
-            _target.ApplyDamage(_damage, _damageType);
+            if (_target is EnemyController enemy)
+                enemy.ApplyDamage(_damage, _damageType, _source);
+            else
+                _target.ApplyDamage(_damage, _damageType);
         }
         // Otherwise: a clean miss — the target dodged out of the predicted
         // impact point before the shell arrived.

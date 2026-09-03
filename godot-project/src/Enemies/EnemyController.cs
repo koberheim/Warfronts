@@ -57,6 +57,9 @@ public partial class EnemyController : Node2D, ITargetable
     // hit counts as "Spotted" (+25% damage, GDD §5.5) is this enemy's own
     // status, not something the attacker passes in.
     public void ApplyDamage(float baseDamage, DamageType type)
+        => ApplyDamage(baseDamage, type, null);
+
+    public void ApplyDamage(float baseDamage, DamageType type, IDamageSource source)
     {
         if (!IsAlive) return;
 
@@ -64,7 +67,7 @@ public partial class EnemyController : Node2D, ITargetable
         float dealt = DamageResolver.ResolveDamage(baseDamage, type, Definition.ArmorClass, Status.IsSpotted, DamageTable.Default);
         _currentHp = Mathf.Max(0f, _currentHp - dealt);
 
-        EventBus.Instance?.Publish(new EnemyDamagedEvent(this, dealt, multiplier, type));
+        EventBus.Instance?.Publish(new EnemyDamagedEvent(this, dealt, multiplier, type, source));
 
         if (_currentHp <= 0f)
             EventBus.Instance?.Publish(new EnemyKilledEvent(this, Definition.Bounty));

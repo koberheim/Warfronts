@@ -7,7 +7,6 @@
 [ext_resource type="Resource" path="res://assets/data/towers/t4_anti_tank_gun.tres" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_automatic_gun.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_anti_tank_gun.tscn" id="7"]
-[ext_resource type="Resource" path="res://assets/data/missions/test_wave_01.tres" id="8"]
 [ext_resource type="Script" path="res://src/UI/Hud/HudController.cs" id="9"]
 [ext_resource type="Script" path="res://src/UI/Hud/WavePreviewPanel.cs" id="10"]
 [ext_resource type="Script" path="res://src/UI/Panels/TowerInspectionPanel.cs" id="11"]
@@ -17,6 +16,7 @@
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_command_post.tscn" id="15"]
 [ext_resource type="Resource" path="res://assets/data/towers/t3_field_mortar.tres" id="16"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_field_mortar.tscn" id="17"]
+[ext_resource type="Resource" path="res://assets/data/missions/m2_wave_sequence.tres" id="18"]
 
 [sub_resource type="Curve2D" id="Curve2D_1"]
 _data = {
@@ -30,7 +30,7 @@ EnemyContainerPath = NodePath("EnemyContainer")
 ProjectileContainerPath = NodePath("ProjectileContainer")
 TowerContainerPath = NodePath("TowerContainer")
 CommandPostContainerPath = NodePath("CommandPostContainer")
-DebugStartWave = ExtResource("8")
+DebugWaveSequence = ExtResource("18")
 DebugLogEvents = true
 
 [node name="PathNetwork" type="Node2D" parent="."]

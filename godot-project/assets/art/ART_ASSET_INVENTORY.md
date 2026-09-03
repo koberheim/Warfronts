@@ -28,6 +28,13 @@ These are review images, not yet connected to scenes or considered
 production-ready. They deliberately contain no nation-specific units,
 enemy silhouettes, people, real insignia, political symbols, or gore.
 
+### Direction review note
+
+The user has confirmed that all ten images are successful art-direction
+references. Their individual statuses remain `REVIEW`: some may be promoted
+to runtime map/UI assets after placement and readability checks, while others
+may remain palette, material, composition, or style references only.
+
 ## Placeholder-art plumbing
 
 The complete family-level pathway map is maintained in

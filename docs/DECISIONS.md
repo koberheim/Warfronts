@@ -557,6 +557,18 @@ revisited — worth preserving before it's lost to editing history.
   enemy review boundary intact.
 - **Status:** Active.
 
+### D39 - The initial ten art images are direction-approved, not runtime-approved
+- **Decided by:** User
+- **Date:** 2026-09-03
+- **Decision:** Treat all ten generated art images as successful art-direction
+  references. Keep each image's asset status at `REVIEW` until its specific
+  gameplay/UI placement, native scale, readability, and replacement role are
+  confirmed. Some may remain references rather than ship as runtime assets.
+- **Rationale:** The images establish a visual north star without forcing
+  every generated composition into a role it may not fit. This preserves the
+  art acceptance gates and the placeholder-first workflow.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

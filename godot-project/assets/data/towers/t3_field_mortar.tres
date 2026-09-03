@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/projectiles/projectile_mortar_shell.tscn" id="3"]
+
+[sub_resource type="Resource" id="StatBlock_L1"]
+script = ExtResource("2")
+Cost = 150
+DamagePerShot = 30.0
+RateOfFirePerSec = 0.4
+RangeTiles = 8.0
+MinRangeTiles = 2.0
+BlastRadiusTiles = 1.6
+TurnRateSeconds = 1.2
+
+[resource]
+script = ExtResource("1")
+Id = "t3_field_mortar"
+Archetype = 2
+DisplayName = "Field Mortar"
+DamageType = 1
+DefaultTargeting = 5
+Levels = [SubResource("StatBlock_L1")]
+ProjectileScene = ExtResource("3")
+ProjectileSpeedTilesPerSec = 6.0
+GroundOnly = true
+AirOnly = false

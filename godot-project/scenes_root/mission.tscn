@@ -15,6 +15,8 @@
 [ext_resource type="Script" path="res://src/UI/DamageNumberSpawner.cs" id="13"]
 [ext_resource type="Resource" path="res://assets/data/towers/t9_command_post.tres" id="14"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_command_post.tscn" id="15"]
+[ext_resource type="Resource" path="res://assets/data/towers/t3_field_mortar.tres" id="16"]
+[ext_resource type="PackedScene" path="res://scenes/towers/tower_field_mortar.tscn" id="17"]
 
 [sub_resource type="Curve2D" id="Curve2D_1"]
 _data = {
@@ -51,6 +53,10 @@ Definition = ExtResource("4")
 [node name="Tower2" parent="TowerContainer" instance=ExtResource("7")]
 position = Vector2(400, 250)
 Definition = ExtResource("5")
+
+[node name="Tower3" parent="TowerContainer" instance=ExtResource("17")]
+position = Vector2(560, 350)
+Definition = ExtResource("16")
 
 [node name="CommandPostContainer" type="Node2D" parent="."]
 

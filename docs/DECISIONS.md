@@ -394,6 +394,18 @@ revisited — worth preserving before it's lost to editing history.
   language pass.
 - **Status:** Active.
 
+### D27 - T3 mortar is added to the reusable mission smoke scene
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-02
+- **Decision:** Add the GDD-specified T3 Field Mortar as a data resource,
+  pooled mortar-shell scene, and placed tower in `scenes_root/mission.tscn`.
+  Point-targeted fire events are logged as ground-point events rather than
+  assuming every tower shot has a live unit target.
+- **Rationale:** M2 prompt 15 requires T3's densest-cluster path to be
+  exercised, and the existing debug logger had an invalid single-target
+  assumption that became visible as soon as the mortar was placed.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

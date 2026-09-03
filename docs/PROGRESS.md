@@ -63,14 +63,11 @@ for the mission scene.
 15. [x] T3 Field Mortar / T9 Command Post support systems: densest-cluster
     point-targeting (T3) and non-stacking aura + CP generation (T9) are both
     implemented and wired into a live test scene (one Command Post next to
-    the machine gun). Verified: the full 25-second smoke run has zero
-    errors with the aura active. **Not yet separately verified:** the
-    aura's exact numeric effect (+12% range / +8% rate of fire) — the
-    smoke run confirms nothing broke, not that the bonus is precisely
-    right; that needs a targeted check, noted as a near-term follow-up.
-    T3 itself has no placed instance in the test scene yet (no mortar
-    projectile/data asset authored) — the densest-cluster targeting code
-    path is implemented but unexercised.
+    the machine gun and mortar). Verified: the smoke run includes mortar
+    ground-point fire with zero gameplay exceptions, and `CoreTests` checks
+    the exact +12% range / +8% rate-of-fire aura. The mortar uses authored
+    T3 data and a pooled mortar-shell scene; its full arc/miss behavior still
+    needs a dedicated gameplay check.
 16. [x] `StatusController` (Suppressed, Spotted) with the 4-second
     non-refreshing cap. Wired into `EnemyController` (movement speed
     penalty, Spotted damage bonus) and `TowerController` (a parallel

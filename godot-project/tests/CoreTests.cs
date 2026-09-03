@@ -3,6 +3,7 @@ using Chickensoft.GoDotTest;
 using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
+using FrontsOfWar.Towers;
 
 namespace FrontsOfWar.Tests;
 
@@ -92,6 +93,41 @@ public class CoreTests : TestClass
             RequireApproximately(first.NextFloat(), second.NextFloat(), "Seeded float sequence");
             Require(first.NextBool() == second.NextBool(), "Seeded boolean sequence");
         }
+    }
+
+    [Test]
+    public void CommandPostAuraAppliesExactBonuses()
+    {
+        var towerDefinition = new TowerDefinition
+        {
+            Levels = new[] { new TowerStatBlock { Cost = 100, RangeTiles = 5f, RateOfFirePerSec = 1f } },
+        };
+        var postDefinition = new TowerDefinition
+        {
+            Levels = new[]
+            {
+                new TowerStatBlock
+                {
+                    AuraRadiusTiles = 6f,
+                    AuraRangeBonusPercent = 0.12f,
+                    AuraRateOfFireBonusPercent = 0.08f,
+                },
+            },
+        };
+        var tower = new TowerController { Definition = towerDefinition, Position = Vector2.Zero };
+        var post = new CommandPostController { Definition = postDefinition, Position = new Vector2(3f * 32f, 0f) };
+        var towers = new TowerManager();
+
+        tower._Ready();
+        post._Ready();
+        towers.Register(tower);
+        post.ApplyAuraTo(towers, 32f);
+
+        RequireApproximately(1.12f, tower.AuraRangeMultiplier, "Command Post range aura");
+        RequireApproximately(1.08f, tower.AuraRateOfFireMultiplier, "Command Post rate-of-fire aura");
+
+        tower.Free();
+        post.Free();
     }
 
     private readonly struct TestEvent

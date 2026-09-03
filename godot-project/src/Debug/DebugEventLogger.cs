@@ -41,7 +41,11 @@ public class DebugEventLogger : IDisposable
     private void OnWaveSpawningComplete(WaveSpawningCompleteEvent e) => GD.Print($"[wave] {e.WaveNumber} spawning complete");
     private void OnEnemyKilled(EnemyKilledEvent e) => GD.Print($"[kill] {e.Enemy.Definition.Id} bounty={e.Bounty}");
     private void OnEnemyLeaked(EnemyLeakedEvent e) => GD.Print($"[leak] {e.Enemy.Definition.Id} cost={e.LeakCost}");
-    private void OnTowerFired(TowerFiredEvent e) => GD.Print($"[fire] {e.Tower.Definition.Id} -> target hp={e.Target.CurrentHp:F1}");
+    private void OnTowerFired(TowerFiredEvent e)
+    {
+        string target = e.Target == null ? "ground point" : $"target hp={e.Target.CurrentHp:F1}";
+        GD.Print($"[fire] {e.Tower.Definition.Id} -> {target}");
+    }
     private void OnSupplyChanged(SupplyChangedEvent e) => GD.Print($"[supply] {e.NewBalance} (Δ{e.Delta:+0;-0})");
     private void OnDefenseLineChanged(DefenseLineChangedEvent e) => GD.Print($"[defense-line] {e.NewIntegrity} (Δ{e.Delta:+0;-0})");
     private void OnDefenseLineDepleted(DefenseLineDepletedEvent e) => GD.Print("[defense-line] DEPLETED");

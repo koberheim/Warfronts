@@ -27,6 +27,13 @@ public partial class TowerDefinition : Resource
     [Export] public bool GroundOnly = true;
     [Export] public bool AirOnly;
 
+    // Mirrors EnemyDefinition.ControllerScene (Claude decision, see
+    // docs/DECISIONS.md) — the scene TowerPlacementService instantiates when
+    // the player places this archetype on a build pad. Null means the
+    // archetype isn't buildable through the build bar (T8 Minefield is
+    // free-placement on the path instead, GDD §7.5).
+    [Export] public PackedScene ControllerScene;
+
     // Covers only L1–L2 (pre-fork). L3–L4 come from whichever TowerBranch
     // was chosen — see TowerUpgradeController.CurrentStats().
     public TowerStatBlock PreForkStatsForLevel(int level) => Levels[Mathf.Clamp(level - 1, 0, Levels.Length - 1)];

@@ -109,6 +109,40 @@ Definition = ExtResource("14")
 [node name="BuildPad1" parent="." instance=ExtResource("3")]
 position = Vector2(550, 300)
 
+[node name="BuildPad2" parent="." instance=ExtResource("3")]
+position = Vector2(160, 460)
+
+[node name="BuildPad3" parent="." instance=ExtResource("3")]
+position = Vector2(340, 460)
+
+[node name="BuildPad4" parent="." instance=ExtResource("3")]
+position = Vector2(130, 330)
+Tag = 2
+
+[node name="BuildPad5" parent="." instance=ExtResource("3")]
+position = Vector2(350, 320)
+Tag = 1
+
+[node name="BuildPad6" parent="." instance=ExtResource("3")]
+position = Vector2(470, 320)
+
+[node name="BuildPad7" parent="." instance=ExtResource("3")]
+position = Vector2(330, 340)
+Tag = 2
+
+[node name="BuildPad8" parent="." instance=ExtResource("3")]
+position = Vector2(480, 190)
+
+[node name="BuildPad9" parent="." instance=ExtResource("3")]
+position = Vector2(620, 190)
+Tag = 1
+
+[node name="BuildPad10" parent="." instance=ExtResource("3")]
+position = Vector2(700, 190)
+
+[node name="BuildPad11" parent="." instance=ExtResource("3")]
+position = Vector2(650, 330)
+
 [node name="DamageNumberSpawner" type="Node2D" parent="."]
 script = ExtResource("13")
 

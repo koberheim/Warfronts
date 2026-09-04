@@ -105,7 +105,12 @@ public partial class TowerInspectionPanel : CanvasLayer
             _upgradeButton.Disabled = true;
         }
 
-        _sellButton.Text = $"Sell ({_selected.Upgrade.SellRefund()})";
+        // Universal sell rule (GDD §6): towers may be sold any time except
+        // while Suppressed.
+        _sellButton.Text = _selected.IsSuppressed
+            ? "Sell (suppressed)"
+            : $"Sell ({_selected.Upgrade.SellRefund()})";
+        _sellButton.Disabled = _selected.IsSuppressed;
     }
 
     private void OnUpgradePressed()
@@ -121,11 +126,12 @@ public partial class TowerInspectionPanel : CanvasLayer
 
     private void OnSellPressed()
     {
-        if (_selected == null) return;
+        if (_selected == null || _selected.IsSuppressed) return;
 
         int refund = _selected.Sell();
         _mission.Supply.Credit(refund);
         _mission.Towers.Unregister(_selected);
+        _mission.Placement?.ReleasePad(_selected);
         _selected.QueueFree();
         Close();
     }

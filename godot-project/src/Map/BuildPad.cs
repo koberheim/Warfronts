@@ -15,6 +15,7 @@ public partial class BuildPad : Node2D
 
     private Area2D _hoverArea;
     private CanvasItem _highlight;
+    private bool _buildModeGlow;
 
     public override void _Ready()
     {
@@ -43,6 +44,17 @@ public partial class BuildPad : Node2D
 
     public void SetOccupied(bool occupied) => IsOccupied = occupied;
 
+    // Toggled by the build bar (GDD §13.4: "build pads glow when the build
+    // menu is open") for every unoccupied pad while a tower is selected.
+    // Reuses the same Highlight node as mouse hover — the two never conflict
+    // because hover-out only turns the highlight back off if build mode
+    // isn't also asking for it.
+    public void SetBuildModeGlow(bool active)
+    {
+        _buildModeGlow = active;
+        if (_highlight != null) _highlight.Visible = active || IsHovered;
+    }
+
     private void OnMouseEntered()
     {
         IsHovered = true;
@@ -53,7 +65,7 @@ public partial class BuildPad : Node2D
     private void OnMouseExited()
     {
         IsHovered = false;
-        if (_highlight != null) _highlight.Visible = false;
+        if (_highlight != null) _highlight.Visible = _buildModeGlow;
         EventBus.Instance?.Publish(new BuildPadHoverChangedEvent(this, false));
     }
 

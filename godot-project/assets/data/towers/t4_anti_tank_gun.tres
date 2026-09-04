@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=5 format=3]
+[gd_resource type="Resource" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
 [ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/projectiles/projectile_at_shell.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/towers/tower_anti_tank_gun.tscn" id="4"]
 
 [sub_resource type="Resource" id="StatBlock_L1"]
 script = ExtResource("2")
@@ -26,3 +27,4 @@ ProjectileScene = ExtResource("3")
 ProjectileSpeedTilesPerSec = 30.0
 GroundOnly = true
 AirOnly = false
+ControllerScene = ExtResource("4")

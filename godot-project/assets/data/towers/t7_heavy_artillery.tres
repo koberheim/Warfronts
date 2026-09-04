@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=11 format=3]
+[gd_resource type="Resource" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
 [ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
 [ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/projectiles/projectile_mortar_shell.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/towers/tower_heavy_artillery.tscn" id="5"]
 
 [sub_resource type="Resource" id="L1"]
 script = ExtResource("2")
@@ -97,3 +98,4 @@ BranchB = SubResource("Rocket")
 ProjectileScene = ExtResource("4")
 ProjectileSpeedTilesPerSec = 6.0
 GroundOnly = true
+ControllerScene = ExtResource("5")

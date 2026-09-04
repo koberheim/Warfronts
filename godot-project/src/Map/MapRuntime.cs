@@ -53,6 +53,7 @@ public partial class MapRuntime : Node2D, ISimTickable
     public SignatureManager Signatures { get; } = new();
     public MinefieldManager Minefields { get; } = new();
     public SeededRandom Random { get; private set; }
+    public TowerPlacementService Placement { get; private set; }
 
     private SpatialGrid _spatialGrid;
     private DebugEventLogger _debugLogger;
@@ -95,23 +96,34 @@ public partial class MapRuntime : Node2D, ISimTickable
         // self-registering in its own _Ready(), because Godot calls
         // children's _Ready() before their parent's — a tower under this
         // node would run before GameLoop.CurrentMission is even set.
+        Node towerContainer = null;
         if (TowerContainerPath != null)
         {
-            var towerContainer = GetNodeOrNull<Node>(TowerContainerPath);
+            towerContainer = GetNodeOrNull<Node>(TowerContainerPath);
             if (towerContainer != null)
                 foreach (var child in towerContainer.GetChildren())
                     if (child is TowerController tower)
                         Towers.Register(tower);
         }
 
+        Node commandPostContainer = null;
         if (CommandPostContainerPath != null)
         {
-            var cpContainer = GetNodeOrNull<Node>(CommandPostContainerPath);
-            if (cpContainer != null)
-                foreach (var child in cpContainer.GetChildren())
+            commandPostContainer = GetNodeOrNull<Node>(CommandPostContainerPath);
+            if (commandPostContainer != null)
+                foreach (var child in commandPostContainer.GetChildren())
                     if (child is CommandPostController post)
                         CommandPosts.Register(post);
         }
+
+        // Built here (not lazily) so it's ready before the HUD's build bar
+        // reads it in its own _Ready() — see D21 in docs/DECISIONS.md on
+        // child-before-parent ordering. Falls back to this mission root for
+        // either container so a test/mission scene without a dedicated
+        // CommandPostContainer can still place T9 (matches the
+        // FriendlyContainerPath fallback above).
+        Placement = new TowerPlacementService(
+            towerContainer ?? this, commandPostContainer ?? this, Supply, Towers, CommandPosts);
 
         if (ArsenalPath != null)
         {

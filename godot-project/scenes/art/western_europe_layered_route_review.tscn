@@ -17,7 +17,7 @@ offset_left = 22.0
 offset_top = 14.0
 offset_right = 1120.0
 offset_bottom = 42.0
-text = "WESTERN EUROPE LAYERED ROUTE  /  SOCKET REVIEW"
+text = "WESTERN EUROPE ROUTE GEOMETRY  /  ENGINEERING PROOF"
 theme_override_font_sizes/font_size = 20
 
 [node name="Instruction" type="Label" parent="."]
@@ -25,14 +25,14 @@ offset_left = 22.0
 offset_top = 43.0
 offset_right = 1120.0
 offset_bottom = 72.0
-text = "Ground texture is separate from route geometry. Mixed neighboring topologies are checked for matching edge sockets."
+text = "Technical proof only: brown geometry is a placeholder route layer, not final painterly art. Mixed neighboring topologies are checked for matching edge sockets."
 
 [node name="AuditLabel" type="Label" parent="."]
 offset_left = 22.0
 offset_top = 78.0
 offset_right = 600.0
 offset_bottom = 102.0
-text = "ADJACENCY AUDIT  /  checking..."
+text = "ADJACENCY AUDIT  /  PASS  /  12 neighbor joins match"
 
 [node name="Base00" parent="." instance=ExtResource("1_slot")]
 position = Vector2(104, 184)
@@ -161,4 +161,4 @@ offset_left = 590.0
 offset_top = 138.0
 offset_right = 1110.0
 offset_bottom = 360.0
-text = "LAYERED ROUTE PROOF\n\nGreen: geographic ground texture\nBrown: shared gameplay shoulder\nDark brown: shared gameplay road\n\nThe road is no longer dependent\non painted terrain bands. The six\nreview topologies on the left are\nmixed deliberately to test joins."
+text = "ENGINEERING PROOF\n\nGreen: repeated ground test tile\nBrown: placeholder shoulder\nDark brown: placeholder road\n\nThis validates fixed-width route\ngeometry and matching sockets.\nIt is not the final art pass.\nThe painterly route material will\nbe added after this geometry gate."

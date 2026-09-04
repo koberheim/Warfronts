@@ -12,7 +12,7 @@ public partial class RouteAdjacencyAudit : Node
     [Export] public float CellSize = 160f;
     [Export] public NodePath StatusLabelPath = new("AuditLabel");
 
-    public override void _Ready() => CallDeferred(nameof(RunAudit));
+    public override void _Ready() => RunAudit();
 
     private void RunAudit()
     {

@@ -671,6 +671,103 @@ revisited — worth preserving before it's lost to editing history.
 
 ---
 
+### D46 - Headless detection uses DisplayServer, not an OS feature tag
+- **Decided by:** Claude under standing delegation
+- **Date:** 2026-09-03
+- **Context:** `Boot` routed headless launches straight into the mission and
+  `TutorialController` skipped its pause-and-highlight cards when
+  `OS.HasFeature("headless")` was true. Godot 4.7 has no `headless` feature
+  tag (verified with a throwaway `SceneTree` script: `has_feature` returned
+  false while `DisplayServer.get_name()` returned `headless`), so every
+  headless smoke run since M3 sat on the briefing screen or paused behind the
+  tutorial and printed nothing. The M4/M5 "smoke run" claims in
+  `docs/PROGRESS.md` were therefore not exercising the mission.
+- **Decision:** Detect headless mode with `DisplayServer.GetName() ==
+  "headless"` everywhere. The canonical smoke command is now
+  `godot --headless --path . --fixed-fps 60 --quit-after 5400` (90 simulated
+  seconds; `--fixed-fps` makes each frame advance one fixed step so the run
+  is deterministic and fast). A run must print zero error/exception lines and
+  at least one `[kill]` line.
+- **Status:** Active. Any future headless-only branch must use the same check.
+
+### D47 - Signature charge regeneration starts only after a charge is missing
+- **Decided by:** Claude under standing delegation
+- **Date:** 2026-09-03
+- **Context:** The M5 GoDotTest suite had never been run (the previous
+  session only had the non-.NET Godot binary). Running it on the Mono build
+  exposed two failures. `RafScrambleController` kept its regen timer at zero
+  while full, so the first tick after spending a charge immediately refunded
+  it; the GDD (§8.2.2) wants one charge per 22/18/14 s.
+- **Decision:** A regeneration cycle begins when a charge is first missing and
+  waits the full authored interval before granting. The second failure was a
+  test-isolation problem, not a gameplay bug: the minefield-vs-concealed check
+  registered the recon with the same `EnemyManager` as an earlier Escort whose
+  shield pool absorbed the blast (correct behaviour per §5.6). The test now
+  gives the recon its own manager. All 32 tests across the five suites pass
+  on the Mono build.
+- **Status:** Active.
+
+### D48 - Tower placement runs through a data-declared scene and a plain placement service
+- **Decided by:** Claude under standing delegation (implemented by a Sonnet
+  worker under the lead's brief)
+- **Date:** 2026-09-03
+- **Context:** Nothing consumed `BuildPadClickedEvent`; the mission ran only
+  on pre-placed grey-box towers, so the GDD §4.2 "full build/upgrade/sell
+  loop" was missing. Four archetypes (T2, T5, T6, T7) had data but no scene.
+- **Decision:**
+  - `TowerDefinition.ControllerScene` (mirroring `EnemyDefinition`) names the
+    scene the build bar instantiates; every archetype `.tres` declares it.
+    T8 Minefield leaves it null because §7.5 makes minefields free-placement
+    on path segments — that UI is still open.
+  - `TowerPlacementService` (plain C#, owned by `MapRuntime`) is the single
+    place that spends Supply, instantiates, registers (T9 goes to
+    `CommandPostManager`), marks the pad, and remembers the pad→tower link so
+    selling frees the pad. `BuildPad` stays a dumb presentation node.
+  - It writes `Position = pad.GlobalPosition` before the node enters the
+    tree, which is only correct while `TowerContainer`/`CommandPostContainer`
+    sit at the world origin (true of every scene today). A map that nests
+    those containers under a transformed node must convert first.
+  - The six-tower loadout lives in `MissionSession.Loadout` as resource paths
+    (static state must survive scene changes); the default is the GDD's
+    recommended US Mission 1 set. §13.3's drag-and-drop loadout screen is
+    still deferred.
+  - Build-bar layout (bottom-centre, x 340–720 at the default 1152×648
+    viewport) is a judgment call to clear the build-phase label and the
+    ability hotbar; revisit when the map-table frame UI lands.
+  - Known gap carried forward: `CommandPostController` publishes no click
+    event, so a placed Command Post cannot be inspected or sold yet.
+- **Status:** Active.
+
+### D49 - Data Validator scope and the first bug it caught
+- **Decided by:** Claude under standing delegation (implemented by a Sonnet
+  worker under the lead's brief)
+- **Date:** 2026-09-03
+- **Decision:** GDD §19 prompt 45 is implemented as a plain-C# validator
+  (`src/Debug/DataValidator*.cs`) with two front doors that call the same
+  function: the `addons/data_validator` editor menu item (Project ▸ Tools ▸
+  Validate Data) and `godot --headless --path . --validate-data`, which exits
+  1 on any error. `tools/Run-HeadlessChecks.ps1` chains build → every
+  GoDotTest suite (discovered by scanning `tests/`) → validator → the D46
+  smoke run, for manual pre-commit use (hook wiring is documented, never
+  auto-installed).
+  - Duplicate Ids are checked in one pooled namespace across tower, enemy,
+    nation, signature, arsenal, and friendly-unit definitions.
+  - `NationProfile.SignatureId` must resolve against the union of
+    `SignatureDefinition.Id` and `ArsenalDefinition.Id`.
+  - Missing L3/L4 branch data is a **warning** while the four VS towers are
+    still un-authored; it becomes an error once all nine archetypes carry
+    both branches (see D50).
+- **First catch:** `united_states.tres` pointed at `arsenal_of_democracy`
+  while the Arsenal resource's Id was `us_arsenal_of_democracy`. The Arsenal
+  side was renamed to `arsenal_of_democracy`, matching the un-prefixed ids of
+  the other five signatures. Nothing resolved the id at runtime yet, so the
+  bug was dormant.
+- **Side note:** a real editor scan surfaced a pre-existing
+  `InvalidCastException` in `BalanceDashboardDock.LoadProfiles()` during the
+  initial C# domain load (the Wave Editor already guards the same case with
+  a generic-Resource fallback). Open, low priority.
+- **Status:** Active.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

@@ -8,7 +8,7 @@
 
 [resource]
 script = ExtResource("1")
-Id = "us_arsenal_of_democracy"
+Id = "arsenal_of_democracy"
 DisplayName = "Arsenal of Democracy Factory"
 LevelCosts = PackedInt32Array(650, 423, 748)
 ProductionIntervals = PackedFloat32Array(14, 10, 7)

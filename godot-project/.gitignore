@@ -1,7 +1,7 @@
 # Godot 4+ specific ignores
 .godot/
 .mono/
-data_*/
+/data_*/
 
 # Godot-specific ignores
 .import/
@@ -13,7 +13,7 @@ export_presets.cfg
 
 # Mono-specific ignores
 .mono/
-data_*/
+/data_*/
 
 # System/tool-specific ignores
 .directory

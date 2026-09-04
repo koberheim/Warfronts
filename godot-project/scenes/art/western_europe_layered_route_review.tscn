@@ -1,0 +1,164 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/art/art_asset_slot.tscn" id="1_slot"]
+[ext_resource type="Script" path="res://src/Art/RouteTopologyLayer.cs" id="2_layer"]
+[ext_resource type="Script" path="res://src/Art/RouteAdjacencyAudit.cs" id="3_audit"]
+[ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_ne.tres" id="4_ne"]
+[ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_wn.tres" id="5_wn"]
+[ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_entry_n.tres" id="6_entry"]
+[ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_es.tres" id="7_es"]
+[ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_sw.tres" id="8_sw"]
+[ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_cross.tres" id="9_cross"]
+
+[node name="WesternEuropeLayeredRouteReview" type="Node2D"]
+
+[node name="Title" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 14.0
+offset_right = 1120.0
+offset_bottom = 42.0
+text = "WESTERN EUROPE LAYERED ROUTE  /  SOCKET REVIEW"
+theme_override_font_sizes/font_size = 20
+
+[node name="Instruction" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 43.0
+offset_right = 1120.0
+offset_bottom = 72.0
+text = "Ground texture is separate from route geometry. Mixed neighboring topologies are checked for matching edge sockets."
+
+[node name="AuditLabel" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 78.0
+offset_right = 600.0
+offset_bottom = 102.0
+text = "ADJACENCY AUDIT  /  checking..."
+
+[node name="Base00" parent="." instance=ExtResource("1_slot")]
+position = Vector2(104, 184)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base01" parent="." instance=ExtResource("1_slot")]
+position = Vector2(264, 184)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base02" parent="." instance=ExtResource("1_slot")]
+position = Vector2(424, 184)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base10" parent="." instance=ExtResource("1_slot")]
+position = Vector2(104, 344)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base11" parent="." instance=ExtResource("1_slot")]
+position = Vector2(264, 344)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base12" parent="." instance=ExtResource("1_slot")]
+position = Vector2(424, 344)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base20" parent="." instance=ExtResource("1_slot")]
+position = Vector2(104, 504)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base21" parent="." instance=ExtResource("1_slot")]
+position = Vector2(264, 504)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Base22" parent="." instance=ExtResource("1_slot")]
+position = Vector2(424, 504)
+scale = Vector2(0.12759, 0.12759)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+ShowPlaceholder = false
+
+[node name="Route00" type="Node2D" parent="."]
+position = Vector2(104, 184)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("4_ne")
+
+[node name="Route01" type="Node2D" parent="."]
+position = Vector2(264, 184)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("5_wn")
+
+[node name="Route02" type="Node2D" parent="."]
+position = Vector2(424, 184)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("6_entry")
+
+[node name="Route10" type="Node2D" parent="."]
+position = Vector2(104, 344)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("7_es")
+
+[node name="Route11" type="Node2D" parent="."]
+position = Vector2(264, 344)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("8_sw")
+
+[node name="Route12" type="Node2D" parent="."]
+position = Vector2(424, 344)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("7_es")
+
+[node name="Route20" type="Node2D" parent="."]
+position = Vector2(104, 504)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("4_ne")
+
+[node name="Route21" type="Node2D" parent="."]
+position = Vector2(264, 504)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("9_cross")
+
+[node name="Route22" type="Node2D" parent="."]
+position = Vector2(424, 504)
+scale = Vector2(0.15625, 0.15625)
+script = ExtResource("2_layer")
+Topology = ExtResource("9_cross")
+
+[node name="Audit" type="Node" parent="."]
+script = ExtResource("3_audit")
+CellSize = 160.0
+StatusLabelPath = NodePath("../AuditLabel")
+
+[node name="Legend" type="Label" parent="."]
+offset_left = 590.0
+offset_top = 138.0
+offset_right = 1110.0
+offset_bottom = 360.0
+text = "LAYERED ROUTE PROOF\n\nGreen: geographic ground texture\nBrown: shared gameplay shoulder\nDark brown: shared gameplay road\n\nThe road is no longer dependent\non painted terrain bands. The six\nreview topologies on the left are\nmixed deliberately to test joins."

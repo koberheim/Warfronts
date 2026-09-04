@@ -67,6 +67,13 @@ must show arbitrary neighboring combinations, not only a closed loop, and
 must keep route geometry separate from geographic texture before any route
 entry is promoted to `APPROVED`.
 
+That first layered proof is now wired in
+`scenes/art/western_europe_layered_route_review.tscn`. Its route topology
+socket masks are data resources under
+`assets/data/art/routes/western_europe/`, and `RouteAdjacencyAudit` checks every
+immediate neighbor in the mixed 3x3 sample. This scene is a geometry/material
+proof, not a replacement for the painterly v01 review board.
+
 ## Folder contract
 
 - `shared/` holds reusable build pads, route markers, transitions, decals,

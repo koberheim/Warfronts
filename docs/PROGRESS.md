@@ -259,6 +259,11 @@ is installed.
   that exact outer edge caps do not solve repeated interior bands. D44 now
   defines the production fix: shared route geometry/material layered over
   varied terrain, with fixed sockets and a soft interior handoff.
+- [x] Implemented the first D44 layered-route proof: reusable topology masks as
+  `.tres` data, a deterministic fixed-width route/shoulder renderer, and an
+  arbitrary mixed-neighbor 3x3 review scene with an audit of all 12 internal
+  joins. The proof passes the .NET build and headless Godot load; it is not yet
+  promoted to the live mission route.
 
 ---
 
@@ -271,8 +276,9 @@ by M6 doctrine and mode work.
 
 - **Immediate art review:** confirm the D44 layered-route direction. The
   current v01 closed-loop board remains a reference and should not be approved
-  as production route art; the next implementation step is a separate shared
-  route layer and an arbitrary-neighbor seam test before generating the
+  as production route art. The next implementation step is applying a shared
+  Western Europe painterly route material to the validated topology layer, then
+  reviewing it against the v01 terrain references before generating the
   remaining 445 prompted outputs.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.

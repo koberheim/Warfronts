@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=25 format=3]
 
 [ext_resource type="Script" path="res://src/Map/MapRuntime.cs" id="1"]
 [ext_resource type="Script" path="res://src/Map/PathNetwork.cs" id="2"]
@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" path="res://scenes/towers/arsenal_factory.tscn" id="21"]
 [ext_resource type="Script" path="res://src/UI/Flow/TutorialController.cs" id="22"]
 [ext_resource type="Resource" path="res://assets/data/map/air_corridor_default.tres" id="23"]
+[ext_resource type="PackedScene" path="res://scenes/art/art_asset_slot.tscn" id="24"]
 
 [sub_resource type="Curve2D" id="Curve2D_1"]
 _data = {
@@ -40,6 +41,33 @@ ArsenalPath = NodePath("ArsenalFactory")
 DebugWaveSequence = ExtResource("18")
 DebugLogEvents = true
 AirCorridor = ExtResource("23")
+
+[node name="ArtEnvironment" type="Node2D" parent="."]
+z_index = -10
+
+[node name="BocageGround" parent="ArtEnvironment" instance=ExtResource("24")]
+position = Vector2(450, 310)
+scale = Vector2(0.48, 0.48)
+AssetId = "review.ART-ENV-001"
+UseApprovedAsset = true
+
+[node name="Hedgerow" parent="ArtEnvironment" instance=ExtResource("24")]
+position = Vector2(470, 120)
+scale = Vector2(0.28, 0.28)
+AssetId = "review.ART-ENV-003"
+UseApprovedAsset = true
+
+[node name="Farmhouse" parent="ArtEnvironment" instance=ExtResource("24")]
+position = Vector2(760, 135)
+scale = Vector2(0.16, 0.16)
+AssetId = "review.ART-ENV-004"
+UseApprovedAsset = true
+
+[node name="FarmyardSupplies" parent="ArtEnvironment" instance=ExtResource("24")]
+position = Vector2(160, 145)
+scale = Vector2(0.13, 0.13)
+AssetId = "review.ART-ENV-005"
+UseApprovedAsset = true
 
 [node name="PathNetwork" type="Node2D" parent="."]
 script = ExtResource("2")

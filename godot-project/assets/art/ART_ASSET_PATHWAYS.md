@@ -24,6 +24,14 @@ The slot behavior is:
 Until that last step, the existing primitive visuals remain the gameplay
 default. This keeps review images from silently becoming production art.
 
+The approved command-table frame is wired into `scenes_root/briefing.tscn`.
+The approved Western Europe ground, hedgerow, farmhouse, and supply cluster
+are wired into the `ArtEnvironment` layer of `scenes_root/mission.tscn`.
+`scenes/art/terrain_adjacency_test.tscn` displays the six approved
+terrain/route images together for manual seam, path-continuity, and shoulder
+review. Different theaters are intentionally shown as test cases, not mixed
+into one production map.
+
 ## Folder contract
 
 - `shared/` holds reusable build pads, route markers, transitions, decals,

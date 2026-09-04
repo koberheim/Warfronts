@@ -226,7 +226,9 @@ is installed.
   `godot-project/assets/art/`, with theater, shared, miscellaneous, and
   explicitly held unit/enemy categories.
 - [x] Created the art inventory and generation log. Ten initial
-  theater/terrain/flavor/UI assets are generated and marked `REVIEW`.
+  theater/terrain/flavor/UI assets are generated; all ten are approved for
+  conditional integration, with terrain adjacency and UI layout checks still
+  required before placement.
 - [x] Deliberately held nation-specific units, enemies, enemy wrecks,
   national insignia, and tower/unit identity art pending implementation
   review, per the user's request.
@@ -240,6 +242,10 @@ is installed.
 - [x] Added reusable SVG placeholder templates, physical leaf-directory
   anchors, `ArtAssetSprite` replacement slots, and a representative
   placeholder gallery. Gameplay remains primitive-first until art is approved.
+- [x] Added the six-tile terrain adjacency review scene and wired the approved
+  command-table frame into briefing plus the selected Western Europe ground,
+  hedgerow, farmhouse, and supply art into the Bocage Crossroads environment
+  layer. Gameplay logic and primitive unit art remain unchanged.
 
 ---
 

@@ -567,7 +567,7 @@ revisited — worth preserving before it's lost to editing history.
 - **Rationale:** The images establish a visual north star without forcing
   every generated composition into a role it may not fit. This preserves the
   art acceptance gates and the placeholder-first workflow.
-- **Status:** Active.
+- **Status:** Superseded by D40.
 
 ### D40 - The initial art images are approved for conditional integration
 - **Decided by:** User
@@ -584,6 +584,21 @@ revisited — worth preserving before it's lost to editing history.
   map seams or ambiguous paths. The UI condition protects the frame's neutral
   center space and keeps it from being forced into an unsuitable battlefield
   role.
+- **Status:** Active.
+
+### D41 - Approved art enters presentation and Bocage environment layers
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Use the approved command-table frame in the briefing scene and
+  use the approved Western Europe ground, hedgerow, farmhouse, and farm-supply
+  cluster in the Bocage Crossroads environment layer. Keep terrain/route art
+  in a separate six-tile adjacency review scene and do not mix theaters in
+  the production mission. Keep gameplay units and tower logic primitive-first.
+- **Rationale:** This gives the selected art a real, reversible integration
+  point while respecting the user's terrain-connectivity condition and the
+  art spec's rule that routes remain readable. Separating the test board from
+  the mission avoids treating visually attractive but unvalidated cross-
+  theater joins as final map construction.
 - **Status:** Active.
 
 ---

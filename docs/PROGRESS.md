@@ -235,10 +235,11 @@ is installed.
 
 ## Post-M5 art plumbing
 
-- [x] Added the 47-entry family-level art catalog under
-  `godot-project/assets/data/art/`, with stable production directories,
-  filename patterns, statuses, and placeholder mappings for every active and
-  held inventory family.
+- [x] Added the 57-entry art catalog under
+  `godot-project/assets/data/art/`: stable family-level pathways for planned
+  art, exact entries for the ten original anchors and ten Western Europe
+  route-review assets, plus statuses and placeholder mappings for active and
+  held inventory families.
 - [x] Added reusable SVG placeholder templates, physical leaf-directory
   anchors, `ArtAssetSprite` replacement slots, and a representative
   placeholder gallery. Gameplay remains primitive-first until art is approved.
@@ -251,6 +252,11 @@ is installed.
   ten compatible route topologies and ten material transitions per theater,
   shared style/palette locks, and per-asset acceptance checks. Held tower,
   nation-unit, and enemy identity art remains intentionally unprompted.
+- [x] Generated and organized the ten-piece Western Europe sunken-lane route
+  family as 1024×1024 review candidates. Added catalog entries, opt-in review
+  loading, shared feathered edge caps, and a touching closed-loop review scene.
+  The family remains `REVIEW`; visible internal blends and gameplay-scale
+  readability require user approval before mission integration.
 
 ---
 
@@ -260,6 +266,11 @@ No design blockers. D17 is superseded by D25; M4 prompts 27–30 and M5
 prompts 31–38 are implemented, and the post-M5 art replacement plumbing is
 in place. The next work is a .NET-enabled Godot playtest/review pass followed
 by M6 doctrine and mode work.
+
+- **Immediate art review:** open
+  `scenes/art/western_europe_route_review.tscn` in the .NET Godot editor and
+  approve, reject, or request changes to the route family's edge blends before
+  generating the remaining 445 prompted outputs.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is the active

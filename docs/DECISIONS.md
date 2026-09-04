@@ -618,6 +618,22 @@ revisited — worth preserving before it's lost to editing history.
   separately generated assets without erasing regional differences.
 - **Status:** Active.
 
+### D43 - Generated route families use review-only loading and normalized edge caps
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Generate the Western Europe route family from five visual
+  anchors and derive rotational companions mechanically. Normalize every
+  connected edge with the same feathered cap: the outer 32 pixels are exact
+  matches, followed by a 128-pixel blend into each generated interior. Add an
+  explicit `AllowReviewAsset` opt-in to art slots and keep all ten entries at
+  `REVIEW` in a dedicated closed-loop inspection scene.
+- **Rationale:** Separate image generations produced useful painted interiors
+  but inconsistent route widths at tile boundaries. Shared edge caps make
+  adjacency deterministic without pretending the remaining internal blends
+  are production-approved. Review-only loading preserves the existing rule
+  that unapproved art cannot silently replace gameplay visuals.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

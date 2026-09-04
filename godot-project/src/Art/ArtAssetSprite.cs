@@ -10,6 +10,7 @@ public partial class ArtAssetSprite : Node2D
 {
     [Export] public string AssetId = "";
     [Export] public bool UseApprovedAsset;
+    [Export] public bool AllowReviewAsset;
     [Export] public bool ShowPlaceholder = true;
 
     private Sprite2D _sprite;
@@ -34,8 +35,10 @@ public partial class ArtAssetSprite : Node2D
             return;
         }
 
-        ResolvedPath = entry.ResolvePath(UseApprovedAsset);
-        if (!ShowPlaceholder && entry.Status != "APPROVED")
+        ResolvedPath = entry.ResolvePath(UseApprovedAsset, AllowReviewAsset);
+        var canShowProduction = entry.Status == "APPROVED" ||
+            (AllowReviewAsset && entry.Status == "REVIEW");
+        if (!ShowPlaceholder && !canShowProduction)
         {
             _sprite.Visible = false;
             return;

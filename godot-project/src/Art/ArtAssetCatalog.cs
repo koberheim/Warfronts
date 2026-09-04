@@ -54,9 +54,10 @@ public sealed class ArtAssetEntry
     [JsonPropertyName("states")] public List<string> States { get; set; } = new();
     [JsonPropertyName("target_count")] public string TargetCount { get; set; } = "";
 
-    public string ResolvePath(bool useApprovedAsset)
+    public string ResolvePath(bool useApprovedAsset, bool allowReviewAsset = false)
     {
-        if (useApprovedAsset && Status == "APPROVED" && !string.IsNullOrWhiteSpace(ProductionPath) &&
+        var canUseProduction = Status == "APPROVED" || (allowReviewAsset && Status == "REVIEW");
+        if (useApprovedAsset && canUseProduction && !string.IsNullOrWhiteSpace(ProductionPath) &&
             ResourceLoader.Exists(ProductionPath))
             return ProductionPath;
         return PlaceholderPath;

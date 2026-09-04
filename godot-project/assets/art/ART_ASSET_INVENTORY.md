@@ -37,13 +37,26 @@ path-continuity check before being placed as connected map tiles. ART-ENV-010
 is approved for command-table presentation UI such as menu, briefing, or
 mission select, pending layout and safe-center-space checks.
 
+## Western Europe route-family generation batch
+
+| IDs | Asset family | Status | Files | Review scene |
+|---|---|---|---|---|
+| WE-ROUTE-001–010 | Sunken-lane straight, corners, T-junctions, cross, and entry | REVIEW | `theaters/western_europe/terrain/route_sunken_lane_*_v01.png` | `scenes/art/western_europe_route_review.tscn` |
+
+All ten outputs are organized at 1024×1024. Rotated companions derive from
+the same straight, corner, and T-junction anchors, and every connected edge
+uses the same feathered socket cap with an exact shared outer band. They must
+pass the review scene's seam, internal-blend, route-width, and gameplay-scale
+checks before any entry becomes `APPROVED` or replaces mission terrain.
+
 ## Placeholder-art plumbing
 
-The complete family-level pathway map is maintained in
+The complete pathway map is maintained in
 `../data/art/art_asset_catalog.json`. Every inventory family has a stable
-production directory, filename pattern, placeholder type, and status. The
-placeholder SVGs live in `placeholders/` and are intentionally generic: they
-prove wiring and layout without being mistaken for approved art.
+production directory, filename pattern, placeholder type, and status;
+generated review files receive exact item-level entries. The placeholder SVGs
+live in `placeholders/` and are intentionally generic: they prove wiring and
+layout without being mistaken for approved art.
 
 Use `scenes/art/art_asset_slot.tscn` for any new scene art reference. Set its
 catalog `AssetId`; the slot resolves the placeholder by default and only

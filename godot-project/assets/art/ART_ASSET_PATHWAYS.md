@@ -3,8 +3,10 @@
 The machine-readable source of truth for art slots is
 `res://assets/data/art/art_asset_catalog.json`. It records each inventory
 family, its stable production directory, filename pattern, placeholder, and
-status. The catalog is intentionally family-level because the art design
-specification gives production ranges rather than one fixed file per variant.
+status. The catalog is family-level while work is only planned, because the
+art specification gives production ranges rather than one fixed file per
+variant. Generated review assets receive exact item-level entries so they can
+be inspected without changing a whole family's approval state.
 
 ## Runtime replacement path
 
@@ -31,6 +33,13 @@ are wired into the `ArtEnvironment` layer of `scenes_root/mission.tscn`.
 terrain/route images together for manual seam, path-continuity, and shoulder
 review. Different theaters are intentionally shown as test cases, not mixed
 into one production map.
+
+`scenes/art/western_europe_route_review.tscn` is the first same-theater
+production-family review board. It loads the ten `REVIEW` sunken-lane entries
+through `ArtAssetSprite.AllowReviewAsset`, displays eight in a touching closed
+loop, and shows the two T-junctions, crossroad, and entry separately. Review
+permission is opt-in and does not make review art available to normal mission
+slots.
 
 ## Generation prompt path
 

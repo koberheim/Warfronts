@@ -1,0 +1,178 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/art/art_asset_slot.tscn" id="1_slot"]
+
+[node name="WesternEuropeRouteReview" type="Node2D"]
+
+[node name="Title" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 14.0
+offset_right = 1120.0
+offset_bottom = 42.0
+text = "WESTERN EUROPE ROUTE FAMILY  /  REVIEW ONLY"
+theme_override_font_sizes/font_size = 20
+
+[node name="Instruction" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 43.0
+offset_right = 1120.0
+offset_bottom = 72.0
+text = "Inspect the closed loop for edge seams and the four samples for route clarity. These assets do not replace the mission route until approved."
+
+[node name="LoopLabel" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 82.0
+offset_right = 500.0
+offset_bottom = 106.0
+text = "3×3 closed-loop adjacency test"
+
+[node name="LoopES" parent="." instance=ExtResource("1_slot")]
+position = Vector2(104, 184)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-004"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="LoopEWTop" parent="." instance=ExtResource("1_slot")]
+position = Vector2(264, 184)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-002"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="LoopSW" parent="." instance=ExtResource("1_slot")]
+position = Vector2(424, 184)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-005"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="LoopNSLeft" parent="." instance=ExtResource("1_slot")]
+position = Vector2(104, 344)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-001"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="EmptyCenter" type="ColorRect" parent="."]
+offset_left = 184.0
+offset_top = 264.0
+offset_right = 344.0
+offset_bottom = 424.0
+color = Color(0.055, 0.064, 0.043, 1)
+mouse_filter = 2
+
+[node name="EmptyCenterLabel" type="Label" parent="."]
+offset_left = 206.0
+offset_top = 329.0
+offset_right = 322.0
+offset_bottom = 359.0
+text = "NO ROUTE"
+horizontal_alignment = 1
+
+[node name="LoopNSRight" parent="." instance=ExtResource("1_slot")]
+position = Vector2(424, 344)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-001"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="LoopNE" parent="." instance=ExtResource("1_slot")]
+position = Vector2(104, 504)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-003"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="LoopEWBottom" parent="." instance=ExtResource("1_slot")]
+position = Vector2(264, 504)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-002"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="LoopWN" parent="." instance=ExtResource("1_slot")]
+position = Vector2(424, 504)
+scale = Vector2(0.15625, 0.15625)
+AssetId = "review.WE-ROUTE-006"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="SamplesLabel" type="Label" parent="."]
+offset_left = 590.0
+offset_top = 82.0
+offset_right = 1090.0
+offset_bottom = 106.0
+text = "Junction and entry samples"
+
+[node name="SampleTNES" parent="." instance=ExtResource("1_slot")]
+position = Vector2(680, 202)
+scale = Vector2(0.14, 0.14)
+AssetId = "review.WE-ROUTE-007"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="SampleTESW" parent="." instance=ExtResource("1_slot")]
+position = Vector2(886, 202)
+scale = Vector2(0.14, 0.14)
+AssetId = "review.WE-ROUTE-008"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="SampleCross" parent="." instance=ExtResource("1_slot")]
+position = Vector2(680, 414)
+scale = Vector2(0.14, 0.14)
+AssetId = "review.WE-ROUTE-009"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="SampleEntry" parent="." instance=ExtResource("1_slot")]
+position = Vector2(886, 414)
+scale = Vector2(0.14, 0.14)
+AssetId = "review.WE-ROUTE-010"
+UseApprovedAsset = true
+AllowReviewAsset = true
+ShowPlaceholder = false
+
+[node name="TNESLabel" type="Label" parent="."]
+offset_left = 608.0
+offset_top = 278.0
+offset_right = 752.0
+offset_bottom = 302.0
+text = "T: N/E/S"
+horizontal_alignment = 1
+
+[node name="TESWLabel" type="Label" parent="."]
+offset_left = 814.0
+offset_top = 278.0
+offset_right = 958.0
+offset_bottom = 302.0
+text = "T: E/S/W"
+horizontal_alignment = 1
+
+[node name="CrossLabel" type="Label" parent="."]
+offset_left = 608.0
+offset_top = 490.0
+offset_right = 752.0
+offset_bottom = 514.0
+text = "CROSS"
+horizontal_alignment = 1
+
+[node name="EntryLabel" type="Label" parent="."]
+offset_left = 814.0
+offset_top = 490.0
+offset_right = 958.0
+offset_bottom = 514.0
+text = "NORTH ENTRY"
+horizontal_alignment = 1

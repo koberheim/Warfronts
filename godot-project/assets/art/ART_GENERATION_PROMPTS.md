@@ -622,6 +622,10 @@ mandatory.
 
 ## Western Europe sunken-lane route set
 
+Generation status: `WE-ROUTE-001` through `WE-ROUTE-010` exist as
+1024×1024 `REVIEW` candidates. Their outer socket bands are normalized for
+same-family adjacency; approval awaits the dedicated route-review scene.
+
 - **WE-ROUTE-001 — straight NS** — `theaters/western_europe/terrain/route_sunken_lane_ns_v01.png`
   Prompt: ROUTE TILE Western Europe sunken muddy lane with North and South sockets only, raised damp grassy banks, restrained wheel ruts, overcast light.
 - **WE-ROUTE-002 — straight EW** — `theaters/western_europe/terrain/route_sunken_lane_ew_v01.png`

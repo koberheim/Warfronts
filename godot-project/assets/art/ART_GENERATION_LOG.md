@@ -37,9 +37,24 @@ real or fictional political insignia, no propaganda, no gore.
 
 ## Production queue status
 
-No additional bitmap assets were generated while preparing the production
-queue. `ART_GENERATION_PROMPTS.md` now contains 460 numbered prompts covering
-the active inventory, including ten compatible route topologies and ten
-material transitions for each theater. Its 456 explicit image paths remain
-ungenerated unless already represented by one of the ten approved anchors
-above. Tower, nation-unit, and enemy identity prompts remain on hold.
+`ART_GENERATION_PROMPTS.md` contains 460 numbered prompts covering the active
+inventory, including ten compatible route topologies and ten material
+transitions for each theater. Tower, nation-unit, and enemy identity prompts
+remain on hold.
+
+### Western Europe route batch — 2026-09-03
+
+| IDs | Generated outputs | Status | Method |
+|---|---:|---|---|
+| WE-ROUTE-001–010 | 10 | REVIEW | Five built-in image-generation anchors/color passes; five deterministic rotations; all center-cropped to 1024×1024 and edge-normalized |
+
+The ten route files are stored under
+`theaters/western_europe/terrain/route_sunken_lane_*_v01.png`. The generator
+produced attractive topology interiors but inconsistent edge widths, so a
+shared feathered socket cap now gives every connected edge an identical outer
+32-pixel band. Some internal blending remains visible and requires user review
+in `scenes/art/western_europe_route_review.tscn` before approval.
+
+Queue coverage after this batch: 11 of 456 explicit image paths exist (the
+ten new route tiles plus the earlier Mediterranean rocky-wadi path); 445
+prompted output paths remain ungenerated.

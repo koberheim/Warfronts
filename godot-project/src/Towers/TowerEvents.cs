@@ -24,6 +24,14 @@ public readonly struct TowerClickedEvent
     public TowerClickedEvent(TowerController tower) => Tower = tower;
 }
 
+// Published when the player clicks a placed Command Post; T9 is a different
+// node type from TowerController, so it gets its own event (GDD §13.5).
+public readonly struct CommandPostClickedEvent
+{
+    public readonly CommandPostController Post;
+    public CommandPostClickedEvent(CommandPostController post) => Post = post;
+}
+
 public readonly struct TowerSoldEvent
 {
     public readonly TowerController Tower;

@@ -13,6 +13,7 @@ public class CommandPostManager
     public IReadOnlyList<CommandPostController> Posts => _posts;
 
     public void Register(CommandPostController post) => _posts.Add(post);
+    public void Unregister(CommandPostController post) => _posts.Remove(post);
 
     public void Tick(float tickDeltaSeconds, TowerManager towers, float tilePixelSize)
     {

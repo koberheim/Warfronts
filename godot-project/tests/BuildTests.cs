@@ -124,6 +124,29 @@ public class BuildTests : TestClass
         fixture.Dispose();
     }
 
+    [Test]
+    public void SellingAPlacedCommandPostFreesItsPadAndUnregistersIt()
+    {
+        var fixture = new Fixture(TestScene);
+        var pad = fixture.MakePad(new Vector2(200, 200));
+        var definition = GD.Load<TowerDefinition>("res://assets/data/towers/t9_command_post.tres");
+        int startBalance = fixture.Supply.Balance;
+
+        var post = (CommandPostController)fixture.Placement.TryPlace(definition, pad).PlacedInstance;
+        Require(fixture.CommandPosts.TotalCommandPointBonus() > 0, "a placed post contributes Command Points");
+
+        fixture.Supply.Credit(post.Upgrade.SellRefund());
+        fixture.CommandPosts.Unregister(post);
+        bool released = fixture.Placement.ReleasePad(post);
+
+        Require(released && !pad.IsOccupied, "selling a Command Post frees its pad");
+        Require(fixture.CommandPosts.Posts.Count == 0 && fixture.CommandPosts.TotalCommandPointBonus() == 0,
+            "an unregistered post no longer contributes Command Points");
+        Require(fixture.Supply.Balance == startBalance, "full refund inside the placement window");
+
+        fixture.Dispose();
+    }
+
     // Groups the real (non-fake) collaborators TowerPlacementService needs,
     // built fresh per test so Supply/pad-occupancy state never leaks between
     // cases.

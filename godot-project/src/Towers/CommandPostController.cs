@@ -24,6 +24,22 @@ public partial class CommandPostController : Node2D
     public override void _Ready()
     {
         Upgrade = new TowerUpgradeController(Definition, GameBalanceConfigAutoload.Config);
+        SetupClickArea();
+    }
+
+    // Same click target every combat tower builds for itself (see
+    // TowerController.SetupClickArea) so a placed post can be inspected,
+    // upgraded, and sold through the inspection panel (GDD §13.5).
+    private void SetupClickArea()
+    {
+        var area = new Area2D { InputPickable = true };
+        area.AddChild(new CollisionShape2D { Shape = new CircleShape2D { Radius = 18f } });
+        AddChild(area);
+        area.InputEvent += (viewport, @event, shapeIdx) =>
+        {
+            if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left })
+                EventBus.Instance?.Publish(new CommandPostClickedEvent(this));
+        };
     }
 
     public void SimTick(float tickDeltaSeconds) => Upgrade.Tick(tickDeltaSeconds);

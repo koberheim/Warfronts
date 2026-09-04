@@ -72,7 +72,9 @@ That first layered proof is now wired in
 socket masks are data resources under
 `assets/data/art/routes/western_europe/`, and `RouteAdjacencyAudit` checks every
 immediate neighbor in the mixed 3x3 sample. This scene is a geometry/material
-proof, not a replacement for the painterly v01 review board.
+proof using the shared review material at
+`shared/route_materials/western_europe/route_material_sunken_lane_v01.png`,
+not a replacement for the painterly v01 full-tile review board.
 
 ## Folder contract
 

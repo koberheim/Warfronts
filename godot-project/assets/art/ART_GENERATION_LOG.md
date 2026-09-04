@@ -57,6 +57,19 @@ files remain `REVIEW` references; production approval now requires the route
 to be assembled as a separate shared gameplay layer over varied terrain, as
 specified by D44.
 
+### Western Europe layered material — 2026-09-03
+
+| IDs | Generated outputs | Status | Method |
+|---|---:|---|---|
+| WE-MATERIAL-001 | 1 | REVIEW | Built-in image generation from the accepted Western Europe lane reference; deterministic checkerboard removal, crop, fixed-width normalization, and alpha-halo cleanup |
+
+The shared material is stored at
+`shared/route_materials/western_europe/route_material_sunken_lane_v01.png`.
+It is a transparent 352-pixel route corridor: 256 pixels of road core plus
+48 pixels of shoulder on each side. `RouteTopologyLayer` stretches it along
+the data-authored socket branches, so route continuation can cross tile edges
+without copying full terrain bands.
+
 Queue coverage after this batch: 11 of 456 explicit image paths exist (the
 ten new route tiles plus the earlier Mediterranean rocky-wadi path); 445
 prompted output paths remain ungenerated.

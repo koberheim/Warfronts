@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/art/art_asset_slot.tscn" id="1_slot"]
 [ext_resource type="Script" path="res://src/Art/RouteTopologyLayer.cs" id="2_layer"]
@@ -9,6 +9,7 @@
 [ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_es.tres" id="7_es"]
 [ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_sw.tres" id="8_sw"]
 [ext_resource type="Resource" path="res://assets/data/art/routes/western_europe/route_cross.tres" id="9_cross"]
+[ext_resource type="Texture2D" path="res://assets/art/shared/route_materials/western_europe/route_material_sunken_lane_v01.png" id="10_material"]
 
 [node name="WesternEuropeLayeredRouteReview" type="Node2D"]
 
@@ -102,54 +103,63 @@ position = Vector2(104, 184)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("4_ne")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route01" type="Node2D" parent="."]
 position = Vector2(264, 184)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("5_wn")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route02" type="Node2D" parent="."]
 position = Vector2(424, 184)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("6_entry")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route10" type="Node2D" parent="."]
 position = Vector2(104, 344)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("7_es")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route11" type="Node2D" parent="."]
 position = Vector2(264, 344)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("8_sw")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route12" type="Node2D" parent="."]
 position = Vector2(424, 344)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("7_es")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route20" type="Node2D" parent="."]
 position = Vector2(104, 504)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("4_ne")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route21" type="Node2D" parent="."]
 position = Vector2(264, 504)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("9_cross")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Route22" type="Node2D" parent="."]
 position = Vector2(424, 504)
 scale = Vector2(0.15625, 0.15625)
 script = ExtResource("2_layer")
 Topology = ExtResource("9_cross")
+RouteMaterial = ExtResource("10_material")
 
 [node name="Audit" type="Node" parent="."]
 script = ExtResource("3_audit")

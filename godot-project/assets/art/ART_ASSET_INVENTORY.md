@@ -49,6 +49,11 @@ uses the same feathered socket cap with an exact shared outer band. They must
 pass the review scene's seam, internal-blend, route-width, and gameplay-scale
 checks before any entry becomes `APPROVED` or replaces mission terrain.
 
+| WE-MATERIAL-001 | Shared Western Europe sunken-lane route material | REVIEW | `shared/route_materials/western_europe/route_material_sunken_lane_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+
+The shared material is a separate route-layer asset. It remains `REVIEW` until
+the layered proof is visually accepted over the Western Europe ground tile.
+
 ## Placeholder-art plumbing
 
 The complete pathway map is maintained in

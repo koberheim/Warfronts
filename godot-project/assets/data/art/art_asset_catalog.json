@@ -265,6 +265,19 @@
       "notes": "Generated color route-family entry/dead-end candidate with one normalized north socket."
     },
     {
+      "id": "review.WE-ROUTE-MATERIAL-001",
+      "name": "Western Europe shared sunken-lane route material",
+      "category": "shared/route_materials/western_europe",
+      "status": "REVIEW",
+      "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
+      "production_directory": "res://assets/art/shared/route_materials/western_europe",
+      "production_path": "res://assets/art/shared/route_materials/western_europe/route_material_sunken_lane_v01.png",
+      "filename_pattern": "route_material_sunken_lane_v{version}.png",
+      "native_size": [352, 1024],
+      "items": ["sunken_lane_route_material"],
+      "notes": "Review-only transparent shared material for the layered route proof; fixed 256 px road core plus 48 px shoulders per side."
+    },
+    {
       "id": "shared.build_pad.base_family",
       "name": "Build-pad base family",
       "category": "shared/build_pads",

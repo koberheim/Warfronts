@@ -617,6 +617,19 @@ inputs as references; do not invent new unit or tower art.
 
 ---
 
+# Layered route material prompt
+
+This supplemental material is used by the deterministic topology layer. It is
+not a full terrain tile and must not contain an opaque background plate.
+
+- **WE-MATERIAL-001 — Western Europe shared sunken-lane material** — `shared/route_materials/western_europe/route_material_sunken_lane_v01.png`
+  Prompt: CUTOUT transparent vertical route-material strip, Western Europe
+  damp sunken lane in the canonical painterly storybook style, fixed 256 px
+  muddy road core with 48 px painted shoulders on both sides, subtle parallel
+  wheel wear and restrained limestone flecks, continues cleanly off the top
+  and bottom edges, no curves or junctions, no terrain rectangle, no hard
+  alpha halo, no objects, units, vehicles, text, symbols, or watermark.
+
 # Theater route topology prompts
 
 Generate all ten route topologies for each theater from the same accepted

@@ -11,15 +11,20 @@ public partial class RouteTopologyLayer : Node2D
     [Export] public float TileSize = 1024f;
     [Export] public float RouteWidth = 256f;
     [Export] public float ShoulderWidth = 48f;
+    [Export] public Texture2D RouteMaterial;
     [Export] public Color ShoulderColor = new(0.27f, 0.23f, 0.16f, 0.90f);
     [Export] public Color RouteColor = new(0.34f, 0.28f, 0.20f, 0.96f);
     [Export] public Color WearColor = new(0.20f, 0.17f, 0.12f, 0.55f);
 
-    public override void _Ready() => QueueRedraw();
+    public override void _Ready()
+    {
+        BuildTexturedBranches();
+        QueueRedraw();
+    }
 
     public override void _Draw()
     {
-        if (Topology == null) return;
+        if (Topology == null || RouteMaterial != null) return;
 
         var center = new Vector2(TileSize * 0.5f, TileSize * 0.5f);
         DrawBranch(center, new Vector2(TileSize * 0.5f, 0f), Topology.North);
@@ -34,6 +39,39 @@ public partial class RouteTopologyLayer : Node2D
     }
 
     public bool HasSocket(string edge) => Topology != null && Topology.HasSocket(edge);
+
+    private void BuildTexturedBranches()
+    {
+        if (Topology == null || RouteMaterial == null) return;
+        foreach (var child in GetChildren())
+            if (child is Line2D line) line.QueueFree();
+
+        var center = new Vector2(TileSize * 0.5f, TileSize * 0.5f);
+        AddTexturedBranch("N", center, new Vector2(TileSize * 0.5f, 0f));
+        AddTexturedBranch("E", center, new Vector2(TileSize, TileSize * 0.5f));
+        AddTexturedBranch("S", center, new Vector2(TileSize * 0.5f, TileSize));
+        AddTexturedBranch("W", center, new Vector2(0f, TileSize * 0.5f));
+    }
+
+    private void AddTexturedBranch(string edge, Vector2 start, Vector2 end)
+    {
+        if (!HasSocket(edge)) return;
+
+        var line = new Line2D
+        {
+            Name = $"RouteMaterial{edge}",
+            Width = RouteWidth + ShoulderWidth * 2f,
+            Texture = RouteMaterial,
+            TextureMode = Line2D.LineTextureMode.Stretch,
+            JointMode = Line2D.LineJointMode.Round,
+            BeginCapMode = Line2D.LineCapMode.Round,
+            EndCapMode = Line2D.LineCapMode.Round,
+            Antialiased = true,
+            Points = new[] { start, end }
+        };
+        line.TextureRepeat = CanvasItem.TextureRepeatEnum.Disabled;
+        AddChild(line);
+    }
 
     private void DrawBranch(Vector2 start, Vector2 end, bool enabled)
     {

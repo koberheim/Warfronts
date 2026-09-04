@@ -68,8 +68,22 @@ The shared material is stored at
 It is a transparent 352-pixel route corridor: 256 pixels of road core plus
 48 pixels of shoulder on each side. `RouteTopologyLayer` stretches it along
 the data-authored socket branches, so route continuation can cross tile edges
-without copying full terrain bands.
+without copying full terrain bands. It is now a temporary fallback only;
+topology-specific overlays are the intended final route treatment.
 
-Queue coverage after this batch: 11 of 456 explicit image paths exist (the
-ten new route tiles plus the earlier Mediterranean rocky-wadi path); 445
-prompted output paths remain ungenerated.
+### Western Europe topology overlay proof — 2026-09-03
+
+| ID | Generated outputs | Status | Method |
+|---|---:|---|---|
+| WE-ROUTE-OVERLAY-NE-001 | 1 | REVIEW | Built-in image generation from the accepted lane reference; targeted socket correction; deterministic fit to a transparent 1024×1024 canvas and alpha cleanup |
+
+The first overlay is stored at
+`theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png`.
+It is a single painted North/East corner with centered edge sockets. It is
+wired into the first cell of the layered proof; the other cells deliberately
+remain on the shared-material fallback until their own topology art exists.
+
+Queue coverage after this batch: 12 of 456 explicit image paths exist (the
+ten new route tiles, the earlier Mediterranean rocky-wadi path, and the first
+topology overlay); 444 prompted output paths remain ungenerated. The shared
+route material is tracked as a separate supplemental proof asset.

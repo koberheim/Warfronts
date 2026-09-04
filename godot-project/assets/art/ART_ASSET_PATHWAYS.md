@@ -55,26 +55,27 @@ before generating decorative variants; never connect tiles from different
 theater families in a production map.
 
 The production route is layered: terrain tiles provide geographic variation,
-while a shared same-theater route material and topology mask provide the
-gameplay road and shoulders. This keeps socket width, edge position, and the
-interior handoff stable without stamping the same rectangular band across
-every tile.
+while a topology-specific transparent route overlay provides the gameplay road
+and shoulders. Every overlay keeps the same centered edge socket contract, but
+owns its own interior curve or junction so the meeting point is painted once.
+The shared same-theater route material remains only as a temporary fallback for
+topologies that have not received their unique overlay yet.
 
 The current Western Europe route board is intentionally a review of full-tile
-route references. Its edge caps prove socket placement, but the visible
-interior bands are not acceptable for approval. A future route implementation
-must show arbitrary neighboring combinations, not only a closed loop, and
-must keep route geometry separate from geographic texture before any route
-entry is promoted to `APPROVED`.
+route references. Its edge caps prove socket placement, but the repeated
+interior bands are not acceptable for approval. The layered proof now includes
+the first unique North/East corner overlay; the remaining topologies must use
+the same per-tile approach before any route entry is promoted to `APPROVED`.
 
 That first layered proof is now wired in
 `scenes/art/western_europe_layered_route_review.tscn`. Its route topology
 socket masks are data resources under
 `assets/data/art/routes/western_europe/`, and `RouteAdjacencyAudit` checks every
 immediate neighbor in the mixed 3x3 sample. This scene is a geometry/material
-proof using the shared review material at
-`shared/route_materials/western_europe/route_material_sunken_lane_v01.png`,
-not a replacement for the painterly v01 full-tile review board.
+proof using the first topology-specific painterly overlay at
+`theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png`;
+the shared review material remains a fallback on the other cells. It is not a
+replacement for the painterly v01 full-tile review board.
 
 ## Folder contract
 

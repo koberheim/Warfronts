@@ -630,6 +630,25 @@ not a full terrain tile and must not contain an opaque background plate.
   and bottom edges, no curves or junctions, no terrain rectangle, no hard
   alpha halo, no objects, units, vehicles, text, symbols, or watermark.
 
+# D45 topology-specific route overlay proof
+
+These overlays supersede the shared strip for corners and junctions. Generate
+one complete painted route per topology. Keep the edge socket contract exactly
+the same, but paint the interior curve or junction once as a coherent surface;
+do not assemble it from overlapping straight branches. Output a genuine
+transparent 1024x1024 PNG with no terrain background plate.
+
+- **WE-ROUTE-OVERLAY-NE-001 - unique North/East corner** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png`
+  Prompt: TRANSPARENT full-tile Western Europe damp sunken-lane route overlay
+  in the canonical painterly storybook style. Paint one unique broad North-East
+  quarter-turn as a single continuous route surface with varied wheel ruts,
+  damp soil, stones, and irregular grassy raised banks. North and East sockets
+  are centered on their edges with a 256 px road core and 48 px shoulder on
+  each side; each arm enters perpendicular to the edge for at least 160 px
+  before curving. Keep the outermost 32 px of connected edges simple. Genuine
+  transparent alpha outside the route and shoulder; no checkerboard, terrain
+  plate, frame, text, people, units, vehicles, insignia, or watermark.
+
 # Theater route topology prompts
 
 Generate all ten route topologies for each theater from the same accepted

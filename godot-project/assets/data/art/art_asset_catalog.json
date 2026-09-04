@@ -278,6 +278,19 @@
       "notes": "Review-only transparent shared material for the layered route proof; fixed 256 px road core plus 48 px shoulders per side."
     },
     {
+      "id": "review.WE-ROUTE-OVERLAY-NE-001",
+      "name": "Western Europe unique sunken-lane north/east corner overlay",
+      "category": "theaters/western_europe/terrain/route_overlays",
+      "status": "REVIEW",
+      "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
+      "production_directory": "res://assets/art/theaters/western_europe/terrain/route_overlays",
+      "production_path": "res://assets/art/theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png",
+      "filename_pattern": "route_overlay_sunken_lane_{topology}_v{version}.png",
+      "native_size": [1024, 1024],
+      "items": ["unique_route_corner_ne"],
+      "notes": "First D45 topology-specific painterly overlay. Transparent route and shoulder with centered North/East sockets; review before expanding the family."
+    },
+    {
       "id": "shared.build_pad.base_family",
       "name": "Build-pad base family",
       "category": "shared/build_pads",

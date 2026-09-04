@@ -265,9 +265,12 @@ is installed.
   joins. The proof passes the .NET build and headless Godot load; it is not yet
   promoted to the live mission route.
 - [x] Generated and wired the first shared painterly Western Europe route
-  material as a transparent 352x1024 review asset. It is stretched only along
-  the validated route branches, with the route intentionally continuing beyond
-  tile edges; the material remains `REVIEW` pending visual inspection.
+  material as a transparent 352x1024 review asset. It remains a fallback only;
+  the desired route art is now one unique transparent overlay per topology.
+- [x] Generated and wired the first D45 topology-specific painterly overlay:
+  a coherent Western Europe North/East corner with centered sockets on a
+  transparent 1024x1024 canvas. It remains `REVIEW`; the remaining topologies
+  still use the shared-material fallback until their own overlays exist.
 
 ---
 
@@ -278,12 +281,12 @@ prompts 31–38 are implemented, and the post-M5 art replacement plumbing is
 in place. The next work is a .NET-enabled Godot playtest/review pass followed
 by M6 doctrine and mode work.
 
-- **Immediate art review:** confirm the D44 layered-route direction. The
-  current v01 closed-loop board remains a reference and should not be approved
-  as production route art. The next implementation step is applying a shared
-  Western Europe painterly route material to the validated topology layer in
-  the new layered review scene, then reviewing it against the v01 terrain
-  references before generating the remaining 445 prompted outputs.
+- **Immediate art review:** review the D45 layered-route direction in the
+  updated proof scene. The current v01 closed-loop board remains a reference
+  and should not be approved as production route art. The next implementation
+  step is generating the remaining Western Europe topology overlays (WN, ES,
+  SW, T-junctions, cross, and entry), then checking their mixed-neighbor joins
+  and gameplay-scale readability before expanding to other theaters.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is the active

@@ -651,6 +651,22 @@ revisited — worth preserving before it's lost to editing history.
   or shoulder continuity. Separating gameplay geometry from geographic art
   protects the GDD's sacred Layer 1 map geometry and permits arbitrary tile
   adjacency without erasing theater-specific texture and variation.
+- **Status:** Superseded by D45.
+
+### D45 - Each route topology gets unique interior art behind a shared socket contract
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Keep route gameplay geometry separate from terrain, but give
+  each route topology its own painted transparent overlay: straight, corner,
+  T-junction, cross, and entry. Only the edge socket contract is shared: the
+  centered 256-pixel road opening, fixed road/shoulder widths, and a short
+  clean continuation beyond the tile border. Topology-specific art owns the
+  interior curve and junction so meeting points are painted once rather than
+  produced by overlapping repeated straight strips.
+- **Rationale:** The shared branch material made corners and intersections
+  visibly patterned and created unattractive overlaps. Unique topology art
+  preserves the user's desired variation while the data-authored socket mask
+  still guarantees map-independent adjacency.
 - **Status:** Active.
 
 ---

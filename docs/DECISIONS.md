@@ -569,6 +569,23 @@ revisited — worth preserving before it's lost to editing history.
   art acceptance gates and the placeholder-first workflow.
 - **Status:** Active.
 
+### D40 - The initial art images are approved for conditional integration
+- **Decided by:** User
+- **Date:** 2026-09-03
+- **Decision:** Approve the jungle foliage, Western Europe farmhouse, Western
+  Europe farm-supply cluster, all six terrain/route images, and the commander
+  map-table frame for their catalogued roles. Terrain and route images must
+  pass an adjacency and path-continuity check with neighboring tiles before
+  placement. The map-table frame is approved for command-table presentation
+  UI such as menu, briefing, or mission select, pending layout checks.
+- **Rationale:** These assets fit the established art direction and are
+  promising production candidates. The adjacency condition protects route
+  readability and prevents attractive standalone tiles from creating broken
+  map seams or ambiguous paths. The UI condition protects the frame's neutral
+  center space and keeps it from being forced into an unsuitable battlefield
+  role.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

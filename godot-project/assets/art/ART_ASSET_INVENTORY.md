@@ -13,16 +13,16 @@ not new gameplay scope.
 
 | ID | Asset | Theater/kit | Status | File |
 |---|---|---|---|---|
-| ART-ENV-001 | Bocage grass and field ground tile | Western Europe / terrain | REVIEW | `theaters/western_europe/terrain/ground_bocage_grass_v01.png` |
-| ART-ENV-002 | Sunken muddy lane segment | Western Europe / terrain | REVIEW | `theaters/western_europe/terrain/road_sunken_lane_v01.png` |
-| ART-ENV-003 | Sculpted hedgerow wall segment | Western Europe / terrain | REVIEW | `theaters/western_europe/terrain/hedgerow_wall_v01.png` |
-| ART-ENV-004 | Norman-style stone farmhouse | Western Europe / architecture | REVIEW | `theaters/western_europe/architecture/hero_stone_farmhouse_v01.png` |
-| ART-ENV-005 | Farmyard supply prop cluster | Western Europe / flavor | REVIEW | `theaters/western_europe/flavor/cluster_farmyard_supply_v01.png` |
-| ART-ENV-006 | Mediterranean rocky wadi ground tile | Mediterranean / terrain | REVIEW | `theaters/mediterranean/terrain/ground_rocky_wadi_v01.png` |
-| ART-ENV-007 | Eastern Europe snowbound road tile | Eastern Europe / terrain | REVIEW | `theaters/eastern_europe/terrain/road_snowbound_forest_v01.png` |
-| ART-ENV-008 | Pacific jungle mud-track tile | Pacific / terrain | REVIEW | `theaters/pacific/terrain/road_jungle_mud_track_v01.png` |
-| ART-ENV-009 | Pacific jungle foliage cluster | Pacific / vegetation | REVIEW | `theaters/pacific/vegetation/cluster_jungle_foliage_v01.png` |
-| ART-ENV-010 | Commander’s painted map-table frame | Shared / UI | REVIEW | `shared/ui/commander_map_table_frame_v01.png` |
+| ART-ENV-001 | Bocage grass and field ground tile | Western Europe / terrain | APPROVED | `theaters/western_europe/terrain/ground_bocage_grass_v01.png` |
+| ART-ENV-002 | Sunken muddy lane segment | Western Europe / terrain | APPROVED | `theaters/western_europe/terrain/road_sunken_lane_v01.png` |
+| ART-ENV-003 | Sculpted hedgerow wall segment | Western Europe / terrain | APPROVED | `theaters/western_europe/terrain/hedgerow_wall_v01.png` |
+| ART-ENV-004 | Norman-style stone farmhouse | Western Europe / architecture | APPROVED | `theaters/western_europe/architecture/hero_stone_farmhouse_v01.png` |
+| ART-ENV-005 | Farmyard supply prop cluster | Western Europe / flavor | APPROVED | `theaters/western_europe/flavor/cluster_farmyard_supply_v01.png` |
+| ART-ENV-006 | Mediterranean rocky wadi ground tile | Mediterranean / terrain | APPROVED | `theaters/mediterranean/terrain/ground_rocky_wadi_v01.png` |
+| ART-ENV-007 | Eastern Europe snowbound road tile | Eastern Europe / terrain | APPROVED | `theaters/eastern_europe/terrain/road_snowbound_forest_v01.png` |
+| ART-ENV-008 | Pacific jungle mud-track tile | Pacific / terrain | APPROVED | `theaters/pacific/terrain/road_jungle_mud_track_v01.png` |
+| ART-ENV-009 | Pacific jungle foliage cluster | Pacific / vegetation | APPROVED | `theaters/pacific/vegetation/cluster_jungle_foliage_v01.png` |
+| ART-ENV-010 | Commander’s painted map-table frame | Shared / UI | APPROVED | `shared/ui/commander_map_table_frame_v01.png` |
 
 These are review images, not yet connected to scenes or considered
 production-ready. They deliberately contain no nation-specific units,
@@ -31,9 +31,11 @@ enemy silhouettes, people, real insignia, political symbols, or gore.
 ### Direction review note
 
 The user has confirmed that all ten images are successful art-direction
-references. Their individual statuses remain `REVIEW`: some may be promoted
-to runtime map/UI assets after placement and readability checks, while others
-may remain palette, material, composition, or style references only.
+references. ART-ENV-001 through ART-ENV-009 are approved for their described
+environmental roles. The terrain/route assets still require an adjacency and
+path-continuity check before being placed as connected map tiles. ART-ENV-010
+is approved for command-table presentation UI such as menu, briefing, or
+mission select, pending layout and safe-center-space checks.
 
 ## Placeholder-art plumbing
 

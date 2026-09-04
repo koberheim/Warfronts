@@ -8,131 +8,131 @@
       "id": "review.ART-ENV-001",
       "name": "Bocage grass and field ground tile",
       "category": "theaters/western_europe/terrain",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
       "production_directory": "res://assets/art/theaters/western_europe/terrain",
       "production_path": "res://assets/art/theaters/western_europe/terrain/ground_bocage_grass_v01.png",
       "filename_pattern": "ground_bocage_grass_v{version}.png",
       "native_size": [128, 128],
       "items": ["bocage_grass_field_ground"],
-      "notes": "Initial generated review image ART-ENV-001; not approved for runtime."
+      "notes": "Approved for terrain-tile integration. Validate edge continuity with adjacent road/ground tiles before use."
     },
     {
       "id": "review.ART-ENV-002",
       "name": "Sunken muddy lane segment",
       "category": "theaters/western_europe/terrain",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
       "production_directory": "res://assets/art/theaters/western_europe/terrain",
       "production_path": "res://assets/art/theaters/western_europe/terrain/road_sunken_lane_v01.png",
       "filename_pattern": "road_sunken_lane_v{version}.png",
       "native_size": [128, 128],
       "items": ["sunken_muddy_lane"],
-      "notes": "Initial generated review image ART-ENV-002; not approved for runtime."
+      "notes": "Approved for route integration. Validate both ends against adjacent route and shoulder tiles before use."
     },
     {
       "id": "review.ART-ENV-003",
       "name": "Sculpted hedgerow wall segment",
       "category": "theaters/western_europe/terrain",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
       "production_directory": "res://assets/art/theaters/western_europe/terrain",
       "production_path": "res://assets/art/theaters/western_europe/terrain/hedgerow_wall_v01.png",
       "filename_pattern": "hedgerow_wall_v{version}.png",
       "native_size": [128, 128],
       "items": ["hedgerow_wall"],
-      "notes": "Initial generated review image ART-ENV-003; not approved for runtime."
+      "notes": "Approved for map-edge/hedgerow integration. Validate joins and route clearance before use."
     },
     {
       "id": "review.ART-ENV-004",
       "name": "Norman-style stone farmhouse",
       "category": "theaters/western_europe/architecture",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/architecture_slot.svg",
       "production_directory": "res://assets/art/theaters/western_europe/architecture",
       "production_path": "res://assets/art/theaters/western_europe/architecture/hero_stone_farmhouse_v01.png",
       "filename_pattern": "hero_stone_farmhouse_v{version}.png",
       "native_size": [256, 256],
       "items": ["norman_stone_farmhouse"],
-      "notes": "Initial generated review image ART-ENV-004; not approved for runtime."
+      "notes": "Approved for Western Europe map integration. Keep as a hero/location asset and validate footprint clearance."
     },
     {
       "id": "review.ART-ENV-005",
       "name": "Farmyard supply prop cluster",
       "category": "theaters/western_europe/flavor",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/prop_slot.svg",
       "production_directory": "res://assets/art/theaters/western_europe/flavor",
       "production_path": "res://assets/art/theaters/western_europe/flavor/cluster_farmyard_supply_v01.png",
       "filename_pattern": "cluster_farmyard_supply_v{version}.png",
       "native_size": [192, 192],
       "items": ["farmyard_supply_cluster"],
-      "notes": "Initial generated review image ART-ENV-005; not approved for runtime."
+      "notes": "Approved for Western Europe environmental storytelling and supply-cluster integration."
     },
     {
       "id": "review.ART-ENV-006",
       "name": "Mediterranean rocky wadi ground tile",
       "category": "theaters/mediterranean/terrain",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
       "production_directory": "res://assets/art/theaters/mediterranean/terrain",
       "production_path": "res://assets/art/theaters/mediterranean/terrain/ground_rocky_wadi_v01.png",
       "filename_pattern": "ground_rocky_wadi_v{version}.png",
       "native_size": [128, 128],
       "items": ["rocky_wadi_ground"],
-      "notes": "Initial generated review image ART-ENV-006; not approved for runtime."
+      "notes": "Approved for Mediterranean terrain-tile integration. Validate edge continuity with adjacent road/ground tiles before use."
     },
     {
       "id": "review.ART-ENV-007",
       "name": "Eastern Europe snowbound road tile",
       "category": "theaters/eastern_europe/terrain",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
       "production_directory": "res://assets/art/theaters/eastern_europe/terrain",
       "production_path": "res://assets/art/theaters/eastern_europe/terrain/road_snowbound_forest_v01.png",
       "filename_pattern": "road_snowbound_forest_v{version}.png",
       "native_size": [128, 128],
       "items": ["snowbound_forest_road"],
-      "notes": "Initial generated review image ART-ENV-007; not approved for runtime."
+      "notes": "Approved for Eastern Europe terrain-tile integration. Validate edge continuity with adjacent road/ground tiles before use."
     },
     {
       "id": "review.ART-ENV-008",
       "name": "Pacific jungle mud-track tile",
       "category": "theaters/pacific/terrain",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/terrain_slot.svg",
       "production_directory": "res://assets/art/theaters/pacific/terrain",
       "production_path": "res://assets/art/theaters/pacific/terrain/road_jungle_mud_track_v01.png",
       "filename_pattern": "road_jungle_mud_track_v{version}.png",
       "native_size": [128, 128],
       "items": ["jungle_mud_track"],
-      "notes": "Initial generated review image ART-ENV-008; not approved for runtime."
+      "notes": "Approved for Pacific route-tile integration. Validate both ends against adjacent route and shoulder tiles before use."
     },
     {
       "id": "review.ART-ENV-009",
       "name": "Pacific jungle foliage cluster",
       "category": "theaters/pacific/vegetation",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/vegetation_slot.svg",
       "production_directory": "res://assets/art/theaters/pacific/vegetation",
       "production_path": "res://assets/art/theaters/pacific/vegetation/cluster_jungle_foliage_v01.png",
       "filename_pattern": "cluster_jungle_foliage_v{version}.png",
       "native_size": [192, 192],
       "items": ["jungle_foliage_cluster"],
-      "notes": "Initial generated review image ART-ENV-009; not approved for runtime."
+      "notes": "Approved for Pacific vegetation integration. Preserve route readability and avoid infantry-like silhouettes at gameplay scale."
     },
     {
       "id": "review.ART-ENV-010",
       "name": "Commander's painted map-table frame",
       "category": "shared/ui",
-      "status": "REVIEW",
+      "status": "APPROVED",
       "placeholder": "res://assets/art/placeholders/ui_slot.svg",
       "production_directory": "res://assets/art/shared/ui",
       "production_path": "res://assets/art/shared/ui/commander_map_table_frame_v01.png",
       "filename_pattern": "commander_map_table_frame_v{version}.png",
       "native_size": [1920, 1080],
       "items": ["commander_map_table_frame"],
-      "notes": "Initial generated review image ART-ENV-010; not approved for runtime."
+      "notes": "Approved for command-table presentation UI such as menu, briefing, or mission select. Validate layout and safe center space before integration."
     },
     {
       "id": "shared.build_pad.base_family",

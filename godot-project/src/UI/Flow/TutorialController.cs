@@ -32,7 +32,7 @@ public partial class TutorialController : CanvasLayer
 
     private void StartIfNeeded()
     {
-        if (MissionSession.TutorialCompleted || OS.HasFeature("headless")) return;
+        if (MissionSession.TutorialCompleted || DisplayServer.GetName() == "headless") return;
         _panel = new PanelContainer { Position = new Vector2(220, 180), CustomMinimumSize = new Vector2(600, 170) };
         AddChild(_panel);
         var box = new VBoxContainer();

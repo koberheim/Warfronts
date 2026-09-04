@@ -37,7 +37,7 @@ public partial class Boot : Node2D
 
     private void StartMission()
     {
-        if (OS.HasFeature("headless"))
+        if (DisplayServer.GetName() == "headless")
         {
             GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
             return;

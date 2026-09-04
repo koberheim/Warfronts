@@ -104,8 +104,10 @@ public class M5SignatureAirTests : TestClass
         shielded.ApplyDamage(200f, DamageType.ArmorPiercing);
         Require(shielded.CurrentHp == shieldedHp && escort.ShieldRemaining < 400f, "E10 shield absorbs allied damage");
 
+        // A separate manager keeps the earlier Escort's shield pool from
+        // absorbing the blast; this step only proves the mine/concealment rule.
         var recon = NewEnemy("e11_recon_concealed", path);
-        manager.Register(recon);
+        new EnemyManager().Register(recon);
         Require(recon.IsConcealed && !recon.IsRevealed, "E11 starts concealed to towers");
         var minefield = new MinefieldController { Definition = GD.Load<TowerDefinition>("res://assets/data/towers/t8_minefield.tres") };
         TestScene.AddChild(minefield);

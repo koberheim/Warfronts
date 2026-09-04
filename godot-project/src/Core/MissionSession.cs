@@ -1,16 +1,36 @@
 using System.Collections.Generic;
+using FrontsOfWar.Meta;
 
 namespace FrontsOfWar.Core;
 
-// Small process-local handoff between the mission scenes. Persistent campaign
-// saves are intentionally later milestone work; this only supports the M3
-// briefing/loadout/results loop and one-click retry.
+// Small process-local handoff between the mission scenes. Persistent
+// campaign progress (GDD §19 prompt 41) is read from/written to
+// ProfileStore.Current around this — MissionSession itself stays the
+// per-run scratch state for the M3 briefing/loadout/results loop and
+// one-click retry.
 public static class MissionSession
 {
     public static bool TutorialCompleted { get; set; }
     public static bool LastMissionWon { get; set; }
     public static string LastMissionTitle { get; set; } = "Bocage Crossroads";
     public static int LastWaveReached { get; set; }
+
+    // The mission currently being briefed/played (GDD §19 prompt 41). Only
+    // one campaign mission is authored so far; this is a resource path
+    // rather than a nation id since MissionDefinition itself is
+    // nation-neutral (§10.4).
+    public static string CurrentMissionPath { get; set; } = "res://assets/data/missions/m01_bocage_crossroads.tres";
+
+    // The nation played this run. United States only until §13.3's full
+    // nation-selection UI exists, matching LoadoutController's current
+    // United-States-only doctrine picker.
+    public static string CurrentNationId { get; set; } = "united_states";
+
+    // Filled in by MissionStatsCollector when MissionCompletedEvent fires
+    // (GDD §19 prompt 41: "its snapshot is stored in MissionSession.LastResult
+    // at mission end"). ResultsController reads this to call
+    // ProgressionService.RecordResult.
+    public static MissionStatsSnapshot LastResult { get; set; }
 
     // The doctrine picked in the loadout screen (GDD §8.3, §19 prompt 39) —
     // a bare doctrine id (e.g. "lend_lease"), not a resource path, resolved
@@ -40,5 +60,6 @@ public static class MissionSession
     {
         LastMissionWon = false;
         LastWaveReached = 0;
+        LastResult = null;
     }
 }

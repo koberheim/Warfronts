@@ -1,5 +1,6 @@
 using Godot;
 using FrontsOfWar.Debug;
+using FrontsOfWar.Meta;
 #if DEBUG
 using System.Reflection;
 using Chickensoft.GoDotTest;
@@ -61,6 +62,12 @@ public partial class Boot : Node2D
 
     private void StartMission()
     {
+        // Loads the profile once (GDD §19 prompt 41) and mirrors its
+        // tutorial flag into the per-run MissionSession, matching how the
+        // rest of the M3 briefing/loadout/results flow reads MissionSession
+        // rather than the profile directly.
+        MissionSession.TutorialCompleted = ProfileStore.Current.TutorialCompleted;
+
         if (DisplayServer.GetName() == "headless")
         {
             GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");

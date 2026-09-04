@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Meta/MissionDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Meta/StarObjectiveDefinition.cs" id="2"]
+[ext_resource type="Resource" path="res://assets/data/missions/m2_wave_sequence.tres" id="3"]
+
+[sub_resource type="Resource" id="StarObjective"]
+script = ExtResource("2")
+Kind = 0
+IntParameter = 8
+Description = "Complete without building more than 8 towers"
+
+[resource]
+script = ExtResource("1")
+Id = "m01_bocage_crossroads"
+Title = "Bocage Crossroads"
+Act = 1
+MapId = "bocage_crossroads"
+WaveSequence = ExtResource("3")
+BriefingText = "Enemy armor is probing the crossroads. Hold the Defense Line through twelve waves.\n\nKnown finale threat: B1 Breakthrough Panzer. Its armor skirt yields fastest to Explosive damage;\nafter it breaks, switch to Armor-Piercing fire.\n\nSignature available: Arsenal of Democracy Factory — continuous friendly-unit production."
+StarObjective = SubResource("StarObjective")

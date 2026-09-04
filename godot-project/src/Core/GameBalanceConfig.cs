@@ -67,4 +67,21 @@ public partial class GameBalanceConfig : Resource
     [Export] public int DefenseLineIntegrityRegular = 20;
     [Export] public int DefenseLineIntegrityVeteran = 12;
     [Export] public int DefenseLineIntegrityElite = 8;
+
+    // GDD §11.3, §12.3, §19 prompt 41. Star 2's Defense Line threshold and
+    // the Faction Mastery XP/rank curve — all invented numbers (no GDD
+    // baseline given beyond the 75% star threshold and the XP formula
+    // shape), tunable here rather than hardcoded in MasteryService/StarEvaluator.
+    [ExportGroup("Progression")]
+    [Export] public float Star2DefenseLineThreshold = 0.75f;
+    [Export] public float MasteryXpBase = 100f;
+    [Export] public float MasteryXpExtraStarBonus = 0.25f;
+    [Export] public float MasteryXpDifficultyMultiplierRecruit = 0.75f;
+    [Export] public float MasteryXpDifficultyMultiplierRegular = 1.00f;
+    [Export] public float MasteryXpDifficultyMultiplierVeteran = 1.35f;
+    [Export] public float MasteryXpDifficultyMultiplierElite = 1.75f;
+    // Index i = total XP required to reach rank (i + 1); ten entries for
+    // the GDD §12.3 ten-rank track. Rank 1 is free (index 0 = 0 XP).
+    [Export] public int[] MasteryRankXpThresholds =
+        { 0, 150, 350, 600, 900, 1300, 1800, 2400, 3200, 4200 };
 }

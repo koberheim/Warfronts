@@ -5,6 +5,7 @@ using FrontsOfWar.Debug;
 using FrontsOfWar.Doctrines;
 using FrontsOfWar.Economy;
 using FrontsOfWar.Enemies;
+using FrontsOfWar.Meta;
 using FrontsOfWar.Towers;
 using FrontsOfWar.Waves;
 using System.Linq;
@@ -56,6 +57,7 @@ public partial class MapRuntime : Node2D, ISimTickable
     public SeededRandom Random { get; private set; }
     public TowerPlacementService Placement { get; private set; }
     public DoctrineSystem Doctrines { get; private set; }
+    public MissionStatsCollector Stats { get; private set; }
 
     private SpatialGrid _spatialGrid;
     private DebugEventLogger _debugLogger;
@@ -83,6 +85,7 @@ public partial class MapRuntime : Node2D, ISimTickable
         CommandPoints = new CommandPointLedger(config, () => CommandPosts.TotalCommandPointBonus());
         Abilities = new AbilitySystem(config);
         Waves = new WaveRunner(Enemies, Path, enemyContainer);
+        Stats = new MissionStatsCollector(Difficulty, DefenseLine, () => Waves.CurrentWaveNumber);
         Enemies.AirCorridor = AirCorridor;
         Enemies.SiegeTargetsProvider = () => Towers.Towers.Select(tower => (ISiegeTarget)tower).ToArray();
         FriendlyUnits = new FriendlyUnitManager(friendlyContainer);
@@ -196,6 +199,7 @@ public partial class MapRuntime : Node2D, ISimTickable
         Supply?.Dispose();
         DefenseLine?.Dispose();
         CommandPoints?.Dispose();
+        Stats?.Dispose();
         _debugLogger?.Dispose();
         EventBus.Instance?.Unsubscribe<BossAddsRequestedEvent>(OnBossAddsRequested);
         EventBus.Instance?.Unsubscribe<BossReachedObjectiveEvent>(OnBossReachedObjective);

@@ -17,6 +17,11 @@ public class TowerUpgradeController
     public TowerBranchChoice Branch { get; private set; } = TowerBranchChoice.None;
     public int TotalInvested { get; private set; }
 
+    // Set each tick by DoctrineSystem's passive pass (GDD §19 prompt 39) —
+    // e.g. Deep Battle's "Heavy Artillery towers cost −15%" also discounts
+    // that tower's own upgrades via UpgradeCostMultiplier.
+    public float DoctrineCostMultiplier = 1f;
+
     public const int MaxLevel = 4;
     public const int ForkLevel = 3;
 
@@ -54,7 +59,12 @@ public class TowerUpgradeController
             3 => _config.UpgradeCostMultiplierL4,
             _ => 0f,
         };
-        return (int)System.MathF.Round(baseCost * multiplier);
+        // Multipliers are authored to two decimals (GDD §7.4), so work in
+        // integer hundredths and round half up: float representation
+        // (2.10f ≈ 2.0999999) and banker's rounding would otherwise turn
+        // 225 × 2.10 = 472.5 into 472 instead of the table's 473.
+        int hundredths = (int)System.MathF.Round(multiplier * DoctrineCostMultiplier * 100f);
+        return (baseCost * hundredths + 50) / 100;
     }
 
     public int Upgrade(TowerBranchChoice branchAtFork = TowerBranchChoice.A)

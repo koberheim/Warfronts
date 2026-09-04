@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=6 format=3]
+[gd_resource type="Resource" load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
 [ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/projectiles/projectile_mortar_shell.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_field_mortar.tscn" id="4"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="5"]
 
 [sub_resource type="Resource" id="StatBlock_L1"]
 script = ExtResource("2")
@@ -15,6 +16,74 @@ MinRangeTiles = 2.0
 BlastRadiusTiles = 1.6
 TurnRateSeconds = 1.2
 
+[sub_resource type="Resource" id="StatBlock_L2"]
+script = ExtResource("2")
+Cost = 98
+DamagePerShot = 33.0
+RateOfFirePerSec = 0.44
+RangeTiles = 8.5
+MinRangeTiles = 2.0
+BlastRadiusTiles = 1.6
+TurnRateSeconds = 1.15
+
+[sub_resource type="Resource" id="BarrageL3"]
+script = ExtResource("2")
+Cost = 173
+DamagePerShot = 15.0
+RateOfFirePerSec = 0.27
+RangeTiles = 8.5
+MinRangeTiles = 2.0
+BlastRadiusTiles = 1.6
+TurnRateSeconds = 1.15
+SalvoCount = 3
+
+[sub_resource type="Resource" id="BarrageL4"]
+script = ExtResource("2")
+Cost = 315
+DamagePerShot = 17.0
+RateOfFirePerSec = 0.29
+RangeTiles = 9.0
+MinRangeTiles = 2.0
+BlastRadiusTiles = 1.6
+TurnRateSeconds = 1.1
+SalvoCount = 3
+
+[sub_resource type="Resource" id="SmokeRoundsL3"]
+script = ExtResource("2")
+Cost = 173
+DamagePerShot = 15.0
+RateOfFirePerSec = 0.44
+RangeTiles = 8.5
+MinRangeTiles = 2.0
+BlastRadiusTiles = 2.2
+TurnRateSeconds = 1.15
+StatusEffectId = "Suppressed"
+StatusDurationSeconds = 2.5
+
+[sub_resource type="Resource" id="SmokeRoundsL4"]
+script = ExtResource("2")
+Cost = 315
+DamagePerShot = 17.0
+RateOfFirePerSec = 0.48
+RangeTiles = 9.0
+MinRangeTiles = 2.0
+BlastRadiusTiles = 2.2
+TurnRateSeconds = 1.1
+StatusEffectId = "Suppressed"
+StatusDurationSeconds = 2.5
+
+[sub_resource type="Resource" id="Barrage"]
+script = ExtResource("5")
+Name = "Barrage"
+BehaviorId = "field_mortar_barrage"
+Levels = [SubResource("BarrageL3"), SubResource("BarrageL4")]
+
+[sub_resource type="Resource" id="SmokeRounds"]
+script = ExtResource("5")
+Name = "Smoke Rounds"
+BehaviorId = "field_mortar_smoke_rounds"
+Levels = [SubResource("SmokeRoundsL3"), SubResource("SmokeRoundsL4")]
+
 [resource]
 script = ExtResource("1")
 Id = "t3_field_mortar"
@@ -22,7 +91,9 @@ Archetype = 2
 DisplayName = "Field Mortar"
 DamageType = 1
 DefaultTargeting = 5
-Levels = [SubResource("StatBlock_L1")]
+Levels = [SubResource("StatBlock_L1"), SubResource("StatBlock_L2")]
+BranchA = SubResource("Barrage")
+BranchB = SubResource("SmokeRounds")
 ProjectileScene = ExtResource("3")
 ProjectileSpeedTilesPerSec = 6.0
 GroundOnly = true

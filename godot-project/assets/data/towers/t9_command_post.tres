@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=5 format=3]
+[gd_resource type="Resource" load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
 [ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_command_post.tscn" id="3"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="4"]
 
 [sub_resource type="Resource" id="StatBlock_L1"]
 script = ExtResource("2")
@@ -19,6 +20,75 @@ AuraRateOfFireBonusPercent = 0.08
 CommandPointsPerWave = 2
 SupplyPerWave = 0
 
+[sub_resource type="Resource" id="StatBlock_L2"]
+script = ExtResource("2")
+Cost = 146
+DamagePerShot = 0.0
+RateOfFirePerSec = 0.0
+RangeTiles = 0.0
+MinRangeTiles = 0.0
+BlastRadiusTiles = 0.0
+TurnRateSeconds = 0.0
+AuraRadiusTiles = 6.5
+AuraRangeBonusPercent = 0.13
+AuraRateOfFireBonusPercent = 0.09
+CommandPointsPerWave = 2
+SupplyPerWave = 0
+
+[sub_resource type="Resource" id="ForwardObserverL3"]
+script = ExtResource("2")
+Cost = 259
+AuraRadiusTiles = 8.0
+AuraRangeBonusPercent = 0.20
+AuraRateOfFireBonusPercent = 0.09
+CommandPointsPerWave = 2
+SupplyPerWave = 0
+RangeTiles = 10.0
+StatusEffectId = "Spotted"
+StatusDurationSeconds = 4.0
+
+[sub_resource type="Resource" id="ForwardObserverL4"]
+script = ExtResource("2")
+Cost = 473
+AuraRadiusTiles = 10.0
+AuraRangeBonusPercent = 0.23
+AuraRateOfFireBonusPercent = 0.09
+CommandPointsPerWave = 2
+SupplyPerWave = 0
+RangeTiles = 10.0
+StatusEffectId = "Spotted"
+StatusDurationSeconds = 4.0
+
+[sub_resource type="Resource" id="LogisticsDepotL3"]
+script = ExtResource("2")
+Cost = 259
+AuraRadiusTiles = 6.5
+AuraRangeBonusPercent = 0.06
+AuraRateOfFireBonusPercent = 0.04
+CommandPointsPerWave = 4
+SupplyPerWave = 22
+
+[sub_resource type="Resource" id="LogisticsDepotL4"]
+script = ExtResource("2")
+Cost = 473
+AuraRadiusTiles = 7.0
+AuraRangeBonusPercent = 0.07
+AuraRateOfFireBonusPercent = 0.05
+CommandPointsPerWave = 4
+SupplyPerWave = 22
+
+[sub_resource type="Resource" id="ForwardObserver"]
+script = ExtResource("4")
+Name = "Forward Observer"
+BehaviorId = "command_post_forward_observer"
+Levels = [SubResource("ForwardObserverL3"), SubResource("ForwardObserverL4")]
+
+[sub_resource type="Resource" id="LogisticsDepot"]
+script = ExtResource("4")
+Name = "Logistics Depot"
+BehaviorId = "command_post_logistics_depot"
+Levels = [SubResource("LogisticsDepotL3"), SubResource("LogisticsDepotL4")]
+
 [resource]
 script = ExtResource("1")
 Id = "t9_command_post"
@@ -26,7 +96,9 @@ Archetype = 8
 DisplayName = "Command Post"
 DamageType = 0
 DefaultTargeting = 0
-Levels = [SubResource("StatBlock_L1")]
+Levels = [SubResource("StatBlock_L1"), SubResource("StatBlock_L2")]
+BranchA = SubResource("ForwardObserver")
+BranchB = SubResource("LogisticsDepot")
 GroundOnly = true
 AirOnly = false
 ControllerScene = ExtResource("3")

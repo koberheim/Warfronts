@@ -768,6 +768,31 @@ revisited — worth preserving before it's lost to editing history.
   a generic-Resource fallback). Open, low priority.
 - **Status:** Active.
 
+### D50 - VS towers carry full L1-L4 data; upgrade costs round half up in integer hundredths
+- **Decided by:** Claude under standing delegation (data authored by a Sonnet
+  worker under the lead's brief)
+- **Date:** 2026-09-04
+- **Context:** T1/T3/T4/T9 only had L1 (sometimes L2) stat blocks and no
+  branches, so `TowerUpgradeController.CurrentStats()` dereferenced a null
+  branch at L3 — upgrading any vertical-slice tower to level 3 through the
+  inspection panel would have crashed a live mission. The Data Validator's
+  branch warning (D49) exposed it.
+- **Decision:**
+  - All nine archetypes now author L2 plus two `TowerBranch` sub-resources
+    (L3/L4) from GDD §6 using only existing `TowerStatBlock` fields:
+    Sustained Fire / Suppressive Fire (T1), Barrage / Smoke Rounds (T3),
+    Sabot Rounds / Rapid Loader (T4), Forward Observer / Logistics Depot
+    (T9). Branch effects the stat block cannot express are approximated
+    (e.g. Sabot piercing as a small blast radius; the Forward Observer's
+    Spotted marking is authored as data but `CommandPostController` does not
+    yet consume it). The validator now treats a missing branch as an error.
+  - The inspection panel offers both branch buttons at the fork (§13.5).
+  - `UpgradeCost` computes in integer hundredths with half-up rounding.
+    The old `MathF.Round` (banker's rounding on float products) produced
+    172 for T3 L3 and 472 for T9 L4 where §7.4's table says 173 and 473;
+    the GDD wins. Doctrine cost multipliers are folded in before rounding.
+- **Status:** Active.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

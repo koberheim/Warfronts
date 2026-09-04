@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=6 format=3]
+[gd_resource type="Resource" load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
 [ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/projectiles/projectile_at_shell.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_anti_tank_gun.tscn" id="4"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="5"]
 
 [sub_resource type="Resource" id="StatBlock_L1"]
 script = ExtResource("2")
@@ -15,6 +16,62 @@ MinRangeTiles = 0.0
 BlastRadiusTiles = 0.0
 TurnRateSeconds = 1.1
 
+[sub_resource type="Resource" id="StatBlock_L2"]
+script = ExtResource("2")
+Cost = 130
+DamagePerShot = 82.0
+RateOfFirePerSec = 0.85
+RangeTiles = 8.0
+MinRangeTiles = 0.0
+BlastRadiusTiles = 0.0
+TurnRateSeconds = 1.1
+
+[sub_resource type="Resource" id="SabotRoundsL3"]
+script = ExtResource("2")
+Cost = 230
+DamagePerShot = 105.0
+RateOfFirePerSec = 0.85
+RangeTiles = 8.0
+TurnRateSeconds = 1.1
+BlastRadiusTiles = 0.6
+
+[sub_resource type="Resource" id="SabotRoundsL4"]
+script = ExtResource("2")
+Cost = 420
+DamagePerShot = 121.0
+RateOfFirePerSec = 0.9
+RangeTiles = 8.5
+TurnRateSeconds = 1.1
+BlastRadiusTiles = 0.7
+
+[sub_resource type="Resource" id="RapidLoaderL3"]
+script = ExtResource("2")
+Cost = 230
+DamagePerShot = 60.0
+RateOfFirePerSec = 1.36
+RangeTiles = 8.0
+TurnRateSeconds = 0.4
+
+[sub_resource type="Resource" id="RapidLoaderL4"]
+script = ExtResource("2")
+Cost = 420
+DamagePerShot = 66.0
+RateOfFirePerSec = 1.5
+RangeTiles = 8.5
+TurnRateSeconds = 0.4
+
+[sub_resource type="Resource" id="SabotRounds"]
+script = ExtResource("5")
+Name = "Sabot Rounds"
+BehaviorId = "anti_tank_gun_sabot_rounds"
+Levels = [SubResource("SabotRoundsL3"), SubResource("SabotRoundsL4")]
+
+[sub_resource type="Resource" id="RapidLoader"]
+script = ExtResource("5")
+Name = "Rapid Loader"
+BehaviorId = "anti_tank_gun_rapid_loader"
+Levels = [SubResource("RapidLoaderL3"), SubResource("RapidLoaderL4")]
+
 [resource]
 script = ExtResource("1")
 Id = "t4_anti_tank_gun"
@@ -22,7 +79,9 @@ Archetype = 3
 DisplayName = "Anti-Tank Gun"
 DamageType = 2
 DefaultTargeting = 2
-Levels = [SubResource("StatBlock_L1")]
+Levels = [SubResource("StatBlock_L1"), SubResource("StatBlock_L2")]
+BranchA = SubResource("SabotRounds")
+BranchB = SubResource("RapidLoader")
 ProjectileScene = ExtResource("3")
 ProjectileSpeedTilesPerSec = 30.0
 GroundOnly = true

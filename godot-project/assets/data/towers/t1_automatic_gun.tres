@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=5 format=3]
+[gd_resource type="Resource" load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/TowerDefinition.cs" id="1"]
 [ext_resource type="Script" path="res://src/Towers/TowerStatBlock.cs" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/towers/tower_automatic_gun.tscn" id="3"]
+[ext_resource type="Script" path="res://src/Towers/TowerBranch.cs" id="4"]
 
 [sub_resource type="Resource" id="StatBlock_L1"]
 script = ExtResource("2")
@@ -14,6 +15,64 @@ MinRangeTiles = 0.0
 BlastRadiusTiles = 0.0
 TurnRateSeconds = 0.4
 
+[sub_resource type="Resource" id="StatBlock_L2"]
+script = ExtResource("2")
+Cost = 65
+DamagePerShot = 4.4
+RateOfFirePerSec = 6.5
+RangeTiles = 6.0
+MinRangeTiles = 0.0
+BlastRadiusTiles = 0.0
+TurnRateSeconds = 0.4
+
+[sub_resource type="Resource" id="SustainedFireL3"]
+script = ExtResource("2")
+Cost = 115
+DamagePerShot = 4.4
+RateOfFirePerSec = 11.1
+RangeTiles = 6.0
+TurnRateSeconds = 0.4
+
+[sub_resource type="Resource" id="SustainedFireL4"]
+script = ExtResource("2")
+Cost = 210
+DamagePerShot = 4.8
+RateOfFirePerSec = 12.8
+RangeTiles = 6.5
+TurnRateSeconds = 0.4
+
+[sub_resource type="Resource" id="SuppressiveFireL3"]
+script = ExtResource("2")
+Cost = 115
+DamagePerShot = 3.0
+RateOfFirePerSec = 6.5
+RangeTiles = 6.0
+TurnRateSeconds = 0.4
+StatusEffectId = "Suppressed"
+StatusDurationSeconds = 2.5
+
+[sub_resource type="Resource" id="SuppressiveFireL4"]
+script = ExtResource("2")
+Cost = 210
+DamagePerShot = 3.3
+RateOfFirePerSec = 7.0
+RangeTiles = 6.5
+TurnRateSeconds = 0.4
+StatusEffectId = "Suppressed"
+StatusDurationSeconds = 2.5
+
+[sub_resource type="Resource" id="SustainedFire"]
+script = ExtResource("4")
+Name = "Sustained Fire"
+BehaviorId = "automatic_gun_sustained_fire"
+Levels = [SubResource("SustainedFireL3"), SubResource("SustainedFireL4")]
+
+[sub_resource type="Resource" id="SuppressiveFire"]
+script = ExtResource("4")
+Name = "Suppressive Fire"
+BehaviorId = "automatic_gun_suppressive_fire"
+Levels = [SubResource("SuppressiveFireL3"), SubResource("SuppressiveFireL4")]
+
 [resource]
 script = ExtResource("1")
 Id = "t1_automatic_gun"
@@ -21,7 +80,9 @@ Archetype = 0
 DisplayName = "Automatic Gun"
 DamageType = 0
 DefaultTargeting = 0
-Levels = [SubResource("StatBlock_L1")]
+Levels = [SubResource("StatBlock_L1"), SubResource("StatBlock_L2")]
+BranchA = SubResource("SustainedFire")
+BranchB = SubResource("SuppressiveFire")
 GroundOnly = true
 AirOnly = false
 ControllerScene = ExtResource("3")

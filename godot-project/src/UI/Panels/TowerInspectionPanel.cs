@@ -19,6 +19,8 @@ public partial class TowerInspectionPanel : CanvasLayer
     private Label _titleLabel;
     private Label _statsLabel;
     private Button _upgradeButton;
+    private Button _upgradeBranchAButton;
+    private Button _upgradeBranchBButton;
     private Button _sellButton;
     private TowerController _selected;
 
@@ -55,6 +57,18 @@ public partial class TowerInspectionPanel : CanvasLayer
         _upgradeButton = new Button();
         _upgradeButton.Pressed += OnUpgradePressed;
         buttonRow.AddChild(_upgradeButton);
+
+        // At the fork level (GDD §6: "the fork happens when purchasing
+        // level 3"), the single upgrade button is replaced by one button per
+        // branch so the player can see both names/costs before committing —
+        // the choice is permanent unless the tower is sold.
+        _upgradeBranchAButton = new Button();
+        _upgradeBranchAButton.Pressed += () => OnUpgradeBranchPressed(TowerBranchChoice.A);
+        buttonRow.AddChild(_upgradeBranchAButton);
+
+        _upgradeBranchBButton = new Button();
+        _upgradeBranchBButton.Pressed += () => OnUpgradeBranchPressed(TowerBranchChoice.B);
+        buttonRow.AddChild(_upgradeBranchBButton);
 
         _sellButton = new Button();
         _sellButton.Pressed += OnSellPressed;
@@ -93,7 +107,26 @@ public partial class TowerInspectionPanel : CanvasLayer
             $"Lifetime damage: {_selected.LifetimeDamage:F0}\n" +
             $"Damage / Supply: {DamagePerSupply(_selected):F2}";
 
-        if (_selected.Upgrade.CanUpgrade)
+        // GDD §6: "the fork happens when purchasing level 3" — at that one
+        // level, offer both branches side by side instead of a single
+        // button; every other level (including "no upgrades left") keeps
+        // the single-button layout.
+        bool atFork = _selected.Upgrade.CanUpgrade && _selected.Upgrade.Level == TowerUpgradeController.ForkLevel - 1;
+        _upgradeButton.Visible = !atFork;
+        _upgradeBranchAButton.Visible = atFork;
+        _upgradeBranchBButton.Visible = atFork;
+
+        if (atFork)
+        {
+            var definition = _selected.Definition;
+            int costA = _selected.Upgrade.UpgradeCost(TowerBranchChoice.A);
+            int costB = _selected.Upgrade.UpgradeCost(TowerBranchChoice.B);
+            _upgradeBranchAButton.Text = $"{definition.BranchA?.Name ?? "Branch A"} ({costA})";
+            _upgradeBranchAButton.Disabled = _mission.Supply.Balance < costA;
+            _upgradeBranchBButton.Text = $"{definition.BranchB?.Name ?? "Branch B"} ({costB})";
+            _upgradeBranchBButton.Disabled = _mission.Supply.Balance < costB;
+        }
+        else if (_selected.Upgrade.CanUpgrade)
         {
             int cost = _selected.Upgrade.UpgradeCost();
             _upgradeButton.Text = $"Upgrade ({cost})";
@@ -121,6 +154,17 @@ public partial class TowerInspectionPanel : CanvasLayer
         if (!_mission.Supply.TrySpend(cost)) return;
 
         _selected.Upgrade.Upgrade();
+        Refresh();
+    }
+
+    private void OnUpgradeBranchPressed(TowerBranchChoice branch)
+    {
+        if (_selected == null || !_selected.Upgrade.CanUpgrade) return;
+
+        int cost = _selected.Upgrade.UpgradeCost(branch);
+        if (!_mission.Supply.TrySpend(cost)) return;
+
+        _selected.Upgrade.Upgrade(branch);
         Refresh();
     }
 

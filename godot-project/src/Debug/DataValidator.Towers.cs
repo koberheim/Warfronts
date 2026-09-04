@@ -31,11 +31,11 @@ public static partial class DataValidator
     }
 
     // GDD §6: every one of the nine archetypes forks into two L3/L4 branches.
-    // As of this session four of the nine ("VS" scope towers T1/T3/T4/T9,
-    // per docs/PROGRESS.md prompt 27) have not had that content authored
-    // yet — that is a real, currently-expected gap, not a broken reference,
-    // so it is a warning. An asymmetric branch (only one of BranchA/BranchB
-    // set) or a branch with the wrong level count is always a real bug.
+    // All nine archetypes (including the "VS" scope towers T1/T3/T4/T9, per
+    // docs/PROGRESS.md prompt 27) now have that content authored, so a
+    // missing BranchA/BranchB is a real bug, not an expected gap — same as
+    // an asymmetric branch (only one of BranchA/BranchB set) or a branch
+    // with the wrong level count.
     private static void ValidateBranches(string path, TowerDefinition tower, DataValidationReport report)
     {
         bool hasA = tower.BranchA != null;
@@ -49,7 +49,7 @@ public static partial class DataValidator
 
         if (!hasA)
         {
-            report.AddWarning(path, "TowerDefinition has no L3/L4 branch data authored yet.");
+            report.AddError(path, "TowerDefinition has no L3/L4 branch data authored.");
             return;
         }
 

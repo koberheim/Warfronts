@@ -826,6 +826,21 @@ revisited — worth preserving before it's lost to editing history.
     changes when §13.2 lands.
 - **Status:** Active.
 
+### D52 - Prompt 41 (progression/save) taken before prompt 40 (map gimmicks)
+- **Decided by:** Claude under standing delegation
+- **Date:** 2026-09-04
+- **Context:** `CLAUDE.md` §4 asks for ladder order and a logged reason for
+  any deviation. After prompts 39 and 45 the remaining budget for this
+  completion pass covered one more system.
+- **Decision:** Build prompt 41 (stars, unlocks, mastery, versioned save,
+  plus prompt 43's Null platform service) ahead of prompt 40. Gimmicks are
+  per-map data whose maps (2–8) do not exist yet, so they would ship as
+  untestable systems on a single prototype map; progression and a
+  migration-ready save format are cheap now and expensive to retrofit
+  (§12.8), and they make the results screen meaningful. Prompt 40 is next in
+  order when work resumes.
+- **Status:** Active.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

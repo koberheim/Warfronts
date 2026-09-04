@@ -203,7 +203,17 @@ were added and M4 remains unopened.
 38. [x] Balance Dashboard editor plugin. It reports each nation's
     DPS-per-Supply value, envelope/parity errors, and includes an injected
     violation check.
-39–45. Not started.
+39. [x] Doctrines: `DoctrineDefinition` = one neutral-by-default passive
+    row plus one ability of six shared kinds (point blast, line blast, aura
+    buff, spawn friendly, instant refund/utility, status). All 18 authored as
+    data, three US choices on the loadout screen, hotbar slot 4 / key 4.
+    Inert until their hooks exist: terrain-tag passives, Italy's national
+    relocation, Fortified Line's immunity radius (D51). `DoctrineTests` 14/14.
+40. Not started (next in order; see D52).
+41–44. Not started, except prompt 41 and prompt 43's Null platform half,
+    which were in flight at the end of the completion pass (see the
+    completion-pass section below for the outcome).
+45. [x] Data Validator (see the completion-pass section below).
 
 **M4 prompts 28–30 verification:** the .NET build succeeds with 0
 warnings/errors. Mono Godot passes `M4TowerTests` 3/3, `M4NationEnemyWaveTests`
@@ -306,6 +316,8 @@ entries D46–D50 record the reasoning.
   L3/L4 branches per GDD §6, the inspection panel offers both branches at
   the fork, and upgrade costs reproduce §7.4 exactly (half-up rounding in
   integer hundredths). `M4TowerTests` 5/5.
+- [x] **Prompt 39 doctrines** landed as pure data over six shared behaviours
+  (D51); every one of the 18 rows loads through the validator.
 - [x] Balance Dashboard no longer throws during the editor's initial script
   scan; the stale `data_*/` ignore pattern that hid the validator addon is
   anchored to the project root.

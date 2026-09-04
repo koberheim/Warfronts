@@ -42,6 +42,10 @@ DebugWaveSequence = ExtResource("18")
 DebugLogEvents = true
 AirCorridor = ExtResource("23")
 
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(450, 340)
+zoom = Vector2(1.6, 1.6)
+
 [node name="ArtEnvironment" type="Node2D" parent="."]
 z_index = -10
 

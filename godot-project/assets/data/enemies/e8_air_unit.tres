@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e8_air_unit"
+DisplayName = "Ground-Attack Aircraft"
 Archetype = 7
 ArmorClass = 0
 IsAir = true

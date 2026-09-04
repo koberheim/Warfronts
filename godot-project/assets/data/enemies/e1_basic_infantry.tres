@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e1_basic_infantry"
+DisplayName = "Rifle Infantry"
 Archetype = 0
 ArmorClass = 0
 IsAir = false

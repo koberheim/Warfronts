@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e9_support_repair_vehicle"
+DisplayName = "Repair Halftrack"
 Archetype = 8
 ArmorClass = 1
 BaseHp = 260.0

@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e10_escort_shield_vehicle"
+DisplayName = "Escort Halftrack"
 Archetype = 9
 ArmorClass = 1
 BaseHp = 320.0

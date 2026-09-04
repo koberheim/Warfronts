@@ -7,6 +7,7 @@
 [resource]
 script = ExtResource("1")
 Id = "b1_breakthrough_panzer"
+DisplayName = "Breakthrough Panzer"
 Archetype = 6
 ArmorClass = 3
 IsAir = false

@@ -16,6 +16,13 @@ run/main_scene="res://scenes_root/boot.tscn"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [autoload]
 
 EventBus="*res://src/Core/EventBus.cs"
@@ -29,6 +36,10 @@ project/assembly_name="FrontsOfWar"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/map_planner/plugin.cfg", "res://addons/wave_editor/plugin.cfg", "res://addons/balance_dashboard/plugin.cfg", "res://addons/data_validator/plugin.cfg")
+
+[gui]
+
+theme/custom="res://assets/ui/theme/fow_theme.tres"
 
 [rendering]
 

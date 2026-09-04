@@ -67,18 +67,29 @@ public partial class Boot : Node2D
         // rest of the M3 briefing/loadout/results flow reads MissionSession
         // rather than the profile directly.
         MissionSession.TutorialCompleted = ProfileStore.Current.TutorialCompleted;
+        string[] args = OS.GetCmdlineArgs();
+        if (HasCmdlineArg("--skip-tutorial")) MissionSession.TutorialCompleted = true;
 
-        if (DisplayServer.GetName() == "headless")
+        // Dev-only screenshot capture (D54): --screen picks the root scene,
+        // the capture node rides on the tree root across the scene change.
+        string screen = ScreenshotCapture.ArgValue(args, "--screen");
+        var capture = ScreenshotCapture.FromCmdline(args);
+        if (capture != null)
+        {
+            capture.ScreenName = string.IsNullOrEmpty(screen) ? (HasCmdlineArg("--mission") ? "mission" : "briefing") : screen;
+            GetTree().Root.CallDeferred(Node.MethodName.AddChild, capture);
+        }
+
+        if (!string.IsNullOrEmpty(screen))
+        {
+            GetTree().ChangeSceneToFile($"res://scenes_root/{screen}.tscn");
+            return;
+        }
+        if (DisplayServer.GetName() == "headless" || HasCmdlineArg("--mission"))
         {
             GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
             return;
         }
-        foreach (string arg in OS.GetCmdlineArgs())
-            if (arg == "--mission")
-            {
-                GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
-                return;
-            }
         GetTree().ChangeSceneToFile("res://scenes_root/briefing.tscn");
     }
 }

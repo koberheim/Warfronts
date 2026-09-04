@@ -11,6 +11,7 @@ namespace FrontsOfWar.Enemies;
 public partial class EnemyDefinition : Resource
 {
     [Export] public string Id;
+    [Export] public string DisplayName = "";
     [Export] public EnemyArchetype Archetype;
     [Export] public ArmorClass ArmorClass;
     [Export] public bool IsAir;

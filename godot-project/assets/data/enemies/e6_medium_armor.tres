@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e6_medium_armor"
+DisplayName = "Medium Tank"
 Archetype = 5
 ArmorClass = 2
 IsAir = false

@@ -879,6 +879,45 @@ revisited — worth preserving before it's lost to editing history.
     responsibility lands.
 - **Status:** Active.
 
+### D54 - UI overhaul foundation: 1080p canvas, one theme, war-table materials, screenshot verification
+- **Decided by:** Claude under standing delegation (User asked for a full
+  UI/UX overhaul; the GDD fixes the war-table identity but not the system)
+- **Date:** 2026-09-04
+- **Decision:**
+  - `docs/UI_DESIGN_SPEC.md` is the UI system of record beneath GDD §13 /
+    §3.4 and the art doc's §29-31: identity, 1920×1080 zones, materials,
+    palette tokens, type scale, icon ids, component variations, per-screen
+    specs, motion, accessibility hooks, and the screenshot checklist.
+  - Design resolution is 1920×1080 with `canvas_items` stretch and `expand`
+    aspect (GDD Pillar 1 names 1080p as the legibility bar). The mission
+    scene gains a `Camera2D` (zoom 1.6) so the authored playfield fills the
+    table; world-anchored UI converts through `GetGlobalTransformWithCanvas`.
+  - One project-wide `Theme` (`assets/ui/theme/fow_theme.tres`, hand-
+    authored text) carries every font, color and style box; screens select
+    named type variations and never build ad-hoc `StyleBoxFlat`s.
+    `UiPalette` mirrors the tokens for `_Draw` code; `UiIcons` resolves
+    monochrome SVG glyph ids and returns null for a missing file so screens
+    degrade to text rather than crash.
+  - Fonts are vendored OFL faces (Oswald, Barlow, Courier Prime) under
+    `assets/art/fonts/` with their licenses; no system fonts.
+  - UI materials are derived from the approved ART-ENV-010 frame (paper
+    card, teletype strip, wood rails cropped/processed from it) plus one
+    procedural brass plate, generated once and committed as PNGs under
+    `assets/ui/materials/`; the frame itself is used as a 9-patch backdrop.
+    Tower/unit identity art stays on hold per the art inventory; UI glyphs
+    for towers and enemies are field-manual symbols, not unit art.
+  - `EnemyDefinition.DisplayName` added (data) so the wave strip and reports
+    show names, never ids.
+  - Dev-only `--screenshot-dir` / `--screen` / `--screenshot-frames` /
+    `--skip-tutorial` flags (`src/Debug/ScreenshotCapture.cs`, routed by
+    `Boot`) capture the real viewport so UI work is verified by looking at
+    it; they need a window and are not part of `Run-HeadlessChecks.ps1`.
+  - A main menu (§13.1) and pause menu (§13.7) are built as part of this
+    pass ahead of ladder prompt 42, because the results/pause flows need a
+    destination and the overhaul establishes the visual language they use;
+    modes, settings and the codex stay unbuilt and are shown locked.
+- **Status:** Active.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

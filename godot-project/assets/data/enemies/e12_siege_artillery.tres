@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e12_siege_artillery"
+DisplayName = "Siege Gun"
 Archetype = 11
 ArmorClass = 1
 BaseHp = 480.0

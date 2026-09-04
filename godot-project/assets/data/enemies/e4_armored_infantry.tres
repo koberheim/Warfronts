@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e4_armored_infantry"
+DisplayName = "Assault Infantry"
 Archetype = 3
 ArmorClass = 1
 IsAir = false

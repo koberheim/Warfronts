@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e5_light_vehicle"
+DisplayName = "Scout Car"
 Archetype = 4
 ArmorClass = 1
 IsAir = false

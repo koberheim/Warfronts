@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1")
 Id = "e11_recon_concealed"
+DisplayName = "Concealed Recon"
 Archetype = 10
 ArmorClass = 0
 BaseHp = 90.0

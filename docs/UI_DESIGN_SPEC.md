@@ -50,10 +50,12 @@ mobile F2P skin, a sci-fi HUD.
 
 ## 2. Canvas and layout
 
-- **Design resolution 1920×1080**, `canvas_items` stretch, `expand` aspect
-  (set in `project.godot`). UI is authored in 1080p pixels; wider windows
-  gain battlefield, not stretched chrome. Everything anchors to screen
-  edges or center, never to absolute coordinates.
+- **Design resolution 1920×1080**, `canvas_items` stretch, `expand` aspect,
+  **fullscreen by default** (`window/size/mode=3` in `project.godot`). The
+  reference display is a 24-inch 1080p monitor: every screen must fit
+  exactly 1920×1080 with nothing clipped, and wider windows gain
+  battlefield, not stretched chrome. UI is authored in 1080p pixels and
+  anchors to screen edges or center, never to absolute coordinates.
 - **Spacing unit 8 px.** Safe margin from the screen edge: 24 px. Panel
   content padding: 14/10 (slate) or 30/26 (paper). Gaps between cards: 8 px.
 - **Battlefield framing.** The mission scene carries a `Camera2D`

@@ -889,7 +889,9 @@ revisited — worth preserving before it's lost to editing history.
     palette tokens, type scale, icon ids, component variations, per-screen
     specs, motion, accessibility hooks, and the screenshot checklist.
   - Design resolution is 1920×1080 with `canvas_items` stretch and `expand`
-    aspect (GDD Pillar 1 names 1080p as the legibility bar). The mission
+    aspect, fullscreen by default (User: the game must fit cleanly on a
+    24-inch 1080p monitor and be sized for full-screen play; GDD Pillar 1
+    names 1080p as the legibility bar). The mission
     scene gains a `Camera2D` (zoom 1.6) so the authored playfield fills the
     table; world-anchored UI converts through `GetGlobalTransformWithCanvas`.
   - One project-wide `Theme` (`assets/ui/theme/fow_theme.tres`, hand-

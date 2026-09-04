@@ -33,8 +33,15 @@ Requires [Godot 4.7+ (.NET/C# build)](https://godotengine.org/) and the
 cd godot-project
 dotnet build FrontsOfWar.csproj   # verify the C# build
 godot --path .                    # open in the editor
-godot --headless --path . --run-tests=CoreTests --quit-after 1200
+godot --headless --path . --run-tests=CoreTests --quit-after 1500
+godot --headless --path . --validate-data --quit-after 600
+godot --headless --path . --fixed-fps 60 --quit-after 5400   # 90 s smoke run
+powershell -File ../tools/Run-HeadlessChecks.ps1             # all of the above
 ```
+
+`godot` above must be the .NET-enabled (Mono) build; see `docs/DECISIONS.md`
+D13 for the machine-local path and D46 for why the smoke run needs
+`--fixed-fps`.
 
 ## Status
 
@@ -44,7 +51,9 @@ flow, and the integrated tutorial. M3.5 adds the editor-only Map Planner, and
 M4 contains the five remaining universal archetypes, six data-authored nation
 profiles with parity validation, E3/E7/E12 enemy mechanics, and the Wave
 Editor dock, and M5 now contains all five signatures, air corridors, E8–E11,
-and the Balance Dashboard. See
+and the Balance Dashboard. A completion pass (D46–D50) added the in-mission
+build bar and pad placement, full L1–L4 data for every archetype, the Data
+Validator plugin/CLI, and a working headless verification loop. See
 [docs/PROGRESS.md](docs/PROGRESS.md).
 
 The standalone `dotnet build` command requires an online restore of

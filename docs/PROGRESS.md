@@ -273,14 +273,68 @@ is installed.
   surface with the shared socket contract; all matching cells in the proof
   scene now use their topology overlay. The family remains `REVIEW`.
 
+## Post-M5 completion pass (2026-09-03 / 04)
+
+A lead agent audited the repository against the code rather than the docs
+and closed the gaps that blocked a playable, verifiable build. Decision log
+entries D46–D50 record the reasoning.
+
+- [x] **Verification actually runs.** Godot 4.7 has no `headless` feature
+  tag, so every headless smoke run since M3 had silently idled on the
+  briefing screen or behind the paused tutorial. Detection now uses
+  `DisplayServer.GetName()`; the canonical smoke command is
+  `godot --headless --path . --fixed-fps 60 --quit-after 5400` (90 simulated
+  seconds, must print zero error/exception lines and at least one `[kill]`).
+  The M4/M5 "smoke run" notes above predate this fix and were not exercising
+  the mission.
+- [x] **M5 suite run for the first time** on the Mono build: an RAF charge
+  regenerated instantly after a spend (fixed) and one test leaked an Escort
+  shield into the minefield check (isolated). All suites pass.
+- [x] **Players can build.** Bottom-centre build bar (six loadout towers,
+  costs, hotkeys Q–Y, shortfall labels), pad glow in build mode, range
+  preview on hover, click-to-place through `TowerPlacementService`, pad
+  freed on sell, no selling while Suppressed. T2/T5/T6/T7 gained primitive
+  scenes; every archetype `.tres` declares its `ControllerScene`. Ten more
+  pads on Bocage Crossroads (two Elevated, two Enclosed). `BuildTests` 5/5.
+- [x] **Prompt 45 Data Validator** (`addons/data_validator` menu item and
+  `--validate-data` CLI, exit 1 on errors) plus
+  `tools/Run-HeadlessChecks.ps1`, which chains build → every suite →
+  validator → smoke run. Its first run caught a dormant signature-id
+  mismatch in the US profile. `DataValidatorTests` 4/4.
+- [x] **VS towers can be upgraded to L4.** T1/T3/T4/T9 had no branch data
+  and would have thrown at level 3; all nine archetypes now carry L2 and both
+  L3/L4 branches per GDD §6, the inspection panel offers both branches at
+  the fork, and upgrade costs reproduce §7.4 exactly (half-up rounding in
+  integer hundredths). `M4TowerTests` 5/5.
+- [x] Balance Dashboard no longer throws during the editor's initial script
+  scan; the stale `data_*/` ignore pattern that hid the validator addon is
+  anchored to the project root.
+
+**Automated checks after this pass:** `dotnet build` 0 warnings / 0 errors;
+CoreTests 15, M4TowerTests 5, M4NationEnemyWaveTests 3, M5SignatureAirTests
+5, MapPlanningTests 6, BuildTests 5, DataValidatorTests 4 — all passing;
+`--validate-data` 0 errors / 0 warnings; smoke run 0 errors with kills.
+
 ---
 
 ## Historical blockers / current follow-up
 
-No design blockers. D17 is superseded by D25; M4 prompts 27–30 and M5
-prompts 31–38 are implemented, and the post-M5 art replacement plumbing is
-in place. The next work is a .NET-enabled Godot playtest/review pass followed
-by M6 doctrine and mode work.
+No design blockers. Prompts 1–38 plus 45 are implemented and verified on
+the Mono build; see the completion-pass section above. Remaining ladder work
+in order: 40 (map gimmicks), 41 (progression/save), 42 (modes/modifiers),
+43 (platform service), 44 (settings/accessibility), then M6–M8 content
+(maps 2–8, 12 missions, bosses B2–B4, codex, main menu).
+
+- **Known gameplay gaps carried forward:** T8 Minefield has no free-placement
+  UI (not buildable); a placed Command Post cannot be inspected or sold
+  (`CommandPostController` publishes no click event); the loadout screen is
+  a fixed recommended kit, not §13.3's picker; the Forward Observer branch's
+  Spotted marking is authored but not consumed by `CommandPostController`;
+  `EnemyManager`/`FriendlyUnitManager` instantiate scenes directly rather
+  than pooling (§15.1 principle 5); the mission scene is a prototype layout
+  with 11 pads, not Bocage Crossroads' authored 22.
+- **Not verifiable by agents:** the M3 external playtest gate (§17.2) and
+  visual review of the build bar / inspection panel layout.
 
 - **Immediate art review:** review the complete D45 Western Europe overlay
   family in the updated proof scene. The current v01 closed-loop board remains

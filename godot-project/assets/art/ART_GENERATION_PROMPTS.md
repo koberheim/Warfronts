@@ -649,6 +649,56 @@ transparent 1024x1024 PNG with no terrain background plate.
   transparent alpha outside the route and shoulder; no checkerboard, terrain
   plate, frame, text, people, units, vehicles, insignia, or watermark.
 
+- **WE-ROUTE-OVERLAY-WN-001 - unique West/North corner** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_wn_v01.png`
+  Prompt: Same D45 Western Europe painterly route-overlay style as NE-001;
+  paint one unique coherent West-North quarter-turn, centered 256 px road
+  cores with 48 px shoulders, perpendicular entry of at least 160 px, West
+  and North sockets only, genuine transparent alpha outside the route, no
+  overlapping strips, terrain plate, text, people, units, vehicles, insignia,
+  or watermark.
+- **WE-ROUTE-OVERLAY-ES-001 - unique East/South corner** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_es_v01.png`
+  Prompt: Same D45 Western Europe painterly route-overlay style as NE-001;
+  paint one unique coherent East-South quarter-turn, centered 256 px road
+  cores with 48 px shoulders, perpendicular entry of at least 160 px, East
+  and South sockets only, genuine transparent alpha outside the route, no
+  overlapping strips, terrain plate, text, people, units, vehicles, insignia,
+  or watermark.
+- **WE-ROUTE-OVERLAY-SW-001 - unique South/West corner** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_sw_v01.png`
+  Prompt: Same D45 Western Europe painterly route-overlay style as NE-001;
+  paint one unique coherent South-West quarter-turn, centered 256 px road
+  cores with 48 px shoulders, perpendicular entry of at least 160 px, South
+  and West sockets only, genuine transparent alpha outside the route, no
+  overlapping strips, terrain plate, text, people, units, vehicles, insignia,
+  or watermark.
+- **WE-ROUTE-OVERLAY-T-NES-001 - unique North/East/South T-junction** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_t_nes_v01.png`
+  Prompt: Same D45 Western Europe painterly route-overlay style as NE-001;
+  paint one unique asymmetric coherent North-East-South T-junction, centered
+  256 px road cores with 48 px shoulders and perpendicular entry of at least
+  160 px, no West socket, genuine transparent alpha outside the route, no
+  overlapping strips, terrain plate, text, people, units, vehicles, insignia,
+  or watermark.
+- **WE-ROUTE-OVERLAY-T-ESW-001 - unique East/South/West T-junction** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_t_esw_v01.png`
+  Prompt: Same D45 Western Europe painterly route-overlay style as NE-001;
+  paint one unique asymmetric coherent East-South-West T-junction, centered
+  256 px road cores with 48 px shoulders and perpendicular entry of at least
+  160 px, no North socket, genuine transparent alpha outside the route, no
+  overlapping strips, terrain plate, text, people, units, vehicles, insignia,
+  or watermark.
+- **WE-ROUTE-OVERLAY-CROSS-001 - unique four-way cross** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_cross_v01.png`
+  Prompt: Same D45 Western Europe painterly route-overlay style as NE-001;
+  paint one unique coherent four-way crossroads with centered North, East,
+  South, and West sockets, 256 px road cores with 48 px shoulders, at least
+  160 px perpendicular entry, genuine transparent alpha outside the route, no
+  overlapping strips, terrain plate, text, people, units, vehicles, insignia,
+  or watermark.
+- **WE-ROUTE-OVERLAY-ENTRY-N-001 - unique North entry** - `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_entry_n_v01.png`
+  Prompt: Same D45 Western Europe painterly route-overlay style as NE-001;
+  paint one unique North entry with a centered 256 px road core, 48 px
+  shoulders, perpendicular entry of at least 160 px, and a rounded compact
+  turnaround near the center; North socket only, genuine transparent alpha
+  outside the route, no terrain plate, text, people, units, vehicles,
+  insignia, or watermark.
+
 # Theater route topology prompts
 
 Generate all ten route topologies for each theater from the same accepted

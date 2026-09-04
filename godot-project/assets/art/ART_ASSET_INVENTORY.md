@@ -51,12 +51,20 @@ checks before any entry becomes `APPROVED` or replaces mission terrain.
 
 | WE-MATERIAL-001 | Shared Western Europe sunken-lane route material | REVIEW | `shared/route_materials/western_europe/route_material_sunken_lane_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
 | WE-ROUTE-OVERLAY-NE-001 | Unique painterly Western Europe sunken-lane North/East corner overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+| WE-ROUTE-OVERLAY-WN-001 | Unique painterly Western Europe sunken-lane West/North corner overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_wn_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+| WE-ROUTE-OVERLAY-ES-001 | Unique painterly Western Europe sunken-lane East/South corner overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_es_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+| WE-ROUTE-OVERLAY-SW-001 | Unique painterly Western Europe sunken-lane South/West corner overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_sw_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+| WE-ROUTE-OVERLAY-T-NES-001 | Unique painterly Western Europe sunken-lane North/East/South T-junction overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_t_nes_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+| WE-ROUTE-OVERLAY-T-ESW-001 | Unique painterly Western Europe sunken-lane East/South/West T-junction overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_t_esw_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+| WE-ROUTE-OVERLAY-CROSS-001 | Unique painterly Western Europe sunken-lane four-way cross overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_cross_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
+| WE-ROUTE-OVERLAY-ENTRY-N-001 | Unique painterly Western Europe sunken-lane North entry overlay | REVIEW | `theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_entry_n_v01.png` | `scenes/art/western_europe_layered_route_review.tscn` |
 
-This topology-specific overlay is the first D45 production-direction test. It
-keeps the shared 256-pixel centered edge sockets and 48-pixel shoulders, while
-painting the interior corner once as a single continuous route. The shared
-route material remains available as a temporary fallback for the other review
-cells; it is not the desired final treatment for corners or junctions.
+These topology-specific overlays are the D45 production-direction test set.
+They keep the shared 256-pixel centered edge sockets and 48-pixel shoulders,
+while painting each interior corner or junction once as a single continuous
+route. The shared route material remains available as a temporary fallback for
+topologies that do not yet have an overlay, but it is not the desired final
+treatment for corners or junctions.
 
 The shared material is a separate route-layer asset. It remains `REVIEW` until
 the layered proof is visually accepted over the Western Europe ground tile.

@@ -75,15 +75,16 @@ topology-specific overlays are the intended final route treatment.
 
 | ID | Generated outputs | Status | Method |
 |---|---:|---|---|
-| WE-ROUTE-OVERLAY-NE-001 | 1 | REVIEW | Built-in image generation from the accepted lane reference; targeted socket correction; deterministic fit to a transparent 1024×1024 canvas and alpha cleanup |
+| WE-ROUTE-OVERLAY-NE-001, WN-001, ES-001, SW-001, T-NES-001, T-ESW-001, CROSS-001, ENTRY-N-001 | 8 | REVIEW | Built-in image generation from the accepted lane reference; topology-specific prompts; deterministic socket fitting to transparent 1024×1024 canvases and alpha cleanup |
 
-The first overlay is stored at
-`theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png`.
-It is a single painted North/East corner with centered edge sockets. It is
-wired into the first cell of the layered proof; the other cells deliberately
-remain on the shared-material fallback until their own topology art exists.
+The overlay family is stored under
+`theaters/western_europe/terrain/route_overlays/`.
+The eight review files cover the four corners, two T-junctions, four-way cross,
+and North entry. They are wired into every compatible topology in the layered
+proof; the shared material remains available only as a fallback for future
+topologies without a dedicated overlay.
 
-Queue coverage after this batch: 12 of 456 explicit image paths exist (the
-ten new route tiles, the earlier Mediterranean rocky-wadi path, and the first
-topology overlay); 444 prompted output paths remain ungenerated. The shared
+Queue coverage after this batch: 19 of 456 explicit image paths exist (the
+ten new route tiles, the earlier Mediterranean rocky-wadi path, and eight
+topology overlays); 437 prompted output paths remain ungenerated. The shared
 route material is tracked as a separate supplemental proof asset.

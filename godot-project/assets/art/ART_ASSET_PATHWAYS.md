@@ -64,18 +64,19 @@ topologies that have not received their unique overlay yet.
 The current Western Europe route board is intentionally a review of full-tile
 route references. Its edge caps prove socket placement, but the repeated
 interior bands are not acceptable for approval. The layered proof now includes
-the first unique North/East corner overlay; the remaining topologies must use
-the same per-tile approach before any route entry is promoted to `APPROVED`.
+the complete first Western Europe corner/junction/entry overlay set; these
+remain review assets until mixed-neighbor seams and gameplay-scale readability
+are accepted.
 
 That first layered proof is now wired in
 `scenes/art/western_europe_layered_route_review.tscn`. Its route topology
 socket masks are data resources under
 `assets/data/art/routes/western_europe/`, and `RouteAdjacencyAudit` checks every
 immediate neighbor in the mixed 3x3 sample. This scene is a geometry/material
-proof using the first topology-specific painterly overlay at
-`theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png`;
-the shared review material remains a fallback on the other cells. It is not a
-replacement for the painterly v01 full-tile review board.
+proof using the topology-specific painterly overlays under
+`theaters/western_europe/terrain/route_overlays/`; the shared review material
+remains available as a fallback for future topologies. It is not a replacement
+for the painterly v01 full-tile review board.
 
 ## Folder contract
 

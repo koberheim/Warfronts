@@ -1,6 +1,10 @@
 param(
     [string]$Source = "C:\Users\Kevin\.codex\generated_images\01a064d9-e90e-7e11-be6d-3a309b986488\exec-83ab2b9f-9a04-46fd-94f1-2307274aae2c.png",
-    [string]$Destination = (Join-Path $PSScriptRoot "../../godot-project/assets/art/theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png")
+    [string]$Destination = (Join-Path $PSScriptRoot "../../godot-project/assets/art/theaters/western_europe/terrain/route_overlays/route_overlay_sunken_lane_ne_v01.png"),
+    [int]$DestinationX = 180,
+    [int]$DestinationY = 0,
+    [int]$DestinationWidth = 1200,
+    [int]$DestinationHeight = 750
 )
 
 $ErrorActionPreference = "Stop"
@@ -34,10 +38,10 @@ $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::High
 $graphics.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy
 
 # The accepted reference is a tall L-shaped route. This deterministic fit
-# makes its top arm and right arm meet the shared socket contract while
-# retaining the unique painted curve. The oversized destination is clipped
-# by the 1024px tile canvas, which is intentional for the East continuation.
-$destinationRect = New-Object System.Drawing.Rectangle(180, 0, 1200, 750)
+# makes its named arms meet the shared socket contract while retaining the
+# unique painted curve. The destination can be shifted/scaled per topology;
+# an oversized destination is clipped by the 1024px tile canvas intentionally.
+$destinationRect = New-Object System.Drawing.Rectangle($DestinationX, $DestinationY, $DestinationWidth, $DestinationHeight)
 $sourceRect = New-Object System.Drawing.Rectangle(0, 0, $sourceBitmap.Width, $sourceBitmap.Height)
 $graphics.DrawImage($sourceBitmap, $destinationRect, $sourceRect.X, $sourceRect.Y, $sourceRect.Width, $sourceRect.Height, [System.Drawing.GraphicsUnit]::Pixel)
 $graphics.Dispose()

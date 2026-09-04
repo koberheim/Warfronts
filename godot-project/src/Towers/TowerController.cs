@@ -57,6 +57,15 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     private float _secondaryCooldownRemaining;
     private ITargetable _currentTarget;
 
+    // The turret sprite (art doc sprite_generation_prompts.md §1.7 — a
+    // separate rotating layer over the static emplacement). Null for
+    // archetypes with no "Turret" child node (T8/T9, or any scene not yet
+    // updated) — rotation is simply skipped for those.
+    private Node2D _turret;
+    // Indirect-fire archetypes (DensestCluster targeting) never set
+    // _currentTarget, so the turret needs its own last-aimed-point to track.
+    private Vector2? _turretAimPoint;
+
     // Read by the selection overlay (GDD §13.4: the selected tower shows
     // "its current target with a thin line"); null between engagements.
     public ITargetable CurrentTarget => _currentTarget;
@@ -65,6 +74,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     {
         CurrentTargeting = Definition.DefaultTargeting;
         Upgrade = new TowerUpgradeController(Definition, GameBalanceConfigAutoload.Config);
+        _turret = GetNodeOrNull<Node2D>("Turret");
         SetupClickArea();
         EventBus.Instance?.Subscribe<EnemyDamagedEvent>(OnEnemyDamaged);
         EventBus.Instance?.Subscribe<EnemySiegeBombardEvent>(OnEnemySiegeBombard);
@@ -102,6 +112,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         if (IsSuppressed) return; // fully disabled — no targeting, no firing
 
         var stats = Upgrade.CurrentStats();
+        UpdateTurretRotation(tickDeltaSeconds, stats.TurnRateSeconds);
         float tilePixelSize = GameBalanceConfigAutoload.Config.TilePixelSize;
         float effectiveRangeTiles = stats.RangeTiles * DoctrineRangeMultiplier + DoctrineRangeBonusTiles;
         float rangePixels = effectiveRangeTiles * tilePixelSize * AuraRangeMultiplier;
@@ -155,6 +166,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         float clusterRadiusPixels = Mathf.Max(stats.BlastRadiusTiles, 1f) * GameBalanceConfigAutoload.Config.TilePixelSize;
         var point = TargetingService.SelectDensestClusterPoint(candidates, clusterRadiusPixels);
         if (point == null) return;
+        _turretAimPoint = point;
 
         int salvoCount = stats.SalvoCount < 1 ? 1 : stats.SalvoCount;
         for (int i = 0; i < salvoCount; i++)
@@ -186,6 +198,25 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         if (distSq > rangePixels * rangePixels) return false;
         if (minRangePixels > 0f && distSq < minRangePixels * minRangePixels) return false;
         return true;
+    }
+
+    // Swings the turret layer toward its target/aim-point, capped by
+    // TurnRateSeconds — reused from its existing "time to acquire a new
+    // target" meaning (GDD §6) as "time for a full 180 deg swing", so the
+    // same balance number that gates targeting also gates the visual turn.
+    private void UpdateTurretRotation(float tickDeltaSeconds, float turnRateSeconds)
+    {
+        if (_turret == null) return;
+        Vector2? aimPoint = _currentTarget is { IsAlive: true } ? _currentTarget.GlobalPosition : _turretAimPoint;
+        if (aimPoint == null) return;
+
+        // Turret art is authored facing up/12 o'clock (sprite_generation_
+        // prompts.md §1.1), not +X, so Vector2.Angle()'s atan2(y, x) needs a
+        // +90 deg offset to match.
+        float desiredRotation = (aimPoint.Value - GlobalPosition).Angle() + Mathf.Pi / 2f;
+        float angleDiff = Mathf.Wrap(desiredRotation - _turret.Rotation, -Mathf.Pi, Mathf.Pi);
+        float maxStep = (Mathf.Pi / Mathf.Max(0.01f, turnRateSeconds)) * tickDeltaSeconds;
+        _turret.Rotation += Mathf.Clamp(angleDiff, -maxStep, maxStep);
     }
 
     private void Fire(ITargetable target, ProjectileManager projectileManager, TowerStatBlock stats)

@@ -972,6 +972,187 @@ revisited — worth preserving before it's lost to editing history.
     noted in PROGRESS, unchanged by this pass.
 - **Status:** Active.
 
+### D56 - Sprite generation prompt reference doc, held with the art it covers
+- **Decided by:** Claude under standing delegation (User asked for a
+  comprehensive AI-image-generator prompt document for nation/tower/unit
+  sprites, scanning existing GDD and art docs)
+- **Date:** 2026-09-04
+- **Decision:** Wrote `godot-project/assets/art/sprite_generation_prompts.md`,
+  alongside the existing `ART_GENERATION_PROMPTS.md`. Calls made where the
+  request left room:
+  - **Directional frames dropped in favor of single-orientation + rotation.**
+    The user's request template asked for N/S/E/W directional frame prompts.
+    D3 already establishes this game's units as free-rotating single
+    top-down sprites, not 8-direction sheets, so the doc generates one
+    canonical orientation per unit/tower plus the small walk/track-roll
+    frame set GDD §16.2 actually calls for, and explains the deviation
+    in-document rather than silently dropping the user's template shape.
+  - **File paths follow the reserved catalog schema exactly**
+    (`towers/national/{nation}/{archetype}/...`,
+    `units/national_skins/{nation}/{unit_family}/...`,
+    `enemies/archetypes/{nation}/{archetype}/...`) already defined in
+    `art_asset_catalog.json`'s `held.*` entries, rather than inventing a new
+    layout.
+  - **Marked HOLD, matching the existing gate.** Every category this doc
+    covers (nation tower art, tower upgrade states, insignia, signature
+    towers, friendly/enemy unit skins) is already `status: HOLD` in the
+    catalog pending the user's implementation review. The new doc carries an
+    explicit banner not to generate or integrate from it until that review
+    clears — it's a ready-to-use reference, not a green light.
+  - **Only prompted enemy/nation variants the GDD already names.** Several
+    enemy archetypes (E3, E4, E9-E12) have no nation-specific variant names
+    yet in GDD §10.2; the doc lists what exists per nation and explicitly
+    flags the gaps rather than inventing new unit names.
+- **Reference:** GDD §16.1-16.3, §8.2, §10.2, §14.3; `FRONTS OF WAR ART
+  DESIGN.md` §3, §9-10; `art_asset_catalog.json` `held.*` entries.
+- **Status:** Active (as a held reference document — not wired into any
+  generation or integration pipeline).
+
+### D57 - Tower sprites split into a static emplacement layer plus a rotating turret layer
+- **Decided by:** User (asked directly whether the gun should visually
+  rotate to track its target, offered as a choice after the first generated
+  tower image fused the sandbags and gun into one piece)
+- **Date:** 2026-09-04
+- **Decision:** Every T1-T7 tower archetype (the seven that actually fire)
+  is now prompted as two separate images instead of one: a static
+  **emplacement layer** (sandbags/mount/carriage, never rotates, one image
+  shared across all 4 tower levels) and a **turret/weapon layer** (cropped
+  at its mount point, rotates in-engine to face the target, needs a base
+  state for L1-L2 and a branch state for L3-L4). This reuses GDD §16.3's own
+  reasoning that "the base emplacement... is shared and only the weapon
+  changes" between levels - the split was already implied, just not spelled
+  out for rendering. T8 (Minefield, a triggered trap) and T9 (Command Post,
+  which GDD says "never shoots") keep a single fused image; two nations'
+  T9s with a described rotating radar dish (Britain, Germany) may
+  optionally get the same split later as a cosmetic nicety, not a
+  requirement. `sprite_generation_prompts.md` §1.7 documents the layering
+  contract and pivot-alignment rule; all six nations' tower tables in §2 and
+  the file-path contract in §4 were rewritten to match. At the time of this
+  entry, no code consumed this yet (`TowerController.cs` had no
+  sprite/rotation wiring) — D58 wired it up the same session.
+- **Reference:** GDD §16.2-16.3; supersedes/refines D56's single-image
+  assumption for T1-T7 only.
+- **Status:** Active.
+
+### D58 - Turret rotation wired into TowerController, reusing TurnRateSeconds
+- **Decided by:** Claude under standing delegation (User confirmed the D57
+  split, then asked directly to implement the rotation, not just document
+  it)
+- **Date:** 2026-09-04
+- **Decision:** `TowerController.SimTick` now rotates a tower's `Turret`
+  child node (if present) toward its current target every tick, capped by a
+  turn speed derived from the existing `TowerStatBlock.TurnRateSeconds`
+  stat. Calls made where GDD/D57 left room:
+  - **`TurnRateSeconds` reinterpreted for a second purpose.** It already
+    existed as a mechanical "time to acquire a new target" stat (GDD §6);
+    there was no separate "visual turn speed" stat and adding one would
+    duplicate a number the balance sheet already tunes. Reused it as "time
+    for a full 180 deg swing" (`maxRadiansPerTick = PI / TurnRateSeconds *
+    delta`), so the same GDD-balanced number (e.g. T1's 0.4s Fast vs T4's
+    1.1s Slow) now also drives how fast the art turns - consistent with the
+    corner case GDD already calls out for T4 ("punishes placement on tight
+    corners where targets pass quickly").
+  - **Indirect-fire archetypes (T3, T7) needed a second aim source.** They
+    target a ground point via `DensestCluster`, not `_currentTarget` -
+    added a `_turretAimPoint` field set from that point so their turret
+    still tracks something. Direct-fire archetypes track the live
+    `_currentTarget.GlobalPosition` instead of a cached point, so the
+    turret continues following a moving target between shots rather than
+    aiming at a stale snapshot.
+  - **Rotation always runs on SimTick, not `_Process`.** Matches this
+    class's existing rule (GDD §15.1 principle 4, and the file's own
+    header comment) that everything here moves on GameLoop's fixed tick,
+    never a variable-rate callback - keeps turret motion deterministic
+    alongside targeting/firing rather than adding a second, undocumented
+    update path.
+  - **Retrofitted the 7 existing tower placeholder scenes**
+    (`scenes/towers/tower_*.tscn` for T1-T7) rather than waiting for real
+    art: found that 6 of the 7 already separated their weapon piece
+    (`Barrel`/`BarrelA`+`BarrelB`/`Scope`) from the base `Visual` polygon -
+    wrapped each in a new `Turret` `Node2D` parent so `GetNodeOrNull
+    <Node2D>("Turret")` finds it. T1's scene was missing a weapon piece
+    entirely (just a flat square + label) - added one to match the other
+    six. T8/T9 have no `Turret` node (by design, D57), so rotation is a
+    silent no-op for them via the existing null check.
+  - **Verification:** `dotnet build` succeeds. Could not run the
+    `Chickensoft.GoDotTest` suite (`BuildTests`, `CoreTests`,
+    `DoctrineTests`) to confirm at runtime - no `godot` binary is present
+    in this environment at all (not even the non-.NET build noted in D13).
+    Reviewed the relevant tests by hand instead: `CoreTests` constructs a
+    bare `TowerController` with no child nodes and calls `_Ready()`
+    directly, which is safe (`GetNodeOrNull` returns null, and
+    `UpdateTurretRotation` no-ops on a null `_turret`); `BuildTests` places
+    real towers through the actual `.tscn` files and only asserts
+    Supply/registration/pad state, none of which this change touches.
+    Flagging this as reviewed-not-run rather than claiming a passing test
+    run.
+- **Reference:** GDD §6 (TurnRateSeconds/turn rate per archetype), §15.1
+  principle 4; refines D57.
+- **Status:** Active. Runtime verification via the Godot test suite is
+  still open - re-run `BuildTests`/`CoreTests`/`DoctrineTests` on a machine
+  with a working Godot binary before trusting this beyond the code review
+  above.
+
+### D59 - Writing voice: WW2 dispatch prose with a 15% Catch-22 register
+- **Decided by:** User (asked for a WW2-era press-prose style guide with a
+  "10-15%" Catch-22 satirical influence); boundaries below decided by
+  Claude against GDD §14
+- **Date:** 2026-09-04
+- **Decision:** `docs/WRITING_STYLE_GUIDE.md` now governs all player-facing
+  text - briefings, codex, results copy, achievements, tutorial, UI. Base
+  register is 1940s wire-dispatch prose; roughly 15% is a dry Catch-22
+  seam. Calls made where the request met GDD policy:
+  - **The satire targets the institution, never the combatants.** GDD
+    §14.3 bans national caricature outright and says in as many words that
+    no nation's units are "cowardly, fanatical, primitive, or comic," and
+    §10.1 extends the no-stereotyping rule to codex text. So the permitted
+    targets are paperwork, requisitions, doctrine-as-document, command
+    abstraction, and supply arithmetic; nations, soldiers, units,
+    casualties, civilians, and anything in §14.3's banned list are off
+    limits as material. This is also what Heller actually satirizes, so the
+    constraint costs the voice nothing.
+  - **Radio chatter carries zero voice.** GDD §14.3 requires barks be
+    "short, generic, tactical" and operational only. Rather than let the
+    style guide quietly contradict that, the register table sets barks (and
+    tower/enemy names, tutorial prompts, and UI labels) to no-voice,
+    no-satire, and says so explicitly.
+  - **Clarity outranks voice.** GDD §13.10's bar is that a player learns
+    the whole interface in Mission 1; the guide's final checklist item is
+    "would removing the voice make it clearer? Then remove the voice."
+  - **Dose is defined per surface, not globally.** "10-15%" is unusable as
+    a per-sentence rule, so it became a frequency budget: one satirical
+    beat per briefing, one line per codex entry, never twice in a row, with
+    results/post-mortem copy as the safest home for it.
+  - **Samples live in HTML comments** per the user's request, including a
+    deliberate over-dose/correct-dose calibration pair, so they read as
+    reference rather than as approved shipping strings.
+- **Reference:** GDD §14.2-14.3, §10.1, §9.2 (briefing length), §13.10;
+  `docs/UI_DESIGN_SPEC.md` §5 (Courier Prime carries briefing/report text).
+- **Status:** Active. No existing strings have been rewritten to match yet
+  - the one authored briefing in `m01_bocage_crossroads.tres` still predates
+  this guide.
+
+### D60 - Register the complete non-held environment art queue as review assets
+
+- **Decided by:** User (requested flavor, vegetation, and architecture generation
+  without touching the parallel UI work); Codex (kept the assets review-only)
+- **Date:** 2026-09-04
+- **Decision:** Generate every active numbered vegetation, architecture, flavor
+  prop, and authored-cluster prompt in ART_GENERATION_PROMPTS.md with the
+  built-in ChatGPT ImageGen tool. Place each v01 PNG in its prompt-specified
+  theater folder, normalize vegetation/props to 512×512 and
+  architecture/clusters to 1024×1024 while preserving alpha, and add exact
+  item-level catalog records with REVIEW status. Family catalog entries for
+  these categories also move from PLACEHOLDER_READY to REVIEW.
+- **Why:** This replaces generic environment placeholders with organized,
+  traceable candidates while respecting the art spec's requirement that assets
+  remain unapproved until native-scale, grayscale, blur, and gameplay screenshot
+  checks pass. UI/shared presentation art and held tower, unit, enemy, and
+  insignia categories remain outside this pass.
+- **Reference:** ART_GENERATION_PROMPTS.md, docs/FRONTS OF WAR ART DESIGN.md
+  §§40–50, GDD §14.
+- **Status:** Active. Manual gameplay-context art acceptance remains open.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

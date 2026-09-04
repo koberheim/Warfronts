@@ -84,7 +84,29 @@ and North entry. They are wired into every compatible topology in the layered
 proof; the shared material remains available only as a fallback for future
 topologies without a dedicated overlay.
 
-Queue coverage after this batch: 19 of 456 explicit image paths exist (the
+Queue coverage after the route-overlay batch: 19 of 456 explicit image paths
+existed (the
 ten new route tiles, the earlier Mediterranean rocky-wadi path, and eight
 topology overlays); 437 prompted output paths remain ungenerated. The shared
 route material is tracked as a separate supplemental proof asset.
+
+### Environment flavor / vegetation / architecture pass — 2026-09-04
+
+| Scope | Generated | Status | Method |
+|---|---:|---|---|
+| Four theater vegetation kits | 46 | REVIEW | Built-in ChatGPT ImageGen using the canonical style lock and theater palette anchors; normalized to 512×512 RGBA PNG |
+| Four theater architecture kits | 34 | REVIEW | Built-in ChatGPT ImageGen using the structure/cutout prompts; normalized to 1024×1024 RGBA PNG |
+| Four theater flavor props and authored clusters | 95 | REVIEW | Built-in ChatGPT ImageGen using the prop/cluster prompts; props normalized to 512×512 and clusters to 1024×1024 RGBA PNG |
+
+Every requested non-held output path in ART_GENERATION_PROMPTS.md now has a
+real v01 PNG under its catalogued theater folder. Exact item-level catalog
+entries use REVIEW; family slots are also REVIEW so the generic placeholder
+mapping is no longer the source of truth for these generated candidates.
+No UI, tower, unit, enemy, insignia, or shared presentation art was generated.
+Overall explicit prompt-path coverage is now 194 of 456; the remaining
+un-generated paths are outside this requested flavor/vegetation/architecture
+pass.
+
+The generated candidates still require the documented silhouette, native-scale,
+grayscale, blur, and Clean/Typical/Stress screenshot checks before any entry
+is promoted to APPROVED.

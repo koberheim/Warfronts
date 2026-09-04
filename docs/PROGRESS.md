@@ -416,6 +416,12 @@ menu itself exists since the UI overhaul).
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is the active
   visual-direction reference. The post-M4 environment-only generation pass
   created ten review assets; nation-specific units and enemies remain held.
+- **Environment generation pass (2026-09-04):** all 175 active
+  flavor/vegetation/architecture prompts now have normalized RGBA v01 PNG
+  candidates in the four theater kits. They are registered as REVIEW in
+  the art catalog; gameplay-scale and Clean/Typical/Stress screenshot review
+  remain open before approval. UI, shared presentation, tower, unit, and enemy
+  art were intentionally left untouched.
 - **Standalone .NET restore:** `dotnet build` cannot resolve
   `Godot.NET.Sdk/4.7.2` without access to NuGet; the Mono Godot build can
   still run the current project and smoke scene.

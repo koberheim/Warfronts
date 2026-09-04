@@ -9,7 +9,9 @@ script = ExtResource("1")
 polygon = PackedVector2Array(-10, -18, 10, -18, 10, 18, -10, 18)
 color = Color(0.35, 0.4, 0.3, 1)
 
-[node name="Scope" type="Polygon2D" parent="."]
+[node name="Turret" type="Node2D" parent="."]
+
+[node name="Scope" type="Polygon2D" parent="Turret"]
 polygon = PackedVector2Array(-2, -30, 2, -30, 2, -14, -2, -14)
 color = Color(0.15, 0.15, 0.15, 1)
 

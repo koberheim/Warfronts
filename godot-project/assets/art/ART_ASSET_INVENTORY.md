@@ -225,6 +225,19 @@ Target: 4–6 ground materials, 3–5 route treatments, 10–15 transitions,
   unit art. These are excluded until the implementation review requested by
   the user is complete.
 
+## 2026-09-04 environment generation pass
+
+The active flavor, vegetation, and architecture queue is now physically
+populated for all four theaters: 46 vegetation assets, 34 architecture assets,
+and 95 flavor/cluster assets. Their exact paths and REVIEW status are
+registered in ../data/art/art_asset_catalog.json; generation used the
+corresponding numbered prompts in ART_GENERATION_PROMPTS.md.
+
+This pass deliberately did not touch UI art, UI code, shared presentation
+assets, held tower/unit/enemy categories, or national identity art. The new
+PNG candidates remain review-only until the acceptance gates below are run in
+gameplay context.
+
 ## Acceptance gates for every generated asset
 
 Before changing `REVIEW` to `APPROVED`, check the art spec’s silhouette,

@@ -32,8 +32,7 @@ public partial class BalanceDashboardDock : VBoxContainer
 
     private void Refresh()
     {
-        var profiles = LoadProfiles();
-        var roster = LoadRoster();
+        if (!TryLoadData(out var profiles, out var roster)) return;
         var report = NationBalanceValidator.Validate(profiles, roster);
         _summary.Text = report.IsValid ? "PASS — all six nations are within the configured envelope and parity tolerance." : "FAIL — balance violations detected.";
         _details.Text = FormatReport(report);
@@ -41,14 +40,35 @@ public partial class BalanceDashboardDock : VBoxContainer
 
     private void RunInjectedViolation()
     {
-        var profiles = LoadProfiles();
-        if (profiles.Count == 0) return;
+        if (!TryLoadData(out var profiles, out var roster) || profiles.Count == 0) return;
         var injected = profiles[0];
         var lean = new NationStatLean { Archetype = TowerArchetype.AutomaticGun, StatId = "damage", Multiplier = 1.30f };
         injected.StatLeans = injected.StatLeans.Concat(new[] { lean }).ToArray();
-        var report = NationBalanceValidator.Validate(profiles, LoadRoster());
+        var report = NationBalanceValidator.Validate(profiles, roster);
         _summary.Text = report.IsValid ? "FAIL — injected violation was not detected." : "PASS — injected violation was detected.";
         _details.Text = FormatReport(report);
+    }
+
+    // During the editor's initial C# domain scan, script-backed Resources can
+    // arrive as generic Resources and GD.Load<T> throws InvalidCastException
+    // (the Wave Editor dock guards the same case). Ask for a manual re-run
+    // rather than failing the deferred first refresh.
+    private bool TryLoadData(out List<NationProfile> profiles, out List<TowerDefinition> roster)
+    {
+        try
+        {
+            profiles = LoadProfiles();
+            roster = LoadRoster();
+            return true;
+        }
+        catch (InvalidCastException)
+        {
+            profiles = null;
+            roster = null;
+            _summary.Text = "Scripts are still loading — press Run Validator.";
+            _details.Text = "";
+            return false;
+        }
     }
 
     private static List<NationProfile> LoadProfiles()

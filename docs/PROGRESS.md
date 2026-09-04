@@ -210,9 +210,15 @@ were added and M4 remains unopened.
     Inert until their hooks exist: terrain-tag passives, Italy's national
     relocation, Fortified Line's immunity radius (D51). `DoctrineTests` 14/14.
 40. Not started (next in order; see D52).
-41–44. Not started, except prompt 41 and prompt 43's Null platform half,
-    which were in flight at the end of the completion pass (see the
-    completion-pass section below for the outcome).
+41. [x] Progression: `MissionDefinition`/`StarObjectiveDefinition` data,
+    three-star evaluation (§11.3), §9.5 unlock gates, cosmetic-only Faction
+    Mastery (§12.3), and a versioned JSON save with a real v1→v2 migration
+    and corrupt-file fallback (§12.8). The results screen records and shows
+    stars, XP, rank, and new unlocks. `ProgressionTests` 18/18 (D53).
+42. Not started (Skirmish, Endless, modifiers; needs a main menu).
+43. [~] `IPlatformService` + `NullPlatformService` and achievement ids exist;
+    GodotSteam integration not started.
+44. Not started (settings, colorblind palettes, reduced effects).
 45. [x] Data Validator (see the completion-pass section below).
 
 **M4 prompts 28–30 verification:** the .NET build succeeds with 0
@@ -318,28 +324,31 @@ entries D46–D50 record the reasoning.
   integer hundredths). `M4TowerTests` 5/5.
 - [x] **Prompt 39 doctrines** landed as pure data over six shared behaviours
   (D51); every one of the 18 rows loads through the validator.
+- [x] **Prompt 41 progression and save** landed (D53), with prompt 43's
+  Null platform service.
+- [x] A placed Command Post can now be inspected, upgraded, and sold.
 - [x] Balance Dashboard no longer throws during the editor's initial script
   scan; the stale `data_*/` ignore pattern that hid the validator addon is
   anchored to the project root.
 
 **Automated checks after this pass:** `dotnet build` 0 warnings / 0 errors;
 CoreTests 15, M4TowerTests 5, M4NationEnemyWaveTests 3, M5SignatureAirTests
-5, MapPlanningTests 6, BuildTests 5, DataValidatorTests 4 — all passing;
-`--validate-data` 0 errors / 0 warnings; smoke run 0 errors with kills.
+5, MapPlanningTests 6, BuildTests 6, DataValidatorTests 4, DoctrineTests 14,
+ProgressionTests 18 — all passing; `--validate-data` 0 errors / 0 warnings
+across 64 resources; smoke run 0 errors with kills.
 
 ---
 
 ## Historical blockers / current follow-up
 
-No design blockers. Prompts 1–38 plus 45 are implemented and verified on
-the Mono build; see the completion-pass section above. Remaining ladder work
-in order: 40 (map gimmicks), 41 (progression/save), 42 (modes/modifiers),
-43 (platform service), 44 (settings/accessibility), then M6–M8 content
-(maps 2–8, 12 missions, bosses B2–B4, codex, main menu).
+No design blockers. Prompts 1–39, 41, and 45 (plus 43's Null half) are
+implemented and verified on the Mono build; see the completion-pass section
+above. Remaining ladder work in order: 40 (map gimmicks), 42
+(modes/modifiers), 43 (Steam via GodotSteam), 44 (settings/accessibility),
+then M6–M8 content (maps 2–8, 12 missions, bosses B2–B4, codex, main menu).
 
 - **Known gameplay gaps carried forward:** T8 Minefield has no free-placement
-  UI (not buildable); a placed Command Post cannot be inspected or sold
-  (`CommandPostController` publishes no click event); the loadout screen is
+  UI (not buildable); the loadout screen is
   a fixed recommended kit, not §13.3's picker; the Forward Observer branch's
   Spotted marking is authored but not consumed by `CommandPostController`;
   `EnemyManager`/`FriendlyUnitManager` instantiate scenes directly rather

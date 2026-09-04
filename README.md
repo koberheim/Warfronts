@@ -51,10 +51,11 @@ flow, and the integrated tutorial. M3.5 adds the editor-only Map Planner, and
 M4 contains the five remaining universal archetypes, six data-authored nation
 profiles with parity validation, E3/E7/E12 enemy mechanics, and the Wave
 Editor dock, and M5 now contains all five signatures, air corridors, E8–E11,
-and the Balance Dashboard. A completion pass (D46–D50) added the in-mission
-build bar and pad placement, full L1–L4 data for every archetype, the Data
-Validator plugin/CLI, and a working headless verification loop. See
-[docs/PROGRESS.md](docs/PROGRESS.md).
+and the Balance Dashboard. A completion pass (D46–D53) added the in-mission
+build bar and pad placement, full L1–L4 data for every archetype, all 18
+doctrines as data over six shared behaviours, stars/unlocks/mastery with a
+versioned save, the Data Validator plugin/CLI, and a working headless
+verification loop. See [docs/PROGRESS.md](docs/PROGRESS.md).
 
 The standalone `dotnet build` command requires an online restore of
 `Godot.NET.Sdk/4.7.2`; the Godot Mono installation can currently load and

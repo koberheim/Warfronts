@@ -841,6 +841,44 @@ revisited — worth preserving before it's lost to editing history.
   order when work resumes.
 - **Status:** Active.
 
+### D53 - Progression, stars, mastery, and a versioned save (prompt 41) plus the Null platform service
+- **Decided by:** Claude under standing delegation (implemented by a Sonnet
+  worker under the lead's brief)
+- **Date:** 2026-09-04
+- **Decision:**
+  - `SaveSystem` writes one JSON profile at `user://saves/profile.json`
+    (schema version 2) atomically via a temp file; a missing or corrupt file
+    yields a fresh profile and the corrupt file is moved aside. Migrations
+    run as a chain from the file's version; v1→v2 adds `MasteryXp` and
+    `TutorialCompleted`. `ProgressionTests` proves a hand-written v1 save
+    loads in the v2 build (§19 prompt 41's acceptance check).
+  - `MissionDefinition` (§10.4 subset) and `StarObjectiveDefinition` are
+    data; Bocage Crossroads is authored as `m01_bocage_crossroads.tres` with
+    the star-3 objective "no more than 8 towers". `MissionStatsCollector`
+    listens to placement/kill/completion events and hands a snapshot to the
+    results screen, which records stars (best-of merge), Faction Mastery XP,
+    unlock deltas, and two example achievements, then saves.
+  - `UnlockService` is pure over the profile and encodes §9.5 exactly.
+    `MasteryService` is cosmetic-only (§12.2 is absolute); its XP base (100),
+    difficulty multipliers (0.75 / 1.00 / 1.35 / 1.75), extra-star bonus
+    (25%), and ten rank thresholds live in `GameBalanceConfig` because the
+    GDD gives the formula's shape but not its numbers.
+  - `IPlatformService` + `NullPlatformService` exist now (prompt 43's Null
+    half); GodotSteam integration remains external, unstarted work.
+  - "Towers built" counts Command Posts. "Won without losing a Defense Line
+    point" is evaluated as full integrity at victory, so a mid-mission
+    repair back to full would count — acceptable until a per-hit tracker
+    exists. `MissionSession` (Core) now references Meta types; a directed
+    dependency accepted for the M3 flow's simplicity.
+  - Skirmish/Endless completions (prompt 42) must use their own recording
+    path so they do not feed `CampaignMissionsCompleted`.
+  - Also closed in this pass: a placed Command Post can be inspected,
+    upgraded, and sold (it now publishes `CommandPostClickedEvent` and the
+    inspection panel works through the shared upgrade controller), removing
+    the gap noted in D48. `MapRuntime` is 304 lines; split it when the next
+    responsibility lands.
+- **Status:** Active.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

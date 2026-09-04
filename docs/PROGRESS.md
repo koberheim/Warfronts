@@ -339,13 +339,60 @@ across 64 resources; smoke run 0 errors with kills.
 
 ---
 
+## UI overhaul (2026-09-04)
+
+The User asked for a full UI/UX overhaul on a 24-inch 1080p target. D54
+laid the system down (`docs/UI_DESIGN_SPEC.md`, one theme, vendored fonts,
+war-table materials, the screenshot tool); D55 built every screen on it.
+
+- [x] **System (D54).** 1920×1080 `canvas_items` canvas, fullscreen by
+  default, `fow_theme.tres` with every font/color/style box, `UiPalette` /
+  `UiIcons` mirrors for `_Draw` code, paper/teletype/brass/wood 9-patches
+  derived from the approved frame, `ScreenshotCapture` dev flags.
+- [x] **Glyph set.** `tools/art/generate_ui_icons.py` writes the 79
+  monochrome SVGs of spec §6 (resources, time, waves, damage types, armor
+  classes, statuses, threats, matchups, abilities, towers, enemies,
+  progress, abstract nation marks) into `assets/ui/icons/`.
+- [x] **Flow screens.** New main menu (Campaign live; Skirmish / Endless /
+  Codex / Settings shown locked), briefing as an operation order with an
+  intelligence row derived from the wave sequence, loadout with the six
+  recommended-kit cards and a live doctrine toggle group plus the §13.3
+  AP/AA warning banner, results with stars, mastery bar and unlock lines.
+  `Boot` enters the main menu; `--mission` / `--screen` / headless unchanged.
+- [x] **Mission HUD.** Resources with projected income and the segmented
+  Defense Line bar; wave heading and teletype strip (glyphs, counts, armor,
+  threat badges, air warning); brass speed lever, pause and menu buttons
+  with Space / + / - / P keys; build-phase countdown ring and the exact
+  "Call Wave Early +NN"; build bar tower cards with hotkey plates, glyphs,
+  costs, shortfalls and paper tooltips; four ability cards with radial
+  cooldown sweeps and CP badges (doctrine slot included); pause banner and
+  pause menu (Resume / Restart / Settings-later / Abandon with confirm /
+  Quit to Menu). The war-table frame now sits behind the battlefield.
+- [x] **Cards and overlays.** Paper inspection card anchored beside the
+  tower (level pips, stats with damage glyph, strong/weak rows derived from
+  `DamageTable`, attribution, upgrade with diff preview, branch fork with
+  per-branch diffs, sell, close) with a world-space range ring and target
+  line; tutorial card with step pips and Skip; post-mortem report with a
+  damage-by-type chart and Retry focused; damage numbers, build pads, enemy
+  health bars and the Command Post aura ring re-palettised.
+- [x] **Verified by screenshots** at 1920×1080 for main menu, briefing,
+  loadout, results, mission (engaged and mid-wave), tutorial, pause menu,
+  inspection card and post-mortem (`--ui-state`), see `tools/README.md`.
+
+**Automated checks after this pass:** `dotnet build` 0 warnings / 0 errors;
+CoreTests 15, M4TowerTests 5, M4NationEnemyWaveTests 3, M5SignatureAirTests
+5, MapPlanningTests 6, BuildTests 6, DataValidatorTests 4, DoctrineTests 14,
+ProgressionTests 18 — all passing; `--validate-data` 0 errors / 0 warnings
+across 64 resources; smoke run 0 errors with 18 kills.
+
 ## Historical blockers / current follow-up
 
 No design blockers. Prompts 1–39, 41, and 45 (plus 43's Null half) are
 implemented and verified on the Mono build; see the completion-pass section
 above. Remaining ladder work in order: 40 (map gimmicks), 42
 (modes/modifiers), 43 (Steam via GodotSteam), 44 (settings/accessibility),
-then M6–M8 content (maps 2–8, 12 missions, bosses B2–B4, codex, main menu).
+then M6–M8 content (maps 2–8, 12 missions, bosses B2–B4, codex; the main
+menu itself exists since the UI overhaul).
 
 - **Known gameplay gaps carried forward:** T8 Minefield has no free-placement
   UI (not buildable); the loadout screen is
@@ -354,8 +401,10 @@ then M6–M8 content (maps 2–8, 12 missions, bosses B2–B4, codex, main menu)
   `EnemyManager`/`FriendlyUnitManager` instantiate scenes directly rather
   than pooling (§15.1 principle 5); the mission scene is a prototype layout
   with 11 pads, not Bocage Crossroads' authored 22.
-- **Not verifiable by agents:** the M3 external playtest gate (§17.2) and
-  visual review of the build bar / inspection panel layout.
+- **Not verifiable by agents:** the M3 external playtest gate (§17.2). UI
+  layout is now checked by real screenshots (`tools/README.md`); what an
+  agent cannot judge is feel - hover/press timing and readability at 2x
+  speed on a real 24-inch monitor.
 
 - **Immediate art review:** review the complete D45 Western Europe overlay
   family in the updated proof scene. The current v01 closed-loop board remains

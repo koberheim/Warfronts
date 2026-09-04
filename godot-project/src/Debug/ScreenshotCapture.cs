@@ -41,6 +41,15 @@ public partial class ScreenshotCapture : Node
         return capture;
     }
 
+    // --ui-state=pause|inspect|postmortem asks the matching card to open by
+    // itself a few frames in, so overlays that normally need a click can be
+    // screenshotted. Ignored (null) outside a screenshot run.
+    public static string UiState => ArgValue(OS.GetCmdlineArgs(), "--screenshot-dir") == null
+        ? null
+        : ArgValue(OS.GetCmdlineArgs(), "--ui-state");
+
+    public static bool UiStateIs(string state) => UiState == state;
+
     public static string ArgValue(string[] args, string flag)
     {
         foreach (string arg in args)

@@ -1,6 +1,6 @@
 # Fronts of War — UI design specification
 
-Version 1.0 (2026-09-04). Owner: UI lead agent. Companion to GDD §13 (UI/UX),
+Version 1.1 (2026-09-04). Owner: UI lead agent. Changelog at the end. Companion to GDD §13 (UI/UX),
 §3.4 (war-table framing), §16 (art), and `docs/FRONTS OF WAR ART DESIGN.md`
 §29–31 (hybrid war table, UI materials, iconography). Where this document and
 the GDD disagree, the GDD wins; this document adds the concrete visual system
@@ -57,7 +57,8 @@ mobile F2P skin, a sci-fi HUD.
   battlefield, not stretched chrome. UI is authored in 1080p pixels and
   anchors to screen edges or center, never to absolute coordinates.
 - **Spacing unit 8 px.** Safe margin from the screen edge: 24 px. Panel
-  content padding: 14/10 (slate) or 30/26 (paper). Gaps between cards: 8 px.
+  content padding: 14/10 (slate) or 20/16 inside the paper's 16 px deckle
+  (the `PaperPanel` style box carries 36/32/36/34). Gaps between cards: 8 px.
 - **Battlefield framing.** The mission scene carries a `Camera2D`
   (`zoom 1.6`, centered on the authored playfield) and a full-screen
   war-table frame behind the world (`FramePanel` on a `CanvasLayer` at
@@ -88,8 +89,8 @@ mobile F2P skin, a sci-fi HUD.
 | C Time | top-right, 24/16 | ≈ 300×56 | Brass lever plate: three segments `1× 2× 3×`, the active one pressed; Pause button; Menu (gear) button |
 | D Build phase | bottom-left, 24/24 | ≈ 320×120 | During build time: `BUILD PHASE` caption, countdown ring with seconds, `Call Wave Early  +NN Supply` primary button. During a wave: `ENGAGED` caption and nothing else |
 | E Build bar | bottom-center | 6 × 120×128 + gaps | One card per loadout tower: hotkey plate top-left, icon, name, cost with supply icon; disabled with `Need +NN` when unaffordable; amber pressed state while selected |
-| F Inspection | world-anchored | 340 wide | Paper card, see §8.5 |
-| G Abilities | bottom-right, 24/24 | 4 × 104×128 | Cards 1–3 universal, 4 doctrine; radial cooldown sweep over the icon; CP cost badge; status line above the row |
+| F Inspection | world-anchored | 380 wide | Paper card, see §8.5 |
+| G Abilities | bottom-right, 24/24 | 4 × 104×140 | Cards 1–3 universal, 4 doctrine; radial cooldown sweep over the icon; CP cost badge; status line above the row |
 
 Pause: a `PAUSED — planning mode` banner (slate strong, amber text) at
 top-center just below the wave strip; the pause menu (§8.7) is a paper card
@@ -102,7 +103,7 @@ centered on screen.
 | Material | Asset | Used for |
 |---|---|---|
 | War-table frame | `assets/art/shared/ui/commander_map_table_frame_v01.png` (approved ART-ENV-010), as `FramePanel` 9-patch (margins 330/250) | Full-screen backdrop of every flow screen and the mission's battlefield |
-| Paper card | `assets/ui/materials/paper_card_9p.png` (parchment crop of the frame, deckled edge, drop shadow), `PaperPanel` | Briefing order, loadout cards, doctrine cards, tooltips, inspection card, tutorial card, pause menu, post-mortem report, results sheet |
+| Paper card | `assets/ui/materials/paper_card_9p.png` (parchment crop of the frame, deckled edge, 16 px drop-shadow border), `PaperPanel` | Briefing order, loadout cards, doctrine cards, tooltips, inspection card, tutorial card, pause menu, post-mortem report, results sheet |
 | Teletype strip | `assets/ui/materials/teletype_strip_9p.png`, `TeletypePanel` | Wave preview strip |
 | Brass plate | `assets/ui/materials/brass_plate_9p.png`, `PrimaryButton` | The one primary action per screen; the speed lever plate |
 | Wood rail | `assets/ui/materials/wood_rail_h_9p.png`, `WoodRailPanel` | Optional top/bottom rails on flow screens; not used in the mission HUD |
@@ -202,7 +203,8 @@ use their token color plus the glyph shape; disabled icons use `grey`.
 | Variation | Base | Look | Use |
 |---|---|---|---|
 | `TitleLabel` / `PaperTitleLabel` | Label | Oswald 600 44 | Screen titles |
-| `HeadingLabel` / `PaperHeadingLabel` | Label | Oswald 500 24/26 | Section headings, tower name |
+| `HeadingLabel` / `PaperHeadingLabel` | Label | Oswald 500 24/26 | Section headings |
+| `CardHeadingLabel` / `PaperCardHeadingLabel` | Label | Oswald 500 20 | Card titles: tower name on the inspection card and loadout cards, doctrine card names |
 | `SubheadingLabel` / `PaperSubheadingLabel` | Label | Oswald 500 18, muted | Sub-sections, card kickers |
 | `BodyLabel` / `PaperBodyLabel` | Label | Barlow 16/17 | Body copy |
 | `SmallLabel` / `PaperSmallLabel` | Label | Barlow 13, muted | Captions, shortfall text |
@@ -222,7 +224,7 @@ use their token color plus the glyph shape; disabled icons use `grey`.
 | `PrimaryButton` | Button | brass plate, Oswald 20 ink | The one main action per screen (Deploy, Continue, Retry) |
 | `PaperButton` | Button | cream, 2 px ink border | Actions on paper cards |
 | `CardButton` | Button | slate card, amber when pressed/toggled | Build bar, ability cards, doctrine cards (toggle mode) |
-| `GhostButton` | Button | outline only | Tertiary actions (Close, Back) |
+| `GhostButton` | Button | outline only | Tertiary actions on **slate** only (its muted-cream text is unreadable on paper; tertiary actions on paper use `PaperButton`) |
 | `PaperSeparator` | HSeparator | faint ink rule | Rules on paper |
 | `PaperRichText` | RichTextLabel | ink body with bold/mono | Formatted paper copy |
 
@@ -231,8 +233,8 @@ disabled, keyboard focus (2 px amber ring from `sb_focus`). Disabled controls
 keep their label readable (≥ 50 % alpha) and say *why* where it matters
 (`Need +40`, `Cooling down 12s`, `Used this mission`).
 
-Sizes: buttons ≥ 40 px tall; card buttons 120×128 (build) and 104×128
-(abilities); hit targets ≥ 32 px.
+Sizes: buttons ≥ 40 px tall; card buttons 120×128 (build) and 104×140
+(abilities, two-line names); hit targets ≥ 32 px.
 
 ---
 
@@ -296,7 +298,9 @@ Zones per §2.1. Details:
   `air_warning` badge in `amber` whenever any previewed wave contains air.
 - **Time (C).** A `PrimaryButton`-styled lever plate split into three
   `CardButton`s (`1×` `2×` `3×`, toggle group) + `pause` button + `menu`
-  button (opens the pause menu). Space cycles speed, P pauses (existing).
+  button (opens the pause menu). `TimeControls` owns the keys: Space cycles
+  speed, `+`/`-` step it, P pauses, Esc opens the pause menu once build mode,
+  ability targeting and the inspection card have had their chance to use it.
 - **Build phase (D).** `SlatePanel` with `CaptionLabel` "BUILD PHASE",
   countdown ring (custom `_Draw`: 44 px ring, `amber` sweep, seconds in
   `NumberLabel`), and the `PrimaryButton` "Call Wave Early  +NN" where NN is
@@ -327,7 +331,7 @@ Zones per §2.1. Details:
 
 ### 8.5 Tower inspection card (`TowerInspectionPanel`)
 
-`PaperPanel` 340 wide, anchored 24 px right of the tower (flipped left when
+`PaperPanel` 380 wide, anchored 24 px right of the tower (flipped left when
 it would leave the screen; clamped vertically). Contents top-to-bottom:
 
 1. Header: tower icon 32 px, name (`PaperHeadingLabel` 20), level pips
@@ -340,7 +344,8 @@ it would leave the screen; clamped vertically). Contents top-to-bottom:
 5. Actions: **Upgrade (cost)** `PaperButton` with a diff preview line under it
    (`PaperMonoLabel`: "Damage 45 → 62 · Range 5.0 → 5.5"); at the fork two
    half-width branch cards (`PaperButton`, name + cost + one-line description
-   from `TowerBranch`); **Sell (refund)** `GhostButton` styled for paper;
+   — `TowerBranch` has no description field, so each branch card shows its
+   own stat diff for L3 instead); **Sell (refund)** `PaperButton`;
    **Close** (`close` icon button). Esc or clicking elsewhere closes.
    Command Posts show aura radius and per-wave income instead of combat
    stats. Suppressed towers show a `red` "SUPPRESSED" stamp and a disabled
@@ -349,9 +354,10 @@ it would leave the screen; clamped vertically). Contents top-to-bottom:
 
 ### 8.6 Tutorial card (`TutorialController`)
 
-`PaperPanel` 640 wide, top-center below the wave strip. Step pips (8), step
-title (`PaperHeadingLabel` 20), body (`PaperBodyLabel`), **Next**
-(`PrimaryButton`) and **Skip tutorial** (`GhostButton`). Copy stays as
+`PaperPanel` 640 wide, top-center below the wave strip and the pause banner
+(y 196). Step pips (8), step title (`PaperHeadingLabel`), body
+(`PaperBodyLabel`), **Next** (`PrimaryButton`, `Begin` on the last step) and
+**Skip tutorial** (`PaperButton`). Copy stays as
 authored; only the presentation changes.
 
 ### 8.7 Pause menu
@@ -360,7 +366,8 @@ Centered `PaperPanel` 420 wide: `StampLabel` "PAUSED", buttons **Resume**
 (`PrimaryButton`, focused by default), Restart Mission, Settings (disabled,
 "later"), Abandon Mission (opens an inline confirm row: "Abandon? Yes / No"),
 Quit to Menu (`PaperButton`s). Opened by the HUD menu button or Esc when
-nothing else is open. Game time is paused while open; building stays
+nothing else is open. Abandon returns to the briefing; Quit to Menu to the
+main menu. Game time is paused while open; building stays
 available underneath only via the HUD (the card blocks clicks under itself).
 
 ### 8.8 Post-mortem (`PostMortemPanel`)
@@ -439,10 +446,13 @@ Every UI change is checked with real screenshots, not by reading code:
 
 ```
 godot --path . --resolution 1920x1080 --position 0,0 --screen=<name> \
-      --screenshot-dir=<abs dir> [--screenshot-frames=40,900] [--skip-tutorial]
+      --screenshot-dir=<abs dir> [--screenshot-frames=40,900] [--skip-tutorial] \
+      [--ui-state=pause|inspect|postmortem]
 ```
 
-`--screen` accepts `main_menu`, `briefing`, `loadout`, `mission`, `results`.
+`--screen` accepts `main_menu`, `briefing`, `loadout`, `mission`, `results`;
+`--ui-state` opens an overlay that normally needs a click (see
+`tools/README.md`).
 Then `tools/Run-HeadlessChecks.ps1` must stay green (build, all suites,
 validator, smoke run).
 
@@ -456,6 +466,22 @@ passes §12; no absolute positions that break when the window widens.
 | Area | Files |
 |---|---|
 | Theme, palette, icons registry, materials | `assets/ui/theme/fow_theme.tres`, `src/UI/Theme/*.cs`, `assets/ui/materials/*`, `assets/ui/icons/*.svg` |
-| Flow screens | `src/UI/Flow/{MainMenu,Briefing,Loadout,Results}Controller.cs`, `scenes_root/{main_menu,briefing,loadout,results}.tscn`, `src/Core/Boot.cs` |
-| Mission HUD chrome | `src/UI/Hud/*.cs`, `scenes_root/mission.tscn` (Camera, backdrop, HUD nodes) |
-| Mission cards and overlays | `src/UI/Panels/*.cs`, `src/UI/Flow/TutorialController.cs`, `src/UI/DamageNumberSpawner.cs`, `src/Map/BuildPad.cs`, `scenes/map/build_pad.tscn`, `src/Enemies/EnemyController.cs` (`_Draw` only) |
+| Flow screens | `src/UI/Flow/{MainMenu,Briefing,Loadout,Results}Controller.cs`, `src/UI/Theme/FlowScreen.cs`, `scenes_root/{main_menu,briefing,loadout,results}.tscn`, `src/Core/Boot.cs` |
+| Mission HUD chrome | `src/UI/Hud/*.cs` (`HudController`, `ResourcePanel`, `TimeControls`, `BuildPhasePanel`, `BuildBar` + `TowerCard`, `AbilityHotbar` + `AbilityCard`, `DoctrineAbilitySlot`, `WavePreviewPanel`), `src/UI/Menus/PauseMenu.cs`, `scenes_root/mission.tscn` (Camera, `TableBackdrop`, HUD nodes) |
+| Mission cards and overlays | `src/UI/Panels/*.cs` (`TowerInspectionPanel` + `TowerInspectionCard` + `TowerSelectionOverlay`, `PostMortemPanel` + `PostMortemReport` + `DamageTypeChart`), `src/UI/Flow/TutorialController.cs`, `src/UI/DamageNumberSpawner.cs`, `src/Map/BuildPad.cs`, `scenes/map/build_pad.tscn`, `src/Enemies/EnemyController.cs` and `src/Towers/CommandPostController.cs` (`_Draw` only) |
+| Glyphs | `tools/art/generate_ui_icons.py` → `assets/ui/icons/*.svg` (regenerate, never hand-edit); `MatchupRules` derives strong/weak rows from `DamageTable` |
+
+---
+
+## 15. Changelog
+
+- **1.1 (2026-09-04, D55)** — screens built. Paper 9-patch cropped to a 16 px
+  shadow border with content margins 36/32/36/34 (v1.0's 30/26 sat inside
+  the texture's transparent 40 px border and clipped every card). Added
+  `CardHeadingLabel` / `PaperCardHeadingLabel` (20 px). Ability cards
+  104×140; inspection card 380 wide. `GhostButton` restricted to slate.
+  Branch cards show a stat diff (no `TowerBranch` description exists). Time
+  hotkeys implemented in `TimeControls`. `--ui-state` screenshot flag.
+  Main-menu build caption lives on the paper sheet (unreadable on the map
+  art). Tutorial card at y 196 so it clears the pause banner.
+- **1.0 (2026-09-04, D54)** — initial system.

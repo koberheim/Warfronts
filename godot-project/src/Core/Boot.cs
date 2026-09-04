@@ -90,6 +90,7 @@ public partial class Boot : Node2D
             GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
             return;
         }
-        GetTree().ChangeSceneToFile("res://scenes_root/briefing.tscn");
+        // Normal play starts at the main menu (GDD §13.1; UI spec §8.1).
+        GetTree().ChangeSceneToFile("res://scenes_root/main_menu.tscn");
     }
 }

@@ -1,11 +1,13 @@
 using Godot;
 using FrontsOfWar.Core;
+using FrontsOfWar.UI.Theme;
 
 namespace FrontsOfWar.UI.Flow;
 
-// Eight short, integrated prompts. The game is paused while the card is up,
-// so the tutorial teaches the player's first decisions without execution
-// pressure and can point at the live battlefield in a later art pass.
+// Eight short, integrated prompts on a paper card below the wave strip
+// (docs/UI_DESIGN_SPEC.md §8.6; GDD §13.10). The game is paused while the
+// card is up, so the tutorial teaches the player's first decisions without
+// execution pressure. Copy stays as authored; only the presentation changed.
 public partial class TutorialController : CanvasLayer
 {
     private static readonly string[] Steps =
@@ -20,8 +22,11 @@ public partial class TutorialController : CanvasLayer
         "8 / Adapt — upgrades, sells, and the post-mortem explain what to change before retrying."
     };
 
-    private PanelContainer _panel;
-    private Label _label;
+    private PanelContainer _card;
+    private readonly TextureRect[] _pips = new TextureRect[8];
+    private Label _title;
+    private Label _body;
+    private Button _next;
     private int _step;
 
     public override void _Ready()
@@ -33,35 +38,76 @@ public partial class TutorialController : CanvasLayer
     private void StartIfNeeded()
     {
         if (MissionSession.TutorialCompleted || DisplayServer.GetName() == "headless") return;
-        _panel = new PanelContainer { Position = new Vector2(220, 180), CustomMinimumSize = new Vector2(600, 170) };
-        AddChild(_panel);
-        var box = new VBoxContainer();
-        _panel.AddChild(box);
-        _label = new Label { AutowrapMode = TextServer.AutowrapMode.WordSmart };
-        box.AddChild(_label);
-        var next = new Button { Text = "Next", CustomMinimumSize = new Vector2(140, 42) };
-        next.Pressed += Advance;
-        box.AddChild(next);
+
+        _card = UiFactory.Panel("PaperPanel");
+        _card.CustomMinimumSize = new Vector2(640f, 0f);
+        AddChild(_card);
+        UiFactory.Anchor(_card, Control.LayoutPreset.CenterTop, 0, 196);
+
+        var column = UiFactory.VBox(8);
+        _card.AddChild(column);
+
+        var header = UiFactory.HBox(8);
+        column.AddChild(header);
+        header.AddChild(UiFactory.Label("PaperSubheadingLabel", "TUTORIAL"));
+        header.AddChild(UiFactory.Spacer(expand: true));
+        var pipRow = UiFactory.HBox(4);
+        header.AddChild(pipRow);
+        for (int i = 0; i < _pips.Length; i++)
+        {
+            _pips[i] = UiFactory.Icon("level_pip_off", 10, UiPalette.InkMuted) ?? new TextureRect();
+            pipRow.AddChild(_pips[i]);
+        }
+
+        _title = UiFactory.Label("PaperHeadingLabel", "");
+        column.AddChild(_title);
+        _body = UiFactory.Wrapped("PaperBodyLabel", "");
+        column.AddChild(_body);
+
+        _next = UiFactory.Button("PrimaryButton", "Next", Advance);
+        _next.CustomMinimumSize = new Vector2(140f, 44f);
+        var skip = UiFactory.Button("PaperButton", "Skip tutorial", Finish);
+        var actions = UiFactory.HBox(8);
+        actions.AddChild(skip);
+        actions.AddChild(UiFactory.Spacer(expand: true));
+        actions.AddChild(_next);
+        column.AddChild(actions);
+
         GameLoop.Instance.Time.Pause();
         Refresh();
+        UiFactory.FadeIn(_card);
+        _next.GrabFocus();
     }
 
     private void Advance()
     {
         _step++;
-        if (_step >= Steps.Length)
-        {
-            MissionSession.TutorialCompleted = true;
-            GameLoop.Instance.Time.Resume();
-            _panel.QueueFree();
-            return;
-        }
+        if (_step >= Steps.Length) { Finish(); return; }
         Refresh();
+        _next.GrabFocus();
+    }
+
+    private void Finish()
+    {
+        MissionSession.TutorialCompleted = true;
+        GameLoop.Instance.Time.Resume();
+        _card.QueueFree();
+        _card = null;
     }
 
     private void Refresh()
     {
-        _label.Text = $"TUTORIAL\n\n{Steps[_step]}\n\nPause-and-highlight tutorial — press Next to continue.";
+        // Authored as "N / Title — body"; split for the card's heading.
+        string text = Steps[_step];
+        int slash = text.IndexOf('/');
+        int dash = text.IndexOf('—');
+        string title = dash > slash ? text[(slash + 1)..dash].Trim() : $"Step {_step + 1}";
+        string body = dash > 0 ? text[(dash + 1)..].Trim() : text;
+        _title.Text = title.ToUpperInvariant();
+        _body.Text = body.Length > 0 ? char.ToUpperInvariant(body[0]) + body[1..] : body;
+        for (int i = 0; i < _pips.Length; i++)
+            _pips[i].Texture = UiIcons.Get(i <= _step ? "level_pip_on" : "level_pip_off");
+        _next.Text = _step == Steps.Length - 1 ? "Begin" : "Next";
         EventBus.Instance?.Publish(new TutorialStepChangedEvent(_step));
     }
 }

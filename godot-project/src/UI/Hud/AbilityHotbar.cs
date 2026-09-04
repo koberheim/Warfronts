@@ -2,89 +2,66 @@ using Godot;
 using FrontsOfWar.Core;
 using FrontsOfWar.Economy;
 using FrontsOfWar.Map;
-using System;
+using FrontsOfWar.UI.Theme;
 using System.Collections.Generic;
 
 namespace FrontsOfWar.UI.Hud;
 
-// Bottom-right universal ability bar (GDD §7.6, §13.4). Point abilities
-// enter target mode so the same control works with mouse clicks and keys 1–4.
-// The bar is deliberately text-first while the project is still using
-// primitive prototype art; CP costs and cooldown state remain unambiguous.
-public partial class AbilityHotbar : Control
+// HUD zone G (docs/UI_DESIGN_SPEC.md §8.4; GDD §7.6, §13.4): the ABILITIES
+// panel with its status line and the card row. Owns the three universal
+// abilities; DoctrineAbilitySlot adds the fourth card into CardRow and
+// writes its own messages through ExternalStatus (D26/D51 kept the two
+// controls separate so this one's "one AbilityType, one click" flow stays
+// simple). Point abilities enter target mode; keys 1-3 select or activate.
+public partial class AbilityHotbar : PanelContainer
 {
-    private readonly record struct AbilityEntry(AbilityType Type, string Name, Key Hotkey);
+    private readonly record struct AbilityEntry(AbilityType Type, string Name, string IconId, Key Hotkey, string KeyLabel);
 
     private static readonly AbilityEntry[] Entries =
     {
-        new(AbilityType.ArtilleryStrike, "Artillery Strike", Key.Key1),
-        new(AbilityType.Rally, "Rally", Key.Key2),
-        new(AbilityType.EmergencyRepair, "Emergency Repair", Key.Key3),
+        new(AbilityType.ArtilleryStrike, "Artillery Strike", "ability_artillery_strike", Key.Key1, "1"),
+        new(AbilityType.Rally, "Rally", "ability_rally", Key.Key2, "2"),
+        new(AbilityType.EmergencyRepair, "Emergency Repair", "ability_emergency_repair", Key.Key3, "3"),
     };
 
+    private const string DefaultStatus = "Keys 1–4 select an ability; click the battlefield to target it.";
+
     private MapRuntime _mission;
-    private readonly Dictionary<AbilityType, Button> _buttons = new();
+    private readonly Dictionary<AbilityType, AbilityCard> _cards = new();
     private Label _statusLabel;
     private AbilityType? _selectedAbility;
     private string _lastStatus;
 
-    public MapRuntime Mission
-    {
-        get => _mission;
-        set => _mission = value;
-    }
+    public MapRuntime Mission { get => _mission; set => _mission = value; }
+    public HBoxContainer CardRow { get; private set; }
+
+    // Set by the doctrine slot while it has something to say; null hands
+    // the status line back to this control.
+    public string ExternalStatus { get; set; }
 
     public override void _Ready()
     {
-        ProcessMode = ProcessModeEnum.Always;
-        MouseFilter = MouseFilterEnum.Ignore;
-        CustomMinimumSize = new Vector2(390f, 92f);
-        Size = CustomMinimumSize;
+        ThemeTypeVariation = "SlatePanel";
+        var column = UiFactory.VBox(4);
+        AddChild(column);
+        column.AddChild(UiFactory.Label("CaptionLabel", "ABILITIES", uppercase: true));
 
-        var panel = new PanelContainer
-        {
-            CustomMinimumSize = CustomMinimumSize,
-            Size = CustomMinimumSize,
-            MouseFilter = MouseFilterEnum.Ignore,
-        };
-        panel.AddThemeStyleboxOverride("panel", BuildPanelStyle());
-        AddChild(panel);
+        _statusLabel = UiFactory.Wrapped("SmallLabel", DefaultStatus);
+        _statusLabel.CustomMinimumSize = new Vector2(440f, 0f);
+        column.AddChild(_statusLabel);
 
-        var column = new VBoxContainer { MouseFilter = MouseFilterEnum.Ignore };
-        column.AddThemeConstantOverride("separation", 4);
-        panel.AddChild(column);
-
-        var title = new Label
-        {
-            Text = "TACTICAL ABILITIES",
-            HorizontalAlignment = HorizontalAlignment.Center,
-        };
-        column.AddChild(title);
-
-        var row = new HBoxContainer { MouseFilter = MouseFilterEnum.Ignore };
-        row.AddThemeConstantOverride("separation", 5);
-        column.AddChild(row);
+        CardRow = UiFactory.HBox(8);
+        column.AddChild(CardRow);
 
         foreach (var entry in Entries)
         {
-            var button = new Button
-            {
-                CustomMinimumSize = new Vector2(120f, 48f),
-                FocusMode = FocusModeEnum.None,
-                TooltipText = $"{entry.Name} ({entry.Hotkey})",
-            };
-            button.AddThemeFontSizeOverride("font_size", 12);
-            button.Pressed += () => SelectOrActivate(entry.Type);
-            row.AddChild(button);
-            _buttons.Add(entry.Type, button);
+            var card = new AbilityCard();
+            CardRow.AddChild(card);
+            card.Setup(entry.KeyLabel, entry.IconId, entry.Name, _mission?.Abilities?.CpCost(entry.Type) ?? 0);
+            var type = entry.Type;
+            card.Pressed += () => SelectOrActivate(type);
+            _cards.Add(entry.Type, card);
         }
-
-        _statusLabel = new Label
-        {
-            Text = "Keys 1–3 select an ability; click the battlefield to target it.",
-            HorizontalAlignment = HorizontalAlignment.Center,
-        };
-        column.AddChild(_statusLabel);
 
         EventBus.Instance?.Subscribe<CommandPointsChangedEvent>(OnCommandPointsChanged);
         Callable.From(Refresh).CallDeferred();
@@ -95,12 +72,9 @@ public partial class AbilityHotbar : Control
         EventBus.Instance?.Unsubscribe<CommandPointsChangedEvent>(OnCommandPointsChanged);
     }
 
-    public override void _Process(double delta)
-    {
-        // Cooldowns are simulation-owned, so the display is refreshed from
-        // the live values rather than maintaining a second timer in the UI.
-        Refresh();
-    }
+    // Cooldowns are simulation-owned, so the display reads the live values
+    // rather than keeping a second timer in the UI.
+    public override void _Process(double delta) => Refresh();
 
     public override void _UnhandledInput(InputEvent @event)
     {
@@ -113,13 +87,16 @@ public partial class AbilityHotbar : Control
                 GetViewport().SetInputAsHandled();
                 return;
             }
+            if (key.Keycode == Key.Escape && _selectedAbility != null)
+            {
+                _selectedAbility = null;
+                _lastStatus = null;
+                GetViewport().SetInputAsHandled();
+            }
+            return;
         }
 
-        if (_selectedAbility == null || @event is not InputEventMouseButton
-            {
-                Pressed: true,
-                ButtonIndex: MouseButton.Left,
-            } mouse)
+        if (_selectedAbility == null || @event is not InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left } mouse)
             return;
 
         var worldPoint = GetViewport().GetCanvasTransform().AffineInverse() * mouse.Position;
@@ -134,7 +111,6 @@ public partial class AbilityHotbar : Control
             TryActivate(type, Vector2.Zero);
             return;
         }
-
         _selectedAbility = _selectedAbility == type ? null : type;
         _lastStatus = null;
         Refresh();
@@ -156,7 +132,6 @@ public partial class AbilityHotbar : Control
                 ? $"Need {shortfall} more CP for {DisplayName(type)}."
                 : $"{DisplayName(type)} is cooling down.";
         }
-
         Refresh();
     }
 
@@ -168,21 +143,16 @@ public partial class AbilityHotbar : Control
 
         foreach (var entry in Entries)
         {
-            var button = _buttons[entry.Type];
             float cooldown = _mission.Abilities.CooldownRemaining(entry.Type);
-            int cost = _mission.Abilities.CpCost(entry.Type);
-            bool affordable = _mission.CommandPoints.Balance >= cost;
-            string state = cooldown > 0f ? $"{cooldown:0.0}s" : affordable ? "READY" : "LOW CP";
-            button.Text = $"[{HotkeyNumber(entry.Hotkey)}] {entry.Name}\n{cost} CP  {state}";
-            button.Disabled = cooldown > 0f;
-            button.Modulate = _selectedAbility == entry.Type
-                ? new Color(1f, 0.9f, 0.45f)
-                : Colors.White;
+            bool affordable = _mission.CommandPoints.Balance >= _mission.Abilities.CpCost(entry.Type);
+            _cards[entry.Type].SetCpCost(_mission.Abilities.CpCost(entry.Type));
+            _cards[entry.Type].SetState(cooldown, _mission.Abilities.CooldownSeconds(entry.Type), affordable,
+                _selectedAbility == entry.Type, false);
         }
 
-        string status = _lastStatus ?? (_selectedAbility == null
-            ? "Keys 1–3 select an ability; click the battlefield to target it."
-            : $"Targeting {DisplayName(_selectedAbility.Value)} — click a point or press the button again to cancel.");
+        string status = ExternalStatus ?? _lastStatus ?? (_selectedAbility == null
+            ? DefaultStatus
+            : $"Targeting {DisplayName(_selectedAbility.Value)} — click a target, or press the key again to cancel.");
         if (status != _statusLabel.Text) _statusLabel.Text = status;
     }
 
@@ -192,31 +162,5 @@ public partial class AbilityHotbar : Control
         AbilityType.Rally => "Rally",
         AbilityType.EmergencyRepair => "Emergency Repair",
         _ => type.ToString(),
-    };
-
-    private static string HotkeyNumber(Key key) => key switch
-    {
-        Key.Key1 => "1",
-        Key.Key2 => "2",
-        Key.Key3 => "3",
-        _ => "?",
-    };
-
-    private static StyleBoxFlat BuildPanelStyle() => new()
-    {
-        BgColor = new Color(0.06f, 0.08f, 0.1f, 0.92f),
-        BorderColor = new Color(0.65f, 0.52f, 0.28f, 0.95f),
-        BorderWidthLeft = 2,
-        BorderWidthTop = 2,
-        BorderWidthRight = 2,
-        BorderWidthBottom = 2,
-        CornerRadiusTopLeft = 5,
-        CornerRadiusTopRight = 5,
-        CornerRadiusBottomRight = 5,
-        CornerRadiusBottomLeft = 5,
-        ContentMarginLeft = 8,
-        ContentMarginTop = 6,
-        ContentMarginRight = 8,
-        ContentMarginBottom = 5,
     };
 }

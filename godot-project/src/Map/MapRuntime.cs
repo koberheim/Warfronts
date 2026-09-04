@@ -167,6 +167,7 @@ public partial class MapRuntime : Node2D, ISimTickable
         if (DebugLogEvents) _debugLogger = new DebugEventLogger();
         if (DebugWaveSequence?.Waves is { Length: > 0 } sequence)
         {
+            TotalWaves = sequence.Length;
             int startIndex = RequestedDebugWaveIndex(sequence);
             Waves.StartWave(sequence[startIndex]);
             if (!DebugSingleWave)
@@ -264,12 +265,19 @@ public partial class MapRuntime : Node2D, ISimTickable
 
     public float BuildTimeRemaining => Mathf.Max(0f, _buildTimeRemaining);
     public bool IsBuildPhase => _waitingForBuild;
+    public int TotalWaves { get; private set; }
+
+    // The exact Supply the "Call Wave Early" button pays right now (GDD
+    // §7.7: "shows the exact bonus Supply before you commit") - the HUD reads
+    // this so the number shown is the number credited.
+    public int EarlyCallBonusNow => _waitingForBuild
+        ? Supply.EarlyCallBonus(Waves.CurrentWaveNumber, Mathf.Clamp(_buildTimeRemaining / Mathf.Max(1f, MissionBuildTimeSeconds), 0f, 1f))
+        : 0;
 
     public void CallNextWaveEarly()
     {
         if (!_waitingForBuild) return;
-        float fraction = Mathf.Clamp(_buildTimeRemaining / Mathf.Max(1f, MissionBuildTimeSeconds), 0f, 1f);
-        Supply.Credit(Supply.EarlyCallBonus(Waves.CurrentWaveNumber, fraction));
+        Supply.Credit(EarlyCallBonusNow);
         _waitingForBuild = false;
         Waves.StartNextWave();
     }

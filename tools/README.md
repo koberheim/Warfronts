@@ -59,3 +59,31 @@ repo (installing hooks from a script a clone just downloaded is its own can
 of worms), and the full check suite (headless smoke run included) takes
 long enough that some contributors may prefer running it manually before
 `git push` instead of on every commit.
+
+## UI screenshots (visual verification)
+
+Every UI change is checked by looking at it (docs/UI_DESIGN_SPEC.md §13),
+using the dev-only capture flags routed by `Boot` into
+`src/Debug/ScreenshotCapture.cs`. This needs a real window, so it is not
+part of `Run-HeadlessChecks.ps1`:
+
+```powershell
+# from godot-project/, with the Mono binary on your path or via $G
+& $G --path . --resolution 1920x1080 --position 0,0 `
+     --screen=mission --skip-tutorial --ui-state=inspect `
+     --screenshot-dir="C:\some\abs\dir" --screenshot-frames=40,900
+```
+
+- `--screen=` one of `main_menu`, `briefing`, `loadout`, `mission`, `results`.
+- `--screenshot-frames=` comma-separated frame numbers to save (default 45);
+  the process quits after the last one. Frame ~900 of the mission shows a
+  wave in progress.
+- `--skip-tutorial` suppresses the tutorial card so the HUD is unobstructed.
+- `--ui-state=` opens an overlay that normally needs a click:
+  `pause` (pause menu), `inspect` (inspection card on the first tower),
+  `postmortem` (defeat report). Ignored unless `--screenshot-dir` is set.
+- Files land as `<dir>/<screen>_f<frame>.png` at the window's resolution.
+
+`tools/art/generate_ui_icons.py` regenerates the monochrome glyph set under
+`assets/ui/icons/` (spec §6); run `godot --headless --path . --import`
+afterwards so the new SVGs are imported before a screenshot run.

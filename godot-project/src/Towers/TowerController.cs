@@ -57,6 +57,10 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     private float _secondaryCooldownRemaining;
     private ITargetable _currentTarget;
 
+    // Read by the selection overlay (GDD §13.4: the selected tower shows
+    // "its current target with a thin line"); null between engagements.
+    public ITargetable CurrentTarget => _currentTarget;
+
     public override void _Ready()
     {
         CurrentTargeting = Definition.DefaultTargeting;

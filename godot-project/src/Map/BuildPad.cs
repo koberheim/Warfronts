@@ -53,12 +53,14 @@ public partial class BuildPad : Node2D
     {
         _buildModeGlow = active;
         if (_highlight != null) _highlight.Visible = active || IsHovered;
+        QueueRedraw();
     }
 
     private void OnMouseEntered()
     {
         IsHovered = true;
         if (_highlight != null) _highlight.Visible = true;
+        QueueRedraw();
         EventBus.Instance?.Publish(new BuildPadHoverChangedEvent(this, true));
     }
 
@@ -66,7 +68,19 @@ public partial class BuildPad : Node2D
     {
         IsHovered = false;
         if (_highlight != null) _highlight.Visible = _buildModeGlow;
+        QueueRedraw();
         EventBus.Instance?.Publish(new BuildPadHoverChangedEvent(this, false));
+    }
+
+    // Build-mode ring (UI spec §9: amber 2 px ring + soft fill while a build
+    // card is selected, stronger fill on hover) drawn over the pad mark.
+    public override void _Draw()
+    {
+        if (!_buildModeGlow || IsOccupied) return;
+        var amber = UI.Theme.UiPalette.Amber;
+        var rect = new Rect2(-20f, -20f, 40f, 40f);
+        if (IsHovered) DrawRect(rect, amber with { A = 0.2f });
+        DrawRect(rect, amber with { A = 0.95f }, false, 2f);
     }
 
     private void OnInputEvent(Node viewport, InputEvent @event, long shapeIdx)

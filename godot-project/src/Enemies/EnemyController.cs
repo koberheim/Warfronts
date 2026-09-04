@@ -1,4 +1,5 @@
 using Godot;
+using FrontsOfWar.UI.Theme;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
 using FrontsOfWar.Map;
@@ -192,15 +193,15 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
 
         if (Definition.IsBoss || _currentHp < _maxHp)
         {
-            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth, barHeight), new Color(0.15f, 0.15f, 0.15f, 0.9f));
-            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth * fraction, barHeight), new Color(0.75f, 0.15f, 0.15f, 1f));
+            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth, barHeight), UiPalette.Slate with { A = 0.9f });
+            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth * fraction, barHeight), UiPalette.Red);
         }
 
         if (BossPhase is { IsSkirtIntact: true })
         {
             float skirtFraction = BossPhase.SkirtMaxHp > 0f ? BossPhase.SkirtHp / BossPhase.SkirtMaxHp : 0f;
-            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth, barHeight), new Color(0.1f, 0.1f, 0.1f, 0.9f));
-            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth * skirtFraction, barHeight), new Color(0.85f, 0.65f, 0.2f, 1f));
+            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth, barHeight), UiPalette.Slate with { A = 0.9f });
+            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth * skirtFraction, barHeight), UiPalette.Amber);
         }
 
         DrawArmorGlyph(new Vector2(-barWidth / 2f - 7f, yOffset + barHeight / 2f));
@@ -209,23 +210,23 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
         float badgeY = yOffset + barHeight / 2f;
         if (Status.IsSuppressed)
         {
-            DrawCircle(new Vector2(badgeX, badgeY), 3f, new Color(0.6f, 0.6f, 0.6f));
+            DrawCircle(new Vector2(badgeX, badgeY), 3f, UiPalette.Grey);
             badgeX += 8f;
         }
         if (Status.IsSpotted)
-            DrawCircle(new Vector2(badgeX, badgeY), 3f, new Color(0.85f, 0.2f, 0.2f));
+            DrawArc(new Vector2(badgeX, badgeY), 3f, 0f, Mathf.Tau, 12, UiPalette.Red, 1.5f, true);
         if (Definition.Archetype == EnemyArchetype.Escort && _shieldRemaining > 0f)
         {
             float radius = Definition.EscortShieldRadiusTiles * GameBalanceConfigAutoload.Config.TilePixelSize;
             var bubble = new Vector2[7];
             for (int i = 0; i < bubble.Length; i++)
                 bubble[i] = new Vector2(radius, 0f).Rotated(i * Mathf.Tau / bubble.Length);
-            DrawPolyline(bubble, new Color(0.35f, 0.85f, 0.95f, 0.28f), 2f, true);
-            DrawRect(new Rect2(-21f, 24f, 42f, 3f), new Color(0.08f, 0.1f, 0.12f));
-            DrawRect(new Rect2(-21f, 24f, 42f * (_shieldRemaining / Mathf.Max(1f, Definition.EscortShieldMaxHp)), 3f), new Color(0.35f, 0.85f, 0.95f));
+            DrawPolyline(bubble, UiPalette.Blue with { A = 0.28f }, 2f, true);
+            DrawRect(new Rect2(-21f, 24f, 42f, 3f), UiPalette.Slate with { A = 0.9f });
+            DrawRect(new Rect2(-21f, 24f, 42f * (_shieldRemaining / Mathf.Max(1f, Definition.EscortShieldMaxHp)), 3f), UiPalette.Blue);
         }
         if (_repairTarget != null && _repairTarget.IsAlive)
-            DrawLine(Vector2.Zero, ToLocal(_repairTarget.GlobalPosition), new Color(0.25f, 0.95f, 0.35f, 0.9f), 3f);
+            DrawLine(Vector2.Zero, ToLocal(_repairTarget.GlobalPosition), UiPalette.Green with { A = 0.9f }, 3f);
         if (IsAir)
         {
             DrawLine(new Vector2(-20f, 10f), new Vector2(20f, 10f), new Color(0.15f, 0.15f, 0.2f, 0.35f), 8f);

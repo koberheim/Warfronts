@@ -4,50 +4,49 @@ using FrontsOfWar.Doctrines;
 using FrontsOfWar.Economy;
 using FrontsOfWar.Map;
 using FrontsOfWar.Towers;
+using FrontsOfWar.UI.Theme;
 
 namespace FrontsOfWar.UI.Hud;
 
-// The doctrine's fourth ability (GDD §8.3, §19 prompt 39) — key 4, a sibling
-// to AbilityHotbar rather than a fourth entry inside it, so that control's
-// uniform "one AbilityType, one world-point click" flow doesn't have to grow
-// tower/pad/two-point targeting just for this one slot (see AbilityHotbar's
-// own file-size note in the GDD prompt).
+// The doctrine's fourth ability (GDD §8.3, §19 prompt 39) - key 4. A logic-
+// only sibling of AbilityHotbar that places its card into the hotbar's row
+// and speaks through the shared status line, so the four cards read as one
+// bar while this control keeps its own tower / pad / two-point targeting.
 public partial class DoctrineAbilitySlot : Control
 {
     private MapRuntime _mission;
-    private Button _button;
-    private Label _statusLabel;
+    private AbilityHotbar _hotbar;
+    private AbilityCard _card;
     private bool _targeting;
     private Vector2? _firstPoint;
     private TowerController _firstTower;
     private string _lastStatus;
 
     public MapRuntime Mission { get => _mission; set => _mission = value; }
+    public AbilityHotbar Hotbar { get => _hotbar; set => _hotbar = value; }
 
     public override void _Ready()
     {
-        ProcessMode = ProcessModeEnum.Always;
         MouseFilter = MouseFilterEnum.Ignore;
-        CustomMinimumSize = new Vector2(150f, 92f);
-        Size = CustomMinimumSize;
-
-        var panel = new PanelContainer { CustomMinimumSize = CustomMinimumSize, Size = CustomMinimumSize, MouseFilter = MouseFilterEnum.Ignore };
-        AddChild(panel);
-        var column = new VBoxContainer { MouseFilter = MouseFilterEnum.Ignore };
-        panel.AddChild(column);
-        column.AddChild(new Label { Text = "DOCTRINE", HorizontalAlignment = HorizontalAlignment.Center });
-
-        _button = new Button { CustomMinimumSize = new Vector2(140f, 48f), FocusMode = FocusModeEnum.None };
-        _button.Pressed += () => ToggleTargeting();
-        column.AddChild(_button);
-
-        _statusLabel = new Label { HorizontalAlignment = HorizontalAlignment.Center };
-        column.AddChild(_statusLabel);
-
         EventBus.Instance?.Subscribe<CommandPointsChangedEvent>(OnCommandPointsChanged);
         EventBus.Instance?.Subscribe<TowerClickedEvent>(OnTowerClicked);
         EventBus.Instance?.Subscribe<BuildPadClickedEvent>(OnPadClicked);
-        Callable.From(Refresh).CallDeferred();
+        // Deferred: MapRuntime builds DoctrineSystem in its own _Ready, which
+        // runs after this child's (see HudController's note on ordering).
+        Callable.From(CreateCard).CallDeferred();
+    }
+
+    private void CreateCard()
+    {
+        var doctrine = _mission?.Doctrines?.Doctrine;
+        if (doctrine?.Ability == null || _hotbar?.CardRow == null) return;
+        _card = new AbilityCard();
+        _hotbar.CardRow.AddChild(_card);
+        string iconId = UiIcons.Get("ability_" + doctrine.Id) != null ? "ability_" + doctrine.Id : "ability_doctrine";
+        _card.Setup("4", iconId, doctrine.AbilityName, _mission.Doctrines.CpCost);
+        _card.TooltipText = $"{doctrine.AbilityName}  [4]\n{doctrine.AbilityDescription}";
+        _card.Pressed += () => ToggleTargeting();
+        Refresh();
     }
 
     public override void _ExitTree()
@@ -70,10 +69,9 @@ public partial class DoctrineAbilitySlot : Control
 
         if (!_targeting || _mission?.Doctrines == null) return;
         var mode = _mission.Doctrines.TargetingMode;
+        if (@event is InputEventKey { Pressed: true, Keycode: Key.Escape }) { CancelTargeting(); GetViewport().SetInputAsHandled(); return; }
         // Tower / TowerThenPad resolve via TowerClickedEvent/BuildPadClickedEvent instead.
         if (mode is DoctrineTargetingMode.Tower or DoctrineTargetingMode.TowerThenPad or DoctrineTargetingMode.None) return;
-
-        if (@event is InputEventKey { Pressed: true, Keycode: Key.Escape }) { CancelTargeting(); GetViewport().SetInputAsHandled(); return; }
         if (@event is not InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left } mouse) return;
 
         var worldPoint = GetViewport().GetCanvasTransform().AffineInverse() * mouse.Position;
@@ -148,9 +146,9 @@ public partial class DoctrineAbilitySlot : Control
     private string ShortfallMessage()
     {
         var doctrines = _mission.Doctrines;
-        if (doctrines.IsExhausted) return "Already used this mission.";
+        if (doctrines.IsExhausted) return "Used this mission.";
         int shortfall = doctrines.CpCost - _mission.CommandPoints.Balance;
-        return shortfall > 0 ? $"Need {shortfall} more CP." : "Cooling down.";
+        return shortfall > 0 ? $"Need {shortfall} more CP for {doctrines.Doctrine?.AbilityName}." : "Cooling down.";
     }
 
     private void OnCommandPointsChanged(CommandPointsChangedEvent evt) => Refresh();
@@ -158,16 +156,11 @@ public partial class DoctrineAbilitySlot : Control
     private void Refresh()
     {
         var doctrines = _mission?.Doctrines;
-        if (doctrines?.Doctrine?.Ability == null || _button == null) { Visible = false; return; }
+        if (_card == null || doctrines?.Doctrine?.Ability == null) return;
 
-        Visible = true;
-        float cooldown = doctrines.CooldownRemaining;
         bool affordable = _mission.CommandPoints.Balance >= doctrines.CpCost;
-        string state = doctrines.IsExhausted ? "USED" : cooldown > 0f ? $"{cooldown:0.0}s" : affordable ? "READY" : "LOW CP";
-        _button.Text = $"[4] {doctrines.Doctrine.AbilityName}\n{doctrines.CpCost} CP  {state}";
-        _button.Disabled = cooldown > 0f || doctrines.IsExhausted;
-        _button.Modulate = _targeting ? new Color(1f, 0.9f, 0.45f) : Colors.White;
-        _statusLabel.Text = _lastStatus ?? "";
+        _card.SetState(doctrines.CooldownRemaining, doctrines.Doctrine.Ability.CooldownSeconds, affordable, _targeting, doctrines.IsExhausted);
+        if (_hotbar != null) _hotbar.ExternalStatus = _lastStatus;
     }
 
     private static string TargetingPrompt(DoctrineTargetingMode mode) => mode switch

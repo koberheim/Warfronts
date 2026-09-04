@@ -42,7 +42,28 @@ public partial class CommandPostController : Node2D
         };
     }
 
-    public void SimTick(float tickDeltaSeconds) => Upgrade.Tick(tickDeltaSeconds);
+    public void SimTick(float tickDeltaSeconds)
+    {
+        Upgrade.Tick(tickDeltaSeconds);
+        float radius = CurrentAuraRadiusPixels();
+        if (!Mathf.IsEqualApprox(radius, _drawnAuraRadius)) QueueRedraw();
+    }
+
+    private float _drawnAuraRadius = -1f;
+
+    private float CurrentAuraRadiusPixels()
+        => Mathf.Max(0f, Upgrade.CurrentStats().AuraRadiusTiles) * GameBalanceConfigAutoload.Config.TilePixelSize * DoctrineAuraRadiusMultiplier;
+
+    // The aura ring is always visible (GDD §5.8: the aura's value is never
+    // hidden; UI spec §8.4/§9: olive, 35 %, 48 segments) and redraws only
+    // when an upgrade or doctrine changes the radius.
+    public override void _Draw()
+    {
+        if (Upgrade == null) return;
+        _drawnAuraRadius = CurrentAuraRadiusPixels();
+        if (_drawnAuraRadius <= 0f) return;
+        DrawArc(Vector2.Zero, _drawnAuraRadius, 0f, Mathf.Tau, 48, UI.Theme.UiPalette.Olive with { A = 0.35f }, 2f, true);
+    }
 
     public int CurrentCommandPointsPerWave => Upgrade.CurrentStats().CommandPointsPerWave;
     public int CurrentSupplyPerWave => Upgrade.CurrentStats().SupplyPerWave;

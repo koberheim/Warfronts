@@ -47,6 +47,7 @@ public class AbilitySystem
     public bool IsOnCooldown(AbilityType type) => _cooldownRemaining.TryGetValue(type, out var t) && t > 0f;
     public float CooldownRemaining(AbilityType type) => _cooldownRemaining.TryGetValue(type, out var t) ? Mathf.Max(0f, t) : 0f;
     public int CpCost(AbilityType type) => Specs[type].CpCost;
+    public float CooldownSeconds(AbilityType type) => Specs[type].CooldownSeconds;
 
     // targetPoint is required for ArtilleryStrike and Rally (both are
     // point-centered, GDD §7.6); ignored for EmergencyRepair, which affects

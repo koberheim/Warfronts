@@ -920,6 +920,58 @@ revisited — worth preserving before it's lost to editing history.
     modes, settings and the codex stay unbuilt and are shown locked.
 - **Status:** Active.
 
+### D55 - UI overhaul screens: HUD, cards, flow screens, pause menu, glyph set
+- **Decided by:** Claude under standing delegation (User asked for the full
+  UI/UX overhaul; D54 fixed the system, this pass builds the screens on it)
+- **Date:** 2026-09-04
+- **Decision:** Every screen in `docs/UI_DESIGN_SPEC.md` §8 is now built on
+  the D54 theme: main menu (new), briefing, loadout, results, the mission
+  HUD zones A-G, the tower inspection card with its world-space selection
+  overlay, the tutorial card, the pause menu (new), and the post-mortem
+  report with its damage-by-type chart. Calls made where the spec or GDD
+  left room:
+  - **Glyphs are generated, not drawn by hand.** `tools/art/
+    generate_ui_icons.py` writes the 79 monochrome SVGs in spec §6 from
+    geometric primitives so the set can be regenerated as one unit; they
+    import at 2x with mipmaps for clean downscaling. Nation marks are the
+    plain abstract shapes the spec allows (star-in-ring, segmented roundel,
+    lozenge, shield, chevron, disc-in-hexagon) - no crosses, no real
+    insignia (GDD §14.3).
+  - **Matchup rows derive from `DamageTable`** (`MatchupRules`): strong is a
+    multiplier ≥ 1.0, weak is < 0.5, Anti-Air is Air-only. The UI can never
+    disagree with the simulation's table.
+  - **Branch cards show a stat diff, not a description.** `TowerBranch` has
+    no description field; the fork offers "Damage 45 → 62 · Range …" per
+    branch instead, which is the information the GDD's diff preview asks
+    for anyway. Adding authored branch copy is a data task for later.
+  - **GhostButton is slate-only.** Its muted-cream text is unreadable on
+    paper, so tertiary actions on paper (Back, Quit, Skip tutorial, Results)
+    use `PaperButton`; spec §7/§8 updated to match.
+  - **Time hotkeys live in `TimeControls`.** The spec described Space / P as
+    existing; they were not implemented anywhere. Space cycles, + / - step,
+    P pauses (GDD §7.7), Esc opens the pause menu after build mode, ability
+    targeting and the inspection card have had their chance to consume it
+    (unhandled input runs in reverse tree order, so the pause menu is the
+    HUD's first child).
+  - **Sim exposes what the HUD shows.** `MapRuntime.EarlyCallBonusNow` is the
+    single source for the "Call Wave Early +NN" figure (the button credits
+    exactly it), `MapRuntime.TotalWaves` feeds "WAVE 4 / 12",
+    `AbilitySystem.CooldownSeconds` feeds the radial sweep,
+    `TowerUpgradeController.PreviewStats` feeds the diff preview, and
+    `TowerController.CurrentTarget` feeds the target line. `MapRuntime` is
+    now 312 lines; D53's "split on the next responsibility" note stands.
+  - **Screenshot states.** `--ui-state=pause|inspect|postmortem` (dev-only,
+    only honoured alongside `--screenshot-dir`) opens overlays that need a
+    click so they can be verified from the command line.
+  - **Boot enters the main menu** in normal play; `--mission`, `--screen`
+    and the headless smoke run are unchanged. Pause Abandon returns to the
+    briefing, Quit to Menu to the main menu; every flow screen resumes the
+    autoload `TimeController` on entry because it outlives the mission.
+  - Damage numbers are counter-scaled by the camera zoom so they read at
+    the spec's 18 px. Pooling them (§15.1 principle 5) remains an open gap
+    noted in PROGRESS, unchanged by this pass.
+- **Status:** Active.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

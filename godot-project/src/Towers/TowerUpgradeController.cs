@@ -47,6 +47,21 @@ public class TowerUpgradeController
 
     public bool CanUpgrade => Level < MaxLevel;
 
+    // The stats the next purchase would give (GDD §13.5's "diff preview:
+    // Damage 45 → 62"). At the fork the caller says which branch it is
+    // previewing; null once the tower is at max level.
+    public TowerStatBlock PreviewStats(TowerBranchChoice branchAtFork = TowerBranchChoice.A)
+    {
+        if (!CanUpgrade) return null;
+        int next = Level + 1;
+        if (next < ForkLevel) return _definition.PreForkStatsForLevel(next);
+
+        var choice = Level >= ForkLevel ? Branch : branchAtFork;
+        var branch = choice == TowerBranchChoice.B ? _definition.BranchB : _definition.BranchA;
+        int branchIndex = next - ForkLevel;
+        return branch != null && branchIndex < branch.Levels.Length ? branch.Levels[branchIndex] : null;
+    }
+
     // At the fork level (L3), the caller must supply which branch to enter;
     // ignored at every other level.
     public int UpgradeCost(TowerBranchChoice branchAtFork = TowerBranchChoice.A)

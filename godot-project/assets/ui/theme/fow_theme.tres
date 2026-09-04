@@ -6,9 +6,9 @@
 ; for _Draw code in src/UI/Theme/UiPalette.cs; keep the two in step.
 ;
 ; Type variations (set Control.ThemeTypeVariation to use):
-;   Dark HUD text:  TitleLabel HeadingLabel SubheadingLabel BodyLabel
+;   Dark HUD text:  TitleLabel HeadingLabel CardHeadingLabel SubheadingLabel BodyLabel
 ;                   SmallLabel NumberLabel MonoLabel CaptionLabel
-;   Paper text:     PaperTitleLabel PaperHeadingLabel PaperSubheadingLabel
+;   Paper text:     PaperTitleLabel PaperHeadingLabel PaperCardHeadingLabel PaperSubheadingLabel
 ;                   PaperBodyLabel PaperSmallLabel PaperNumberLabel
 ;                   PaperMonoLabel StampLabel
 ;   World overlay:  DamageNumberLabel
@@ -106,14 +106,14 @@ content_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxTexture" id="sb_paper"]
 texture = ExtResource("t_paper")
-texture_margin_left = 40.0
-texture_margin_top = 40.0
-texture_margin_right = 40.0
-texture_margin_bottom = 40.0
-content_margin_left = 30.0
-content_margin_top = 26.0
-content_margin_right = 30.0
-content_margin_bottom = 28.0
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 36.0
+content_margin_top = 32.0
+content_margin_right = 36.0
+content_margin_bottom = 34.0
 
 [sub_resource type="StyleBoxTexture" id="sb_frame"]
 texture = ExtResource("t_frame")
@@ -584,6 +584,14 @@ PaperMonoLabel/base_type = &"Label"
 PaperMonoLabel/colors/font_color = Color(0.1686, 0.1333, 0.102, 1)
 PaperMonoLabel/font_sizes/font_size = 16
 PaperMonoLabel/fonts/font = ExtResource("f_mono")
+CardHeadingLabel/base_type = &"Label"
+CardHeadingLabel/colors/font_color = Color(0.9373, 0.8902, 0.7843, 1)
+CardHeadingLabel/font_sizes/font_size = 20
+CardHeadingLabel/fonts/font = SubResource("fv_display_medium")
+PaperCardHeadingLabel/base_type = &"Label"
+PaperCardHeadingLabel/colors/font_color = Color(0.1686, 0.1333, 0.102, 1)
+PaperCardHeadingLabel/font_sizes/font_size = 20
+PaperCardHeadingLabel/fonts/font = SubResource("fv_display_medium")
 StampLabel/base_type = &"Label"
 StampLabel/colors/font_color = Color(0.6471, 0.2157, 0.1686, 1)
 StampLabel/font_sizes/font_size = 20

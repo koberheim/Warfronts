@@ -793,6 +793,39 @@ revisited — worth preserving before it's lost to editing history.
     the GDD wins. Doctrine cost multipliers are folded in before rounding.
 - **Status:** Active.
 
+### D51 - Doctrines are one passive schema plus six shared ability behaviours
+- **Decided by:** Claude under standing delegation (implemented by a Sonnet
+  worker under the lead's brief)
+- **Date:** 2026-09-04
+- **Decision:** GDD §19 prompt 39 is implemented as `DoctrineDefinition` =
+  one `DoctrinePassive` row (neutral-by-default multipliers gated by optional
+  archetype / pad-tag / terrain-tag filters) plus one `DoctrineAbility` whose
+  `Kind` is one of PointBlast, LineBlast, AuraBuff, SpawnFriendly,
+  InstantRefund (utility, with a closed `UtilityId` set), StatusApplication.
+  All 18 doctrines are `.tres` rows under `assets/data/doctrines/`; no code
+  branches on a doctrine id (`DoctrineTests` asserts the closed sets).
+  `DoctrineSystem` recomputes passive multipliers every tick, the same way
+  Command Post auras work, and the doctrine ability is hotbar slot 4 / key 4
+  in a sibling control (`DoctrineAbilitySlot`).
+  - Every `LineBlast` mode (drawn line, path segment sweep, from map edge)
+    resolves through the existing path-corridor targeting rather than
+    free-form geometry, keeping it one shared behaviour.
+  - Numbers the GDD leaves open: cooldowns by CP cost (3→25 s, 4→20 s,
+    5→35 s, 6→40 s, anchored on Artillery Strike's 4 CP / 20 s); line
+    blasts deal 30 damage per CP over a 6×2-tile corridor; Concentrated
+    Fire's radius is 7 tiles (Rally's). Enemy-targeted abilities pick the
+    nearest living enemy within 2 tiles of the click.
+  - `MinefieldExtraCharges` and `MinefieldCapBonus` share one code path;
+    the GDD describes the same "+3 charges" outcome for both.
+  - Inert until their hooks exist: `TerrainTagFilter` (Desert Rats — maps
+    carry no terrain tags), `RelocationFree` (Celere — Italy's national
+    relocation mechanic is unbuilt; the Redeploy ability's own relocation
+    works), `SuppressionImmunityRadiusBonusTiles` (Fortified Line).
+  - Doctrine choice is United States-only for now because no nation picker
+    exists; `DoctrineSystem.LoadDoctrine` takes the nation id so that
+    changes when §13.2 lands.
+- **Status:** Active.
+
 ## How to add to this log
 
 Append, don't rewrite history. One entry per decision: what was decided, who

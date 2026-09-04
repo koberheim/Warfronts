@@ -23,3 +23,4 @@ Alliance = "Allies"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2")]
 BranchFlavorIds = ["combined_arms", "logistics_depth"]
 SignatureId = "arsenal_of_democracy"
+DoctrineIds = ["lend_lease", "airborne", "combined_arms"]

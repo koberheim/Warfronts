@@ -24,6 +24,13 @@ public abstract partial class SignatureControllerBase : Node2D
     public int MaxCharges => ChargeCapacity;
     public bool IsFullyCharged => Charges >= MaxCharges;
 
+    // Set each tick by DoctrineSystem's passive pass (GDD §19 prompt 39 —
+    // Bomber Command's "RAF Scramble charges regenerate 25% faster",
+    // Kampfgruppe's "Blitzkrieg recharge −20%"). Multiplies the regen/
+    // recharge interval, so smaller is faster; 1f (no-op) for any mission
+    // with no doctrine loaded.
+    public float DoctrineRegenMultiplier = 1f;
+
     public virtual void Initialize(PathNetwork path, Func<IReadOnlyList<ITargetable>> targetsProvider)
     {
         Path = path;

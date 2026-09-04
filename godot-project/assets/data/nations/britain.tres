@@ -23,3 +23,4 @@ Alliance = "Allies"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2")]
 BranchFlavorIds = ["layered_defense", "signals"]
 SignatureId = "raf_scramble_command"
+DoctrineIds = ["desert_rats", "bomber_command", "home_guard"]

@@ -29,3 +29,4 @@ Alliance = "Allies"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2"), SubResource("Lean3")]
 BranchFlavorIds = ["mass_assault", "fortified_depth"]
 SignatureId = "katyusha_storm_battery"
+DoctrineIds = ["deep_battle", "scorched_earth", "guards_rifles"]

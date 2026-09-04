@@ -16,6 +16,11 @@ public partial class CommandPostController : Node2D
 
     public TowerUpgradeController Upgrade { get; private set; }
 
+    // Set each tick by DoctrineSystem's passive pass (GDD §19 prompt 39 —
+    // Airborne's "Command Posts grant +50% aura radius"). 1f (no-op) for any
+    // mission with no doctrine loaded.
+    public float DoctrineAuraRadiusMultiplier = 1f;
+
     public override void _Ready()
     {
         Upgrade = new TowerUpgradeController(Definition, GameBalanceConfigAutoload.Config);
@@ -29,7 +34,7 @@ public partial class CommandPostController : Node2D
     public void RevealTargets(IReadOnlyList<EnemyController> enemies, float tilePixelSize)
     {
         float multiplier = Definition?.DisplayName?.Contains("Radar", System.StringComparison.OrdinalIgnoreCase) == true ? 2f : 1f;
-        float radius = Mathf.Max(0f, Upgrade.CurrentStats().AuraRadiusTiles) * tilePixelSize * multiplier;
+        float radius = Mathf.Max(0f, Upgrade.CurrentStats().AuraRadiusTiles) * tilePixelSize * multiplier * DoctrineAuraRadiusMultiplier;
         foreach (var enemy in enemies ?? System.Array.Empty<EnemyController>())
             if (enemy != null && enemy.IsConcealed && enemy.GlobalPosition.DistanceTo(GlobalPosition) <= radius)
                 enemy.SetRevealed(true);
@@ -41,7 +46,7 @@ public partial class CommandPostController : Node2D
     public void ApplyAuraTo(TowerManager towers, float tilePixelSize)
     {
         var stats = Upgrade.CurrentStats();
-        float radiusPixels = stats.AuraRadiusTiles * tilePixelSize;
+        float radiusPixels = stats.AuraRadiusTiles * tilePixelSize * DoctrineAuraRadiusMultiplier;
         float radiusSquared = radiusPixels * radiusPixels;
         float rangeMultiplier = 1f + stats.AuraRangeBonusPercent;
         float rofMultiplier = 1f + stats.AuraRateOfFireBonusPercent;

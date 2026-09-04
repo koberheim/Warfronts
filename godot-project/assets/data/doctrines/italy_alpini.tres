@@ -1,0 +1,30 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrinePassive.cs" id="2"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineAbility.cs" id="3"]
+
+[sub_resource type="Resource" id="Passive"]
+script = ExtResource("2")
+PadTagFilter = 1
+RangeMultiplier = 1.12
+
+[sub_resource type="Resource" id="Ability"]
+script = ExtResource("3")
+Kind = 2
+CommandPointCost = 4
+CooldownSeconds = 20.0
+SingleTarget = true
+RangeMultiplier = 1.4
+DurationSeconds = 12.0
+
+[resource]
+script = ExtResource("1")
+Id = "alpini"
+NationId = "italy"
+DisplayName = "Alpini"
+AbilityName = "Mountain Position"
+PassiveDescription = "All towers gain +12% range on Elevated pads."
+AbilityDescription = "One tower gains +40% range for 12s."
+Passive = SubResource("Passive")
+Ability = SubResource("Ability")

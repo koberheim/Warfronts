@@ -2,6 +2,7 @@ using Godot;
 using FrontsOfWar.Core;
 using FrontsOfWar.Economy;
 using FrontsOfWar.Towers;
+using System;
 using System.Collections.Generic;
 
 namespace FrontsOfWar.Map;
@@ -52,6 +53,11 @@ public class TowerPlacementService
     // BuildPad keeps BuildPad a dumb, presentation-only node).
     private readonly Dictionary<Node2D, BuildPad> _padByInstance = new();
 
+    // Set once by MapRuntime after DoctrineSystem exists (GDD §19 prompt 39,
+    // e.g. Lend-Lease's "all towers cost −6%"). Null before then, or for any
+    // mission with no doctrine loaded — TryPlace treats that as a 1x no-op.
+    public Func<TowerDefinition, PadTag, float> DoctrineCostMultiplierProvider { get; set; }
+
     public TowerPlacementService(Node towerContainer, Node commandPostContainer,
         SupplyLedger supply, TowerManager towers, CommandPostManager commandPosts)
     {
@@ -68,7 +74,8 @@ public class TowerPlacementService
         if (pad.IsOccupied) return new TowerPlacementOutcome(TowerPlacementResult.PadOccupied);
         if (definition.ControllerScene == null) return new TowerPlacementOutcome(TowerPlacementResult.NoControllerScene);
 
-        int cost = definition.PreForkStatsForLevel(1).Cost;
+        float multiplier = DoctrineCostMultiplierProvider?.Invoke(definition, pad.Tag) ?? 1f;
+        int cost = Mathf.RoundToInt(definition.PreForkStatsForLevel(1).Cost * multiplier);
         if (_supply.Balance < cost)
             return new TowerPlacementOutcome(TowerPlacementResult.InsufficientSupply, cost - _supply.Balance);
 
@@ -119,6 +126,22 @@ public class TowerPlacementService
         if (placedInstance == null || !_padByInstance.TryGetValue(placedInstance, out var pad)) return false;
         pad.SetOccupied(false);
         _padByInstance.Remove(placedInstance);
+        return true;
+    }
+
+    // A doctrine's relocate_tower utility (GDD §8.2.5 Celere's Redeploy —
+    // "instantly move any tower to any empty pad"). Only moves a tower this
+    // service itself placed (i.e. one tracked in _padByInstance); a
+    // scene-authored pre-placed tower has no pad to release.
+    public bool TryRelocate(TowerController tower, BuildPad destinationPad)
+    {
+        if (tower == null || destinationPad == null || destinationPad.IsOccupied) return false;
+        if (!_padByInstance.TryGetValue(tower, out var sourcePad) || sourcePad == destinationPad) return false;
+
+        sourcePad.SetOccupied(false);
+        tower.GlobalPosition = destinationPad.GlobalPosition;
+        destinationPad.SetOccupied(true);
+        _padByInstance[tower] = destinationPad;
         return true;
     }
 }

@@ -9,7 +9,7 @@ namespace FrontsOfWar.Economy;
 public class DefenseLineLedger : IDisposable
 {
     public int Integrity { get; private set; }
-    public int MaxIntegrity { get; }
+    public int MaxIntegrity { get; private set; }
     public bool IsDepleted => Integrity <= 0;
 
     public DefenseLineLedger(Difficulty difficulty, GameBalanceConfig config)
@@ -59,5 +59,17 @@ public class DefenseLineLedger : IDisposable
         int delta = clamped - Integrity;
         Integrity = clamped;
         if (delta != 0) EventBus.Instance?.Publish(new DefenseLineChangedEvent(Integrity, delta));
+    }
+
+    // A doctrine's DefenseLineBonus (GDD §19 prompt 39 — Home Guard's
+    // permanent "+6 Integrity" passive, and Fortified Line's Hold Fast
+    // once-per-mission ability). Raises the ceiling and immediately grants
+    // the same amount of current Integrity, matching how "+N Integrity" is
+    // worded everywhere else in the GDD.
+    public void RaiseMaxIntegrity(int amount)
+    {
+        if (amount <= 0) return;
+        MaxIntegrity += amount;
+        Restore(amount);
     }
 }

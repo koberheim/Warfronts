@@ -87,7 +87,7 @@ public partial class RafScrambleController : SignatureControllerBase, IDamageSou
     private void TickCharge(float delta)
     {
         if (Charges >= MaxCharges) { _regenRemaining = 0f; return; }
-        float interval = GetFloat(Definition.ChargeRegenSeconds, 22f);
+        float interval = GetFloat(Definition.ChargeRegenSeconds, 22f) * DoctrineRegenMultiplier;
         // A regeneration cycle only begins once a charge is missing, so a
         // freshly spent charge always waits the full authored interval
         // (GDD §8.2.2: "regenerating one every 22s").

@@ -26,6 +26,7 @@ public partial class HudController : CanvasLayer
     private Label _buildLabel;
     private Button _callWaveButton;
     private AbilityHotbar _abilityHotbar;
+    private DoctrineAbilitySlot _doctrineSlot;
     private BuildBar _buildBar;
 
     public override void _Ready()
@@ -90,6 +91,13 @@ public partial class HudController : CanvasLayer
             Position = new Vector2(750, 535),
         };
         AddChild(_abilityHotbar);
+
+        _doctrineSlot = new DoctrineAbilitySlot
+        {
+            Mission = _mission,
+            Position = new Vector2(750, 430),
+        };
+        AddChild(_doctrineSlot);
 
         // Bottom-center (§13.4). x:340-720 sits clear of the build-phase
         // label/Call Wave Early button (bottom-left, ends ~310) and the

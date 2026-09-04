@@ -1,0 +1,30 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrinePassive.cs" id="2"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineAbility.cs" id="3"]
+
+[sub_resource type="Resource" id="Passive"]
+script = ExtResource("2")
+ArchetypeFilter = 0
+RateOfFireMultiplier = 1.2
+
+[sub_resource type="Resource" id="Ability"]
+script = ExtResource("3")
+Kind = 2
+CommandPointCost = 3
+CooldownSeconds = 25.0
+DamageMultiplier = 1.3
+SuppressionImmunity = true
+DurationSeconds = 6.0
+
+[resource]
+script = ExtResource("1")
+Id = "guards_rifles"
+NationId = "soviet_union"
+DisplayName = "Guards Rifles"
+AbilityName = "Urra!"
+PassiveDescription = "Automatic Guns gain +20% rate of fire."
+AbilityDescription = "All towers gain +30% damage for 6s and immunity to Suppression."
+Passive = SubResource("Passive")
+Ability = SubResource("Ability")

@@ -24,7 +24,14 @@ public partial class MinefieldController : Node2D
     private float _armingRemaining;
 
     public int Charges => _charges;
-    public int MaxCharges => _upgrade?.CurrentStats().MaxCharges ?? 0;
+    public int MaxCharges => (_upgrade?.CurrentStats().MaxCharges ?? 0) + DoctrineCapBonus;
+
+    // Set each tick by DoctrineSystem's passive pass (GDD §19 prompt 39 —
+    // Island Defense's "Minefield cap +3", Scorched Earth's "+3 charges" and
+    // "+20% damage"). Neutral defaults for any mission with no doctrine
+    // loaded, or before the doctrine's first tick has run.
+    public int DoctrineCapBonus;
+    public float DoctrineDamageMultiplier = 1f;
 
     public void Initialize(Func<IReadOnlyList<ITargetable>> provider)
     {
@@ -41,13 +48,13 @@ public partial class MinefieldController : Node2D
         _upgrade.Tick(delta);
         var stats = _upgrade.CurrentStats();
         _armingRemaining = Mathf.Max(0f, _armingRemaining - delta);
-        if (_charges < stats.MaxCharges)
+        if (_charges < MaxCharges)
         {
             _regenElapsed += delta;
             while (_regenElapsed >= stats.ChargeRegenSeconds && stats.ChargeRegenSeconds > 0f)
             {
                 _regenElapsed -= stats.ChargeRegenSeconds;
-                _charges = Mathf.Min(stats.MaxCharges, _charges + 1);
+                _charges = Mathf.Min(MaxCharges, _charges + 1);
             }
         }
         if (_armingRemaining <= 0f && _charges > 0)
@@ -63,22 +70,29 @@ public partial class MinefieldController : Node2D
         QueueRedraw();
     }
 
-    public bool TriggerNow()
+    // extraDamageMultiplier is a one-time bonus on top of DoctrineDamageMultiplier
+    // — used by a doctrine's detonate_minefields utility (Scorched Earth's
+    // Demolition, "150% damage"); ordinary proximity triggers pass the
+    // default 1x.
+    public bool TriggerNow(float extraDamageMultiplier = 1f)
     {
         if (_upgrade == null || _charges <= 0 || _armingRemaining > 0f) return false;
-        Trigger(_upgrade.CurrentStats());
+        Trigger(_upgrade.CurrentStats(), extraDamageMultiplier);
         return true;
     }
 
-    private void Trigger(TowerStatBlock stats)
+    public void RefillCharges() => _charges = MaxCharges;
+
+    private void Trigger(TowerStatBlock stats, float extraDamageMultiplier = 1f)
     {
         _charges--;
         _armingRemaining = stats.TriggerArmingSeconds;
         var targets = _provider?.Invoke();
         DamageType damageType = stats.UsesDamageTypeOverride ? stats.DamageTypeOverride : Definition.DamageType;
+        float damage = stats.DamagePerShot * DoctrineDamageMultiplier * extraDamageMultiplier;
         SignatureTargeting.ApplyBlast(targets, GlobalPosition,
             stats.BlastRadiusTiles * GameBalanceConfigAutoload.Config.TilePixelSize,
-            stats.DamagePerShot, damageType, null);
+            damage, damageType, null);
         if (stats.StatusEffectId == "Suppressed")
             foreach (var target in targets ?? Array.Empty<ITargetable>())
                 if (target is EnemyController enemy && enemy.IsAlive && !enemy.IsAir &&

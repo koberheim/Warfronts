@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrinePassive.cs" id="2"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineAbility.cs" id="3"]
+
+[sub_resource type="Resource" id="Passive"]
+script = ExtResource("2")
+SignatureRegenMultiplier = 0.75
+
+[sub_resource type="Resource" id="Ability"]
+script = ExtResource("3")
+Kind = 1
+CommandPointCost = 6
+CooldownSeconds = 40.0
+Damage = 180.0
+DamageType = 1
+LineMode = 0
+LengthTiles = 6.0
+WidthTiles = 2.0
+
+[resource]
+script = ExtResource("1")
+Id = "bomber_command"
+NationId = "britain"
+DisplayName = "Bomber Command"
+AbilityName = "Bombing Run"
+PassiveDescription = "RAF Scramble charges regenerate 25% faster."
+AbilityDescription = "Heavy HE damage along a drawn line."
+Passive = SubResource("Passive")
+Ability = SubResource("Ability")

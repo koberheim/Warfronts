@@ -12,6 +12,12 @@ public static class MissionSession
     public static string LastMissionTitle { get; set; } = "Bocage Crossroads";
     public static int LastWaveReached { get; set; }
 
+    // The doctrine picked in the loadout screen (GDD §8.3, §19 prompt 39) —
+    // a bare doctrine id (e.g. "lend_lease"), not a resource path, resolved
+    // against the current nation by DoctrineSystem.LoadDoctrine. Defaults to
+    // the United States' first doctrine, matching Loadout's default US kit.
+    public static string SelectedDoctrineId { get; set; } = "lend_lease";
+
     // The six build-bar towers for the next mission (GDD §13.3's loadout
     // screen picks these; §13.4's build bar shows exactly these six with
     // hotkeys Q/W/E/R/T/Y in list order). Stored as resource paths rather

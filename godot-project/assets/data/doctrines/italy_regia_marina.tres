@@ -1,0 +1,32 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrinePassive.cs" id="2"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineAbility.cs" id="3"]
+
+[sub_resource type="Resource" id="Passive"]
+script = ExtResource("2")
+PadTagFilter = 3
+DamageMultiplier = 1.18
+
+[sub_resource type="Resource" id="Ability"]
+script = ExtResource("3")
+Kind = 1
+CommandPointCost = 6
+CooldownSeconds = 40.0
+Damage = 180.0
+DamageType = 1
+LineMode = 2
+LengthTiles = 6.0
+WidthTiles = 2.0
+
+[resource]
+script = ExtResource("1")
+Id = "regia_marina"
+NationId = "italy"
+DisplayName = "Regia Marina"
+AbilityName = "Naval Bombardment"
+PassiveDescription = "Coastal pads grant +18% damage."
+AbilityDescription = "A heavy HE strike along a line from the nearest map edge."
+Passive = SubResource("Passive")
+Ability = SubResource("Ability")

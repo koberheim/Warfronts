@@ -54,7 +54,7 @@ public partial class BlitzkriegCommandController : SignatureControllerBase
         {
             _activeRemaining -= delta;
             if (_activeRemaining <= 0f)
-                _rechargeRemaining = GetFloat(Definition.BlitzRechargeDurations, 30f);
+                _rechargeRemaining = GetFloat(Definition.BlitzRechargeDurations, 30f) * DoctrineRegenMultiplier;
         }
         else if (_rechargeRemaining > 0f) _rechargeRemaining -= delta;
 

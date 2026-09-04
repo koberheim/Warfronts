@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrinePassive.cs" id="2"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineAbility.cs" id="3"]
+
+[sub_resource type="Resource" id="Passive"]
+script = ExtResource("2")
+ArchetypeFilter = 5
+TowerCostMultiplier = 0.88
+RangeBonusTiles = 1.0
+
+[sub_resource type="Resource" id="Ability"]
+script = ExtResource("3")
+Kind = 4
+CommandPointCost = 5
+CooldownSeconds = 35.0
+UtilityId = "fire_all"
+ArchetypeFilter = 5
+SalvoCount = 3
+
+[resource]
+script = ExtResource("1")
+Id = "panzer_doctrine"
+NationId = "germany"
+DisplayName = "Panzer Doctrine"
+AbilityName = "Counterattack"
+PassiveDescription = "Armored Emplacements cost −12% and gain +1 range."
+AbilityDescription = "All Armored Emplacements immediately fire 3 shots."
+Passive = SubResource("Passive")
+Ability = SubResource("Ability")

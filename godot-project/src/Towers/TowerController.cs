@@ -36,6 +36,10 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     public float SignatureTraverseSpeedMultiplier = 1f;
     public float SignatureIndirectDelayReductionSeconds;
 
+    // Doctrine* fields (set each tick by DoctrineSystem's passive pass) and
+    // the force_target/fire_all doctrine utility hooks live in
+    // TowerController.Doctrine.cs — see that file.
+
     // Enemy Siege units suppress towers on hit (GDD §5.6) — full disable,
     // never destroyed. Siege (E12) itself isn't implemented until M4, but
     // the hook exists now since the Emergency Repair ability (§7.6) already
@@ -90,14 +94,17 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         Upgrade.Tick(tickDeltaSeconds);
         if (_suppressionRemaining > 0f) _suppressionRemaining -= tickDeltaSeconds;
         if (_rallyRemaining > 0f) _rallyRemaining -= tickDeltaSeconds;
+        if (_forcedTargetRemaining > 0f) _forcedTargetRemaining -= tickDeltaSeconds;
         if (IsSuppressed) return; // fully disabled — no targeting, no firing
 
         var stats = Upgrade.CurrentStats();
         float tilePixelSize = GameBalanceConfigAutoload.Config.TilePixelSize;
-        float rangePixels = stats.RangeTiles * tilePixelSize * AuraRangeMultiplier;
+        float effectiveRangeTiles = stats.RangeTiles * DoctrineRangeMultiplier + DoctrineRangeBonusTiles;
+        float rangePixels = effectiveRangeTiles * tilePixelSize * AuraRangeMultiplier;
         float minRangePixels = stats.MinRangeTiles * tilePixelSize;
         float rallyMultiplier = _rallyRemaining > 0f ? _rallyRateOfFireMultiplier : 1f;
-        float rateOfFire = stats.RateOfFirePerSec * AuraRateOfFireMultiplier * SignatureRateOfFireMultiplier * rallyMultiplier;
+        float rateOfFire = stats.RateOfFirePerSec * AuraRateOfFireMultiplier * SignatureRateOfFireMultiplier *
+            rallyMultiplier * DoctrineRateOfFireMultiplier;
 
         FireSecondaryIfReady(tickDeltaSeconds, grid, stats);
 
@@ -110,7 +117,11 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         }
         else
         {
-            if (!IsValidTarget(_currentTarget, rangePixels, minRangePixels))
+            if (_forcedTargetRemaining > 0f && IsValidTarget(_forcedTarget, rangePixels, minRangePixels))
+            {
+                _currentTarget = _forcedTarget;
+            }
+            else if (!IsValidTarget(_currentTarget, rangePixels, minRangePixels))
             {
                 var candidates = grid.QueryRadius(GlobalPosition, rangePixels)
                     .Where(t => IsAcquirable(t, stats) && IsValidTarget(t, rangePixels, minRangePixels));
@@ -175,7 +186,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
 
     private void Fire(ITargetable target, ProjectileManager projectileManager, TowerStatBlock stats)
     {
-        float damage = stats.DamagePerShot * stats.DamageMultiplier;
+        float damage = stats.DamagePerShot * stats.DamageMultiplier * DoctrineDamageMultiplier;
         var damageType = stats.UsesDamageTypeOverride ? stats.DamageTypeOverride : Definition.DamageType;
         if (Definition.ProjectileScene == null)
         {
@@ -191,7 +202,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         }
 
         if (stats.StatusEffectId == "Spotted" && target is EnemyController spotted)
-            spotted.ApplySpotted(stats.StatusDurationSeconds);
+            spotted.ApplySpotted(stats.StatusDurationSeconds * DoctrineStatusDurationMultiplier);
 
         EventBus.Instance?.Publish(new TowerFiredEvent(this, target));
     }
@@ -208,19 +219,26 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
                 IsValidTarget(candidate, rangePixels, 0f));
         var target = TargetingService.SelectTarget(candidates, stats.SecondaryTargeting, GlobalPosition);
         if (target == null) return;
-        float damage = stats.SecondaryDamagePerShot * stats.DamageMultiplier;
+        float damage = stats.SecondaryDamagePerShot * stats.DamageMultiplier * DoctrineDamageMultiplier;
         if (target is EnemyController enemy)
         {
             enemy.ApplyDamage(damage, stats.SecondaryDamageType, this);
             if (stats.StatusEffectId == "Suppressed")
-                enemy.ApplySuppressed(stats.StatusDurationSeconds, stats.StatusDurationSeconds);
+            {
+                float duration = stats.StatusDurationSeconds * DoctrineStatusDurationMultiplier;
+                enemy.ApplySuppressed(duration, duration);
+            }
         }
         else target.ApplyDamage(damage, stats.SecondaryDamageType);
         _secondaryCooldownRemaining = 1f / stats.SecondaryRateOfFirePerSec;
         EventBus.Instance?.Publish(new TowerFiredEvent(this, target));
     }
 
-    public void ApplySuppression(float durationSeconds) => _suppressionRemaining = Mathf.Max(_suppressionRemaining, durationSeconds);
+    public void ApplySuppression(float durationSeconds)
+    {
+        if (DoctrineSuppressionImmune) return;
+        _suppressionRemaining = Mathf.Max(_suppressionRemaining, durationSeconds);
+    }
     public void ClearSuppression() => _suppressionRemaining = 0f;
 
     public void ApplyRally(float durationSeconds, float rateOfFireMultiplier)

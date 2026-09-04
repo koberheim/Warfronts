@@ -2,6 +2,7 @@ using Godot;
 using FrontsOfWar.Combat;
 using FrontsOfWar.Core;
 using FrontsOfWar.Debug;
+using FrontsOfWar.Doctrines;
 using FrontsOfWar.Economy;
 using FrontsOfWar.Enemies;
 using FrontsOfWar.Towers;
@@ -54,6 +55,7 @@ public partial class MapRuntime : Node2D, ISimTickable
     public MinefieldManager Minefields { get; } = new();
     public SeededRandom Random { get; private set; }
     public TowerPlacementService Placement { get; private set; }
+    public DoctrineSystem Doctrines { get; private set; }
 
     private SpatialGrid _spatialGrid;
     private DebugEventLogger _debugLogger;
@@ -124,6 +126,16 @@ public partial class MapRuntime : Node2D, ISimTickable
         // FriendlyContainerPath fallback above).
         Placement = new TowerPlacementService(
             towerContainer ?? this, commandPostContainer ?? this, Supply, Towers, CommandPosts);
+
+        // Doctrines (GDD §8.3, §19 prompt 39) — built after every manager it
+        // touches exists, before Signatures/Minefields.Initialize below.
+        // United States only, since no other nation is selectable yet (§13.3
+        // is deferred — see LoadoutController).
+        var doctrine = DoctrineSystem.LoadDoctrine("united_states", MissionSession.SelectedDoctrineId);
+        Doctrines = new DoctrineSystem(doctrine, config, Towers, CommandPosts, Minefields,
+            Signatures, FriendlyUnits, Path, Placement, Projectiles, CommandPoints, Supply, DefenseLine);
+        Placement.DoctrineCostMultiplierProvider = Doctrines.PlacementCostMultiplier;
+        Doctrines.ApplyMissionStart();
 
         if (ArsenalPath != null)
         {
@@ -209,6 +221,7 @@ public partial class MapRuntime : Node2D, ISimTickable
         Towers.Tick(tickDeltaSeconds, _spatialGrid, Projectiles);
         Projectiles.Tick(tickDeltaSeconds, _spatialGrid);
         Abilities.Tick(tickDeltaSeconds, _spatialGrid);
+        Doctrines?.Tick(tickDeltaSeconds, _spatialGrid);
 
         if (!_victoryPublished && !_waitingForBuild && !Waves.IsRunning && Enemies.Enemies.Count == 0
             && Waves.PeekUpcoming(1).Count > 0)
@@ -259,6 +272,10 @@ public partial class MapRuntime : Node2D, ISimTickable
 
     public bool ActivateAbility(Economy.AbilityType type, Vector2 targetPoint)
         => Abilities.TryActivate(type, targetPoint, CommandPoints, Towers, DefenseLine);
+
+    public bool ActivateDoctrineAbility(Vector2 primaryPoint, Vector2? secondaryPoint = null,
+        TowerController towerTarget = null, BuildPad padTarget = null)
+        => Doctrines?.TryActivate(primaryPoint, _spatialGrid, secondaryPoint, towerTarget, padTarget) ?? false;
 
     private void OnBossAddsRequested(BossAddsRequestedEvent evt)
     {

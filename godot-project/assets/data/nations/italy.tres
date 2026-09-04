@@ -23,3 +23,4 @@ Alliance = "Axis"
 StatLeans = [SubResource("Lean1"), SubResource("Lean2")]
 BranchFlavorIds = ["mobile_screen", "field_command"]
 SignatureId = "bersaglieri_charge_post"
+DoctrineIds = ["alpini", "celere", "regia_marina"]

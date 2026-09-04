@@ -30,8 +30,9 @@ public class ProjectileManager
         float velocityMultiplier = source is TowerController tower ? tower.SignatureProjectileVelocityMultiplier : 1f;
         float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize * velocityMultiplier;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
+        float doctrineMultiplier = source is TowerController doctrineTower ? doctrineTower.DoctrineDamageMultiplier : 1f;
 
-        projectile.Launch(target, stats.DamagePerShot * stats.DamageMultiplier, definition.DamageType,
+        projectile.Launch(target, stats.DamagePerShot * stats.DamageMultiplier * doctrineMultiplier, definition.DamageType,
             speedPixelsPerSec, blastRadiusPixels, origin, source);
         _active.Add((projectile, pool));
     }
@@ -51,8 +52,9 @@ public class ProjectileManager
         float velocityMultiplier = source is TowerController tower ? tower.SignatureProjectileVelocityMultiplier : 1f;
         float speedPixelsPerSec = definition.ProjectileSpeedTilesPerSec * tilePixelSize * velocityMultiplier;
         float blastRadiusPixels = stats.BlastRadiusTiles * tilePixelSize;
+        float doctrineMultiplier = source is TowerController doctrineTower ? doctrineTower.DoctrineDamageMultiplier : 1f;
 
-        projectile.LaunchAtPoint(impactPoint, stats.DamagePerShot * stats.DamageMultiplier, definition.DamageType,
+        projectile.LaunchAtPoint(impactPoint, stats.DamagePerShot * stats.DamageMultiplier * doctrineMultiplier, definition.DamageType,
             speedPixelsPerSec, blastRadiusPixels, origin, source);
         _active.Add((projectile, pool));
     }

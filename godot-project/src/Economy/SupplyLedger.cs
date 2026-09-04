@@ -14,6 +14,11 @@ public class SupplyLedger : IDisposable
 
     public int Balance { get; private set; }
 
+    // Set once by DoctrineSystem.ApplyMissionStart (GDD §19 prompt 39 — e.g.
+    // Lend-Lease's "Supply income +8%"). 1f (no-op) for any mission with no
+    // doctrine loaded.
+    public float DoctrineIncomeMultiplier = 1f;
+
     public SupplyLedger(Difficulty difficulty, GameBalanceConfig config)
     {
         _difficulty = difficulty;
@@ -49,7 +54,8 @@ public class SupplyLedger : IDisposable
     private void OnEnemyKilled(EnemyKilledEvent evt) => Credit(evt.Bounty);
 
     public int EndOfWaveIncome(int waveNumber)
-        => RoundToInt((_config.WaveIncomeBase + _config.WaveIncomePerWave * waveNumber) * DifficultyIncomeScalar);
+        => RoundToInt((_config.WaveIncomeBase + _config.WaveIncomePerWave * waveNumber) *
+            DifficultyIncomeScalar * DoctrineIncomeMultiplier);
 
     // fractionOfBuildTimeRemaining is 0..1; the bonus is capped in absolute
     // Supply per §7.2 so an early-rush player never snowballs past ~15%.

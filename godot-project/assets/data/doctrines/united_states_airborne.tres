@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineDefinition.cs" id="1"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrinePassive.cs" id="2"]
+[ext_resource type="Script" path="res://src/Doctrines/DoctrineAbility.cs" id="3"]
+[ext_resource type="Resource" path="res://assets/data/enemies/friendly_rifle_squad.tres" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/friendly_unit.tscn" id="5"]
+
+[sub_resource type="Resource" id="Passive"]
+script = ExtResource("2")
+CommandPostAuraRadiusMultiplier = 1.5
+
+[sub_resource type="Resource" id="Ability"]
+script = ExtResource("3")
+Kind = 3
+CommandPointCost = 5
+CooldownSeconds = 35.0
+FriendlyUnit = ExtResource("4")
+FriendlyUnitScene = ExtResource("5")
+FriendlyCount = 3
+
+[resource]
+script = ExtResource("1")
+Id = "airborne"
+NationId = "united_states"
+DisplayName = "Airborne"
+AbilityName = "Paradrop"
+PassiveDescription = "Command Posts grant +50% aura radius."
+AbilityDescription = "Spawn 3 Rifle Squads at any point on the path."
+Passive = SubResource("Passive")
+Ability = SubResource("Ability")

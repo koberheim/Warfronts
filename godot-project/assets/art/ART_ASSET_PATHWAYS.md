@@ -32,6 +32,19 @@ terrain/route images together for manual seam, path-continuity, and shoulder
 review. Different theaters are intentionally shown as test cases, not mixed
 into one production map.
 
+## Generation prompt path
+
+`ART_GENERATION_PROMPTS.md` is the human-facing production queue that feeds
+these runtime pathways. Each numbered entry supplies an exact output filename
+inside the folder contract below. Its canonical style lock keeps the four
+theater kits visually related, while each theater has its own palette anchor.
+
+Route art uses a fixed 1024×1024 tile contract with 256 px centered edge
+sockets and ten named topologies per theater. Each theater also has ten
+material-transition prompts. Generate and validate one complete route family
+before generating decorative variants; never connect tiles from different
+theater families in a production map.
+
 ## Folder contract
 
 - `shared/` holds reusable build pads, route markers, transitions, decals,

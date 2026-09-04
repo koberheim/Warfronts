@@ -55,6 +55,19 @@ The folder structure and catalog also reserve pathways for held tower, unit,
 and enemy art. Those entries remain `HOLD` and are not generated or wired
 into gameplay until the implementation review is complete.
 
+## Individual generation prompt queue
+
+`ART_GENERATION_PROMPTS.md` is the copy-ready production queue for every
+active inventory family. It contains one numbered prompt per output, a shared
+style lock, theater palette anchors, exact route-edge socket rules, ten route
+topologies and ten transition tiles per theater, target filenames, generation
+order, and acceptance checks. Use one theater per generation conversation and
+keep its first accepted output attached as a style reference.
+
+The queue intentionally omits prompts for held tower, nation-unit, and enemy
+identity art. Those categories remain listed as `HOLD` until their
+implementation review is complete.
+
 ## Shared assets
 
 ### Gameplay and map readability

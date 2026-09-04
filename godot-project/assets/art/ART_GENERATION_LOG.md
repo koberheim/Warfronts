@@ -1,8 +1,9 @@
 # Initial art generation log
 
-Generated 2026-09-03 with the built-in ChatGPT image-generation tool. All
-outputs are first-pass review references and remain `REVIEW` until cropped,
-cleaned, imported at native scale, and checked in gameplay screenshots.
+Generated 2026-09-03 with the built-in ChatGPT image-generation tool. All ten
+outputs were subsequently approved for conditional integration under D40.
+Terrain/route assets still require same-theater adjacency validation, and all
+assets retain the native-scale and gameplay-screenshot acceptance gates.
 
 All prompts used the same guardrails: painterly storybook 2D, 80% stylized /
 20% grounded, overhead-with-cheat top-down view, broad readable shapes,
@@ -33,3 +34,12 @@ real or fictional political insignia, no propaganda, no gore.
 - If the style direction is accepted, generate family variants next rather
   than isolated one-offs: road transitions, foliage variants, build pads,
   and the Western Europe prop families.
+
+## Production queue status
+
+No additional bitmap assets were generated while preparing the production
+queue. `ART_GENERATION_PROMPTS.md` now contains 460 numbered prompts covering
+the active inventory, including ten compatible route topologies and ten
+material transitions for each theater. Its 456 explicit image paths remain
+ungenerated unless already represented by one of the ten approved anchors
+above. Tower, nation-unit, and enemy identity prompts remain on hold.

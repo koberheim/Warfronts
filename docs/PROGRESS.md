@@ -246,6 +246,11 @@ is installed.
   command-table frame into briefing plus the selected Western Europe ground,
   hedgerow, farmhouse, and supply art into the Bocage Crossroads environment
   layer. Gameplay logic and primitive unit art remain unchanged.
+- [x] Added a copy-ready individual art prompt queue covering every active
+  inventory family: 460 numbered entries, 456 explicit image output paths,
+  ten compatible route topologies and ten material transitions per theater,
+  shared style/palette locks, and per-asset acceptance checks. Held tower,
+  nation-unit, and enemy identity art remains intentionally unprompted.
 
 ---
 

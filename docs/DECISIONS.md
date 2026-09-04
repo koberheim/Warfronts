@@ -601,6 +601,23 @@ revisited — worth preserving before it's lost to editing history.
   theater joins as final map construction.
 - **Status:** Active.
 
+### D42 - Environment generation uses a shared style lock and fixed route sockets
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Maintain one copy-ready prompt queue with a canonical project
+  style lock, one palette/reference anchor per theater, and an individual
+  numbered prompt plus exact filename for every active inventory output.
+  Route tiles are 1024×1024 with 256 px sockets centered on named edges and
+  use ten standard topologies per theater; each theater also receives ten
+  material-transition tiles. Keep tower, nation-unit, and enemy identity
+  prompts on hold pending their requested implementation review.
+- **Rationale:** Standalone review images from different theaters cannot form
+  a production route family even when their edges happen to align. A fixed
+  mechanical socket contract makes adjacency testable, while the shared style
+  lock and theater-specific anchors preserve visual consistency across many
+  separately generated assets without erasing regional differences.
+- **Status:** Active.
+
 ---
 
 ## How to add to this log

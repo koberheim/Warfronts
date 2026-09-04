@@ -17,7 +17,7 @@ offset_left = 22.0
 offset_top = 43.0
 offset_right = 1120.0
 offset_bottom = 72.0
-text = "Inspect the closed loop for edge seams and the four samples for route clarity. These assets do not replace the mission route until approved."
+text = "Reference only: inspect socket placement and route clarity. Full-tile v01 art is held until the shared route layer eliminates interior bands."
 
 [node name="LoopLabel" type="Label" parent="."]
 offset_left = 22.0

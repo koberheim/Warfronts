@@ -255,8 +255,10 @@ is installed.
 - [x] Generated and organized the ten-piece Western Europe sunken-lane route
   family as 1024×1024 review candidates. Added catalog entries, opt-in review
   loading, shared feathered edge caps, and a touching closed-loop review scene.
-  The family remains `REVIEW`; visible internal blends and gameplay-scale
-  readability require user approval before mission integration.
+  The family remains `REVIEW`; the closed loop confirmed the user's concern
+  that exact outer edge caps do not solve repeated interior bands. D44 now
+  defines the production fix: shared route geometry/material layered over
+  varied terrain, with fixed sockets and a soft interior handoff.
 
 ---
 
@@ -267,10 +269,11 @@ prompts 31–38 are implemented, and the post-M5 art replacement plumbing is
 in place. The next work is a .NET-enabled Godot playtest/review pass followed
 by M6 doctrine and mode work.
 
-- **Immediate art review:** open
-  `scenes/art/western_europe_route_review.tscn` in the .NET Godot editor and
-  approve, reject, or request changes to the route family's edge blends before
-  generating the remaining 445 prompted outputs.
+- **Immediate art review:** confirm the D44 layered-route direction. The
+  current v01 closed-loop board remains a reference and should not be approved
+  as production route art; the next implementation step is a separate shared
+  route layer and an arbitrary-neighbor seam test before generating the
+  remaining 445 prompted outputs.
 - **D17:** test framework selection is historical; D25 records the active
   GoDotTest choice and working headless command.
 - **Art reference:** `docs/FRONTS OF WAR ART DESIGN.md` is the active

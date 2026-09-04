@@ -54,6 +54,19 @@ material-transition prompts. Generate and validate one complete route family
 before generating decorative variants; never connect tiles from different
 theater families in a production map.
 
+The production route is layered: terrain tiles provide geographic variation,
+while a shared same-theater route material and topology mask provide the
+gameplay road and shoulders. This keeps socket width, edge position, and the
+interior handoff stable without stamping the same rectangular band across
+every tile.
+
+The current Western Europe route board is intentionally a review of full-tile
+route references. Its edge caps prove socket placement, but the visible
+interior bands are not acceptable for approval. A future route implementation
+must show arbitrary neighboring combinations, not only a closed loop, and
+must keep route geometry separate from geographic texture before any route
+entry is promoted to `APPROVED`.
+
 ## Folder contract
 
 - `shared/` holds reusable build pads, route markers, transitions, decals,

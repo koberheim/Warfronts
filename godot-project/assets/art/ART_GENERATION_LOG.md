@@ -50,10 +50,12 @@ remain on hold.
 
 The ten route files are stored under
 `theaters/western_europe/terrain/route_sunken_lane_*_v01.png`. The generator
-produced attractive topology interiors but inconsistent edge widths, so a
-shared feathered socket cap now gives every connected edge an identical outer
-32-pixel band. Some internal blending remains visible and requires user review
-in `scenes/art/western_europe_route_review.tscn` before approval.
+produced attractive topology interiors but inconsistent edge widths. The
+current outer 32-pixel normalization proves socket placement but does not
+solve the wider interior-band problem shown by the closed-loop review. These
+files remain `REVIEW` references; production approval now requires the route
+to be assembled as a separate shared gameplay layer over varied terrain, as
+specified by D44.
 
 Queue coverage after this batch: 11 of 456 explicit image paths exist (the
 ten new route tiles plus the earlier Mediterranean rocky-wadi path); 445

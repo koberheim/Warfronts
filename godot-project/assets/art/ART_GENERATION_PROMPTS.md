@@ -45,6 +45,11 @@ Apply this contract to every prompt marked **TILE** or **ROUTE TILE**:
   bridges, or gaps touching another edge.
 - Keep the outermost 32 px of every connected edge visually simple so two
   tiles can meet without a hard seam.
+- Treat the first quarter-tile route corridor as a contract zone, not an
+  independently invented decorative band. The route centerline, road width,
+  shoulder width, and edge position must match the accepted same-theater
+  route-material reference. Detail may vary only after a soft handoff into the
+  tile interior; do not repeat a hard rectangular strip.
 - Straight and corner variants in one route family must use the same road
   width, shoulder width, rut placement rhythm, ground values, and lighting.
 - Do not bake buildings, units, props, UI, shadows from off-tile objects, or

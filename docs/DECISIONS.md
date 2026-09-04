@@ -632,6 +632,25 @@ revisited — worth preserving before it's lost to editing history.
   adjacency deterministic without pretending the remaining internal blends
   are production-approved. Review-only loading preserves the existing rule
   that unapproved art cannot silently replace gameplay visuals.
+- **Status:** Superseded by D44.
+
+### D44 - Route gameplay corridors are a separate layer from painted terrain
+- **Decided by:** Codex under standing delegation
+- **Date:** 2026-09-03
+- **Decision:** Do not bake a broad shared corridor into each full painted route
+  tile. Treat terrain art as the varied geographic base layer and render the
+  gameplay route/shoulder as a separate same-theater layer assembled from
+  fixed topology masks and a shared route material. The route layer uses a
+  centered 256-pixel edge socket, fixed road and shoulder widths, and a soft
+  handoff into the tile interior. The current ten Western Europe v01 images
+  remain `REVIEW` references only; they are not promoted to production route
+  art until they are re-authored or composited through this layered contract.
+- **Rationale:** Exact outer-edge matching alone still leaves visible repeated
+  interior bands. Replacing a large rectangular strip creates a different
+  seam, while independent full-tile generations cannot guarantee route width
+  or shoulder continuity. Separating gameplay geometry from geographic art
+  protects the GDD's sacred Layer 1 map geometry and permits arbitrary tile
+  adjacency without erasing theater-specific texture and variation.
 - **Status:** Active.
 
 ---

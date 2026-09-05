@@ -36,7 +36,7 @@ public sealed class ArtAssetCatalog
     public static void ClearCache() => _cached = null;
 
     public ArtAssetEntry Find(string id)
-        => Entries.FirstOrDefault(entry => entry.Id == id);
+        => (Entries ?? new List<ArtAssetEntry>()).FirstOrDefault(entry => entry?.Id == id);
 }
 
 public sealed class ArtAssetEntry
@@ -53,6 +53,21 @@ public sealed class ArtAssetEntry
     [JsonPropertyName("items")] public List<string> Items { get; set; } = new();
     [JsonPropertyName("states")] public List<string> States { get; set; } = new();
     [JsonPropertyName("target_count")] public string TargetCount { get; set; } = "";
+    // Optional discovery metadata. The original catalog predates these fields;
+    // nullable-friendly defaults keep all legacy entries loadable.
+    [JsonPropertyName("tags")] public List<string> Tags { get; set; } = new();
+    [JsonPropertyName("theater")] public string Theater { get; set; } = "";
+    [JsonPropertyName("biome")] public string Biome { get; set; } = "";
+    [JsonPropertyName("thumbnail")] public string ThumbnailPath { get; set; } = "";
+    [JsonPropertyName("scalability")] public string Scalability { get; set; } = "fixed";
+    [JsonPropertyName("compatible_layers")] public List<string> CompatibleLayers { get; set; } = new();
+    [JsonPropertyName("replacement_group")] public string ReplacementGroup { get; set; } = "";
+
+    public bool IsApproved => string.Equals(Status, "APPROVED", System.StringComparison.OrdinalIgnoreCase);
+    public bool IsReview => string.Equals(Status, "REVIEW", System.StringComparison.OrdinalIgnoreCase);
+    public bool SupportsLayer(string layer)
+        => CompatibleLayers == null || CompatibleLayers.Count == 0 || CompatibleLayers.Exists(value =>
+            string.Equals(value, layer, System.StringComparison.OrdinalIgnoreCase));
 
     public string ResolvePath(bool useApprovedAsset, bool allowReviewAsset = false)
     {

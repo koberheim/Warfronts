@@ -38,7 +38,7 @@ public partial class BriefingController : Node2D
         column.AddChild(UiFactory.Rule(true));
         column.AddChild(IntelligenceRow(mission?.WaveSequence, nation));
 
-        var back = UiFactory.Button("PaperButton", "Back", () => GetTree().ChangeSceneToFile("res://scenes_root/main_menu.tscn"));
+        var back = UiFactory.Button("PaperButton", "Back", () => GetTree().ChangeSceneToFile("res://scenes_root/campaign_selection.tscn"));
         var next = UiFactory.Button("PrimaryButton", "Continue to Loadout", () => GetTree().ChangeSceneToFile("res://scenes_root/loadout.tscn"));
         FlowScreen.ActionRow(column, next, back);
         next.GrabFocus();
@@ -67,10 +67,12 @@ public partial class BriefingController : Node2D
         if (!armor && !air && !boss && !siege) badges.AddChild(UiFactory.Label("PaperBodyLabel", "Ground forces"));
         row.AddChild(threats);
 
-        string signature = nation?.SignatureId is { Length: > 0 } id
-            ? GD.Load<Resource>($"res://assets/data/towers/{id}.tres")?.Get("DisplayName").AsString()
-            : null;
-        row.AddChild(Chip("tower_signature", signature ?? "None", "Signature available"));
+        string signaturePath = nation == null ? "" : MissionCatalog.ResolveSignatureResourcePath(nation.SignatureId);
+        string signature = string.IsNullOrEmpty(signaturePath)
+            ? "No signature authored"
+            : ResourceLoader.Load(signaturePath).Get("DisplayName").AsString();
+        bool unlocked = nation != null && UnlockService.IsSignatureUnlocked(ProfileStore.Current, nation.Id);
+        row.AddChild(Chip("tower_signature", unlocked ? signature : "Locked", unlocked ? "Signature ready" : $"{signature} — 1 mission"));
         return row;
     }
 

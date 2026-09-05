@@ -1,0 +1,548 @@
+[gd_resource type="Resource" load_steps=75 format=3]
+
+[ext_resource type="Script" path="res://src/Map/Authoring/MapDefinition.cs" id="map"]
+[ext_resource type="Script" path="res://src/Map/Authoring/MapMetadata.cs" id="metadata"]
+[ext_resource type="Script" path="res://src/Map/Authoring/GameplayMarker.cs" id="marker"]
+[ext_resource type="Script" path="res://src/Map/Authoring/PathDefinition.cs" id="path"]
+[ext_resource type="Script" path="res://src/Map/Authoring/TowerPlacementNode.cs" id="pad"]
+[ext_resource type="Script" path="res://src/Map/Authoring/MapAirCorridorDefinition.cs" id="air"]
+[ext_resource type="Script" path="res://src/Map/Authoring/MapAssetInstance.cs" id="asset"]
+
+[sub_resource type="Resource" id="meta"]
+script = ExtResource("metadata")
+Id = "bocage_crossroads"
+DisplayName = "Bocage Crossroads"
+Theater = "western_europe"
+Biome = "bocage"
+WidthTiles = 28
+HeightTiles = 16
+TerrainSetId = "bocage"
+Status = 1
+CampaignUsageIds = PackedStringArray("m01_bocage_crossroads")
+Notes = "Hand-authored GDD 11.1 gameplay layout: two entries, shared crossroads, 22 pads. Existing approved catalog art. Layout and full presentation remain under review."
+
+[sub_resource type="Resource" id="west"]
+script = ExtResource("marker")
+Id = "west"
+Kind = 0
+PositionTiles = Vector2(1, 10)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="north"]
+script = ExtResource("marker")
+Id = "north"
+Kind = 0
+PositionTiles = Vector2(7, 1)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="objective"]
+script = ExtResource("marker")
+Id = "objective"
+Kind = 1
+PositionTiles = Vector2(25, 8)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="air_entry"]
+script = ExtResource("marker")
+Id = "air_entry"
+Kind = 4
+PositionTiles = Vector2(0, 3)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="air_end"]
+script = ExtResource("marker")
+Id = "air_end"
+Kind = 5
+PositionTiles = Vector2(25, 8)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="path_0"]
+script = ExtResource("path")
+Id = "path_0"
+EntryMarkerId = "west"
+ObjectiveMarkerId = "objective"
+Points = PackedVector2Array(1, 10, 7, 10, 11, 8, 18, 8, 25, 8)
+BakedRuntimePoints = PackedVector2Array(1, 10, 7, 10, 11, 8, 18, 8, 25, 8)
+
+[sub_resource type="Resource" id="path_1"]
+script = ExtResource("path")
+Id = "path_1"
+EntryMarkerId = "north"
+ObjectiveMarkerId = "objective"
+Points = PackedVector2Array(7, 1, 7, 5, 11, 8, 18, 8, 25, 8)
+BakedRuntimePoints = PackedVector2Array(7, 1, 7, 5, 11, 8, 18, 8, 25, 8)
+
+[sub_resource type="Resource" id="air_route"]
+script = ExtResource("air")
+Id = "air_0"
+EntryMarkerId = "air_entry"
+ObjectiveMarkerId = "air_end"
+EntryPositionTiles = Vector2(0, 3)
+ObjectivePositionTiles = Vector2(25, 8)
+WidthTiles = 2
+
+[sub_resource type="Resource" id="pad_0"]
+script = ExtResource("pad")
+Id = "pad_0"
+PositionTiles = Vector2(3, 8)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_1"]
+script = ExtResource("pad")
+Id = "pad_1"
+PositionTiles = Vector2(3, 12)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_2"]
+script = ExtResource("pad")
+Id = "pad_2"
+PositionTiles = Vector2(5, 7)
+Tag = 2
+
+[sub_resource type="Resource" id="pad_3"]
+script = ExtResource("pad")
+Id = "pad_3"
+PositionTiles = Vector2(6, 12)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_4"]
+script = ExtResource("pad")
+Id = "pad_4"
+PositionTiles = Vector2(8, 8)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_5"]
+script = ExtResource("pad")
+Id = "pad_5"
+PositionTiles = Vector2(9, 11)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_6"]
+script = ExtResource("pad")
+Id = "pad_6"
+PositionTiles = Vector2(10, 5)
+Tag = 2
+
+[sub_resource type="Resource" id="pad_7"]
+script = ExtResource("pad")
+Id = "pad_7"
+PositionTiles = Vector2(11, 10)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_8"]
+script = ExtResource("pad")
+Id = "pad_8"
+PositionTiles = Vector2(12, 6)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_9"]
+script = ExtResource("pad")
+Id = "pad_9"
+PositionTiles = Vector2(13, 10)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_10"]
+script = ExtResource("pad")
+Id = "pad_10"
+PositionTiles = Vector2(14, 5)
+Tag = 2
+
+[sub_resource type="Resource" id="pad_11"]
+script = ExtResource("pad")
+Id = "pad_11"
+PositionTiles = Vector2(15, 7)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_12"]
+script = ExtResource("pad")
+Id = "pad_12"
+PositionTiles = Vector2(16, 10)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_13"]
+script = ExtResource("pad")
+Id = "pad_13"
+PositionTiles = Vector2(17, 5)
+Tag = 2
+
+[sub_resource type="Resource" id="pad_14"]
+script = ExtResource("pad")
+Id = "pad_14"
+PositionTiles = Vector2(18, 7)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_15"]
+script = ExtResource("pad")
+Id = "pad_15"
+PositionTiles = Vector2(19, 10)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_16"]
+script = ExtResource("pad")
+Id = "pad_16"
+PositionTiles = Vector2(20, 5)
+Tag = 2
+
+[sub_resource type="Resource" id="pad_17"]
+script = ExtResource("pad")
+Id = "pad_17"
+PositionTiles = Vector2(21, 7)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_18"]
+script = ExtResource("pad")
+Id = "pad_18"
+PositionTiles = Vector2(22, 10)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_19"]
+script = ExtResource("pad")
+Id = "pad_19"
+PositionTiles = Vector2(24, 11)
+Tag = 2
+
+[sub_resource type="Resource" id="pad_20"]
+script = ExtResource("pad")
+Id = "pad_20"
+PositionTiles = Vector2(5, 3)
+Tag = 0
+
+[sub_resource type="Resource" id="pad_21"]
+script = ExtResource("pad")
+Id = "pad_21"
+PositionTiles = Vector2(9, 3)
+Tag = 0
+
+[sub_resource type="Resource" id="field_0_0"]
+script = ExtResource("asset")
+Id = "field_0_0"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(2, 2)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_1_0"]
+script = ExtResource("asset")
+Id = "field_1_0"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(6, 2)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_2_0"]
+script = ExtResource("asset")
+Id = "field_2_0"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(10, 2)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_3_0"]
+script = ExtResource("asset")
+Id = "field_3_0"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(14, 2)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_4_0"]
+script = ExtResource("asset")
+Id = "field_4_0"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(18, 2)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_5_0"]
+script = ExtResource("asset")
+Id = "field_5_0"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(22, 2)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_6_0"]
+script = ExtResource("asset")
+Id = "field_6_0"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(26, 2)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_0_1"]
+script = ExtResource("asset")
+Id = "field_0_1"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(2, 6)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_1_1"]
+script = ExtResource("asset")
+Id = "field_1_1"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(6, 6)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_2_1"]
+script = ExtResource("asset")
+Id = "field_2_1"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(10, 6)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_3_1"]
+script = ExtResource("asset")
+Id = "field_3_1"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(14, 6)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_4_1"]
+script = ExtResource("asset")
+Id = "field_4_1"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(18, 6)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_5_1"]
+script = ExtResource("asset")
+Id = "field_5_1"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(22, 6)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_6_1"]
+script = ExtResource("asset")
+Id = "field_6_1"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(26, 6)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_0_2"]
+script = ExtResource("asset")
+Id = "field_0_2"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(2, 10)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_1_2"]
+script = ExtResource("asset")
+Id = "field_1_2"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(6, 10)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_2_2"]
+script = ExtResource("asset")
+Id = "field_2_2"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(10, 10)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_3_2"]
+script = ExtResource("asset")
+Id = "field_3_2"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(14, 10)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_4_2"]
+script = ExtResource("asset")
+Id = "field_4_2"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(18, 10)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_5_2"]
+script = ExtResource("asset")
+Id = "field_5_2"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(22, 10)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_6_2"]
+script = ExtResource("asset")
+Id = "field_6_2"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(26, 10)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_0_3"]
+script = ExtResource("asset")
+Id = "field_0_3"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(2, 14)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_1_3"]
+script = ExtResource("asset")
+Id = "field_1_3"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(6, 14)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_2_3"]
+script = ExtResource("asset")
+Id = "field_2_3"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(10, 14)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_3_3"]
+script = ExtResource("asset")
+Id = "field_3_3"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(14, 14)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_4_3"]
+script = ExtResource("asset")
+Id = "field_4_3"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(18, 14)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_5_3"]
+script = ExtResource("asset")
+Id = "field_5_3"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(22, 14)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="field_6_3"]
+script = ExtResource("asset")
+Id = "field_6_3"
+AssetId = "review.ART-ENV-001"
+Layer = 0
+PositionTiles = Vector2(26, 14)
+Scale = Vector2(0.20414673046251994, 0.20414673046251994)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="hedge_0"]
+script = ExtResource("asset")
+Id = "hedge_0"
+AssetId = "review.ART-ENV-003"
+Layer = 3
+PositionTiles = Vector2(5, 8.5)
+Scale = Vector2(0.11, 0.11)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="hedge_1"]
+script = ExtResource("asset")
+Id = "hedge_1"
+AssetId = "review.ART-ENV-003"
+Layer = 3
+PositionTiles = Vector2(10, 6.5)
+Scale = Vector2(0.11, 0.11)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="hedge_2"]
+script = ExtResource("asset")
+Id = "hedge_2"
+AssetId = "review.ART-ENV-003"
+Layer = 3
+PositionTiles = Vector2(14, 6.5)
+Scale = Vector2(0.11, 0.11)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="hedge_3"]
+script = ExtResource("asset")
+Id = "hedge_3"
+AssetId = "review.ART-ENV-003"
+Layer = 3
+PositionTiles = Vector2(17, 6.5)
+Scale = Vector2(0.11, 0.11)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="hedge_4"]
+script = ExtResource("asset")
+Id = "hedge_4"
+AssetId = "review.ART-ENV-003"
+Layer = 3
+PositionTiles = Vector2(20, 6.5)
+Scale = Vector2(0.11, 0.11)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="hedge_5"]
+script = ExtResource("asset")
+Id = "hedge_5"
+AssetId = "review.ART-ENV-003"
+Layer = 3
+PositionTiles = Vector2(24, 9.5)
+Scale = Vector2(0.11, 0.11)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="farmhouse"]
+script = ExtResource("asset")
+Id = "farmhouse"
+AssetId = "review.ART-ENV-004"
+Layer = 2
+PositionTiles = Vector2(25, 6)
+Scale = Vector2(0.13, 0.13)
+RotationRadians = 0
+
+[sub_resource type="Resource" id="supplies"]
+script = ExtResource("asset")
+Id = "supplies"
+AssetId = "review.ART-ENV-005"
+Layer = 4
+PositionTiles = Vector2(25, 12)
+Scale = Vector2(0.1, 0.1)
+RotationRadians = 0
+
+[resource]
+script = ExtResource("map")
+SchemaVersion = 1
+Metadata = SubResource("meta")
+Paths = Array[ExtResource("path")]([SubResource("path_0"), SubResource("path_1")])
+AirCorridors = Array[ExtResource("air")]([SubResource("air_route")])
+TowerNodes = Array[ExtResource("pad")]([SubResource("pad_0"), SubResource("pad_1"), SubResource("pad_2"), SubResource("pad_3"), SubResource("pad_4"), SubResource("pad_5"), SubResource("pad_6"), SubResource("pad_7"), SubResource("pad_8"), SubResource("pad_9"), SubResource("pad_10"), SubResource("pad_11"), SubResource("pad_12"), SubResource("pad_13"), SubResource("pad_14"), SubResource("pad_15"), SubResource("pad_16"), SubResource("pad_17"), SubResource("pad_18"), SubResource("pad_19"), SubResource("pad_20"), SubResource("pad_21")])
+Markers = Array[ExtResource("marker")]([SubResource("west"), SubResource("north"), SubResource("objective"), SubResource("air_entry"), SubResource("air_end")])
+Assets = Array[ExtResource("asset")]([SubResource("field_0_0"), SubResource("field_1_0"), SubResource("field_2_0"), SubResource("field_3_0"), SubResource("field_4_0"), SubResource("field_5_0"), SubResource("field_6_0"), SubResource("field_0_1"), SubResource("field_1_1"), SubResource("field_2_1"), SubResource("field_3_1"), SubResource("field_4_1"), SubResource("field_5_1"), SubResource("field_6_1"), SubResource("field_0_2"), SubResource("field_1_2"), SubResource("field_2_2"), SubResource("field_3_2"), SubResource("field_4_2"), SubResource("field_5_2"), SubResource("field_6_2"), SubResource("field_0_3"), SubResource("field_1_3"), SubResource("field_2_3"), SubResource("field_3_3"), SubResource("field_4_3"), SubResource("field_5_3"), SubResource("field_6_3"), SubResource("hedge_0"), SubResource("hedge_1"), SubResource("hedge_2"), SubResource("hedge_3"), SubResource("hedge_4"), SubResource("hedge_5"), SubResource("farmhouse"), SubResource("supplies")])

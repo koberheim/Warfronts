@@ -1,9 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/RafScrambleController.cs" id="1"]
-[ext_resource type="Resource" path="res://assets/data/towers/signature_raf_scramble_command.tres" id="2"]
 
 [node name="RafScrambleCommand" type="Node2D"]
 script = ExtResource("1")
-Definition = ExtResource("2")
 PadTag = 1

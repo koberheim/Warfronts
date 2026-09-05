@@ -245,3 +245,28 @@ native-scale, function, contrast, rotation, style, detail, tone, grayscale,
 blur, and screenshot tests. Generated images are references until they have
 been cropped/cleaned, imported at the intended size, and checked in Clean,
 Typical, and Stress gameplay screenshots.
+
+## 2026-09-05 alliance/nation selection-screen banners
+
+The User explicitly commissioned these for `campaign_selection.tscn`'s
+alliance and nation choice screens — a deliberate, scoped exception to the
+`HOLD` above, which remains in force for gameplay tower/unit/enemy identity
+art. All eight use real, uncharged national colors (a color palette is not
+protected content) combined with an invented emblem in place of the real one
+— never a real flag, never real political/military iconography (GDD §14.3;
+see `docs/DECISIONS.md` D85). Registered in `../data/art/art_asset_catalog.json`
+as `review.ART-UI-FLAG-001` through `008`.
+
+| ID | Asset | Status | File |
+|---|---|---|---|
+| ART-UI-FLAG-001 | Allies alliance banner | REVIEW | `shared/ui/flags/allies_banner_v01.png` |
+| ART-UI-FLAG-002 | Axis alliance banner | REVIEW | `shared/ui/flags/axis_banner_v01.png` |
+| ART-UI-FLAG-003 | United States nation banner | REVIEW | `shared/ui/flags/nation_banner_united_states_v01.png` |
+| ART-UI-FLAG-004 | Britain nation banner | REVIEW | `shared/ui/flags/nation_banner_britain_v01.png` |
+| ART-UI-FLAG-005 | Soviet Union nation banner | REVIEW | `shared/ui/flags/nation_banner_soviet_union_v01.png` |
+| ART-UI-FLAG-006 | Italy nation banner | REVIEW | `shared/ui/flags/nation_banner_italy_v01.png` |
+| ART-UI-FLAG-007 | Japan nation banner | REVIEW | `shared/ui/flags/nation_banner_japan_v01.png` |
+| ART-UI-FLAG-008 | Germany nation banner | REVIEW | `shared/ui/flags/nation_banner_germany_v01.png` |
+
+Integrated into `CampaignSelectionController`'s alliance and nation cards;
+still `REVIEW` pending the acceptance gates above at actual button scale.

@@ -3,6 +3,22 @@
 Live tracker, updated as work lands. Checkboxes correspond 1:1 to GDD §19's
 numbered prompts. Milestone exit criteria are GDD §17.1.
 
+## Current release audit — 2026-09-05
+
+The active, evidence-based completion tracker is `docs/RELEASE_COMPLETION.md`.
+Older checkboxes below describe implementation history, not release sign-off.
+The User confirmed the external M3 playtest gate passed. The audit found
+missing mission-map binding, prototype defenses in player flow, unsafe save
+edge cases, incomplete pooling and a verification false-positive; those were
+repaired (D72-D74) and the mission now resolves the authored Bocage
+Crossroads map (D73). A follow-on session found the working tree's build
+itself broken (a name collision in mid-flight settings code, D75); once
+fixed, the full headless suite - 14 GoDotTest suites, the data validator, and
+the mission smoke run - passes end to end. Launch content (7 more maps, 11
+more missions), player export, presentation/art/audio, remaining modes, and
+settings/accessibility UI remain unfinished; the project is not yet
+release-ready. See `docs/RELEASE_COMPLETION.md` for the per-item ledger.
+
 ## M0 — Foundation
 
 1. [x] Godot 4.x project structure per §15.2, `.gitignore`, Git LFS config,
@@ -209,7 +225,13 @@ were added and M4 remains unopened.
     data, three US choices on the loadout screen, hotbar slot 4 / key 4.
     Inert until their hooks exist: terrain-tag passives, Italy's national
     relocation, Fortified Line's immunity radius (D51). `DoctrineTests` 14/14.
-40. Not started (next in order; see D52).
+40. [x] Map gimmicks per §11.2 (D82): `GimmickSystem` implements Tide,
+    Sandstorm, Mud, Canopy, and Ruined Town's clipped-range arc, all
+    data-driven via `MapGimmick`/`RuntimeGimmickData` and independently
+    tested (`GimmickTests` 7/7) - none of the eight launch maps exist yet to
+    wire them into (R09/prompt 26's map roster). Tide's WaveRunner spawn-
+    rerouting and the arc gimmick's true wall/line-of-sight geometry are
+    deliberately not built (see D82).
 41. [x] Progression: `MissionDefinition`/`StarObjectiveDefinition` data,
     three-star evaluation (§11.3), §9.5 unlock gates, cosmetic-only Faction
     Mastery (§12.3), and a versioned JSON save with a real v1→v2 migration
@@ -218,7 +240,13 @@ were added and M4 remains unopened.
 42. Not started (Skirmish, Endless, modifiers; needs a main menu).
 43. [~] `IPlatformService` + `NullPlatformService` and achievement ids exist;
     GodotSteam integration not started.
-44. Not started (settings, colorblind palettes, reduced effects).
+44. [~] Settings screen (D80): video (fullscreen, UI scale), audio (five
+    volumes), accessibility (colorblind palette, visual effects intensity),
+    and full control remapping, reachable from the main menu and the pause
+    menu. `SettingsTests` 4/4. Not covered: VSync/resolution/frame cap,
+    screen shake, subtitles, and the gameplay toggles (default speed,
+    auto-pause, confirm-before-sell, targeting-priority defaults, tutorial-
+    hints, damage numbers) - none of those have a backing system yet.
 45. [x] Data Validator (see the completion-pass section below).
 
 **M4 prompts 28–30 verification:** the .NET build succeeds with 0
@@ -387,20 +415,27 @@ across 64 resources; smoke run 0 errors with 18 kills.
 
 ## Historical blockers / current follow-up
 
-No design blockers. Prompts 1–39, 41, and 45 (plus 43's Null half) are
-implemented and verified on the Mono build; see the completion-pass section
-above. Remaining ladder work in order: 40 (map gimmicks), 42
-(modes/modifiers), 43 (Steam via GodotSteam), 44 (settings/accessibility),
-then M6–M8 content (maps 2–8, 12 missions, bosses B2–B4, codex; the main
-menu itself exists since the UI overhaul).
+No design blockers. Prompts 1–39, 41, and 45 (plus 43's Null half and 44's
+core Settings screen, D80) are implemented and verified on the Mono build;
+see the completion-pass section above. GDD §11.2's map gimmick systems
+(Tide, Sandstorm, Mud, Canopy, clipped range arcs, D82) and B2-B4/Elite boss
+mechanics (D83) are also implemented and tested ahead of the map/mission
+content that will use them. Remaining ladder work in order: 42
+(modes/modifiers), 43 (Steam via GodotSteam), 44's uncovered fields (see its
+checkbox above), then M6–M8 content (maps 2–8, 12 missions - including
+placing B2/B3/B4 into missions 8/10/12 - codex; the main menu itself exists
+since the UI overhaul).
 
-- **Known gameplay gaps carried forward:** T8 Minefield has no free-placement
-  UI (not buildable); the loadout screen is
-  a fixed recommended kit, not §13.3's picker; the Forward Observer branch's
-  Spotted marking is authored but not consumed by `CommandPostController`;
-  `EnemyManager`/`FriendlyUnitManager` instantiate scenes directly rather
-  than pooling (§15.1 principle 5); the mission scene is a prototype layout
-  with 11 pads, not Bocage Crossroads' authored 22.
+- **Known gameplay gaps carried forward:** the loadout screen is a fixed
+  recommended kit, not §13.3's picker - `BuildOption`/`SpecialPlacementService.
+  TryPlaceSignature` exist for dynamic signature build-slot placement but
+  have no HUD call site yet (R06 follow-up). **Resolved since the paragraph
+  above was written:** T8 Minefield now has real free-placement UI and its
+  missing `.tscn`/`ControllerScene` (D77); the Forward Observer branch's
+  Spotted marking is now consumed (D77); `EnemyManager`/`FriendlyUnitManager`
+  pool through `ObjectPool<T>` (D74); the mission now resolves the authored
+  Bocage Crossroads map, not the 11-pad prototype (D73, confirmed by
+  `RuntimeMapIntegrationTests` this session).
 - **Not verifiable by agents:** the M3 external playtest gate (§17.2). UI
   layout is now checked by real screenshots (`tools/README.md`); what an
   agent cannot judge is feel - hover/press timing and readability at 2x
@@ -424,8 +459,174 @@ menu itself exists since the UI overhaul).
   art were intentionally left untouched.
 - **Standalone .NET restore:** `dotnet build` cannot resolve
   `Godot.NET.Sdk/4.7.2` without access to NuGet; the Mono Godot build can
-  still run the current project and smoke scene.
+  still run the current project and smoke scene. **Resolved 2026-09-05:**
+  this machine now has NuGet access (`dotnet restore` inside
+  `tools/Build-Windows.ps1` succeeds) and the Godot 4.7.2 Mono Windows export
+  templates are installed - a real `FrontsOfWar.exe` player build now exists
+  under `godot-project/build/player/` (gitignored) and boots headlessly clean
+  (D76). The prior "distributable .exe blocked" notes elsewhere in this file
+  describe earlier sessions' state and are left as history.
 - **Map planner:** `docs/fronts_of_war_map_planner_design_spec.md`, the 100-
   template catalog, and the `map_planner` editor dock implement the M3.5
   design-time workflow. Accepted exports remain authored review artifacts;
   runtime procedural generation is still out of scope.
+- **Standalone map editor blueprint:** `docs/standalone_map_editor_blueprint.md`
+  records the architecture and 16-phase path from shared map domain through
+  publish and M3.5 plugin retirement. Phase 1 is complete: the repository
+  launcher opens a debug-only standalone editor scene, the 1920×1080 themed
+  workbench shell is in place, player/developer exports are separated, and
+  player PCK inspection confirms no editor scene/source/type marker ships.
+  Phase 2 is also complete: the shell can create, open, save, Save As, and
+  close canonical schema-v1 `MapDefinition` resources with dirty prompts and
+  validated deterministic `.tres` output. Phases 3 and 4 are now complete:
+  loaded maps render as an inspectable tile-space board, and selection,
+  transforms, undo/redo, duplicate, copy/paste, delete, and inspector edits are
+  live. Phase 5 asset catalog/palette integration is next.
+
+## Standalone map editor — Phase 1 shell (2026-09-04)
+
+- [x] Repository-root `Launch-MapEditor.ps1` resolves the project from any
+  working directory, accepts `-GodotMono`, falls back through
+  `$env:GODOT_MONO` and D13, forwards Godot arguments, validates Mono/.NET,
+  and reports an actionable missing-binary error.
+- [x] `Boot.ResolveLaunchScene` gates `--map-editor` behind Debug and replaces
+  arbitrary `--screen=<scene>` loading with the five documented screenshot
+  routes. Normal player launch remains `boot.tscn` → main menu/mission.
+- [x] `map_editor.tscn` builds the Fronts of War workbench shell: map board,
+  asset palette/hierarchy, inspector, diagnostics, toolbar, and status rail.
+  It intentionally owns no map document or mutation commands yet.
+- [x] `Windows Player` excludes the editor scene/source and Release omits the
+  editor types; `Windows Developer` retains them for Debug exports. The four
+  existing Godot editor plugin entry classes now use the required `#if TOOLS`
+  boundary, and `FrontsOfWar.sln` is tracked because Godot 4.7 requires it to
+  publish the .NET project.
+
+**Verification:** Debug build 0 warnings / 0 errors; Release solution build
+0 warnings / 0 errors; CoreTests 17/17; headless Godot editor startup clean;
+launcher success from `docs/` and missing-binary failure both pass; real
+1920×1080 screenshot reviewed; player PCK contains `main_menu.tscn` but no
+`map_editor.tscn`, editor source path, or `MapEditorController` marker. A full
+Windows executable was not produced because this machine has no Godot 4.7.2
+Mono export templates installed.
+
+## Standalone map editor — Phase 2 map documents (2026-09-04)
+
+- [x] Added one tile-space coordinate contract (D64's 64px gameplay tile),
+  stable lowercase object IDs, quarter-turn rotation, and uniform-scale rules.
+- [x] Added schema-v1 Godot Resources for map metadata, terrain, placed assets,
+  clusters, paths, air corridors, tower nodes, markers, zones, gimmicks, and
+  generation provenance. Editor-only state is not serialized into the map.
+- [x] Added validated deterministic `.tres` persistence: stable collection and
+  external-resource IDs, explicit schema/corruption failures, and temporary +
+  backup replacement so a failed save preserves the last known-good file.
+- [x] Added New/Open/Save/Save As/Close to the live File menu with dirty state
+  and Save/Discard/Cancel prompts. The standalone document remains isolated
+  from player profile and mission state.
+- [x] Added `Launch-MapEditor.cmd` for double-click startup and
+  `docs/MAP_EDITOR_MANUAL.md` because a distributable `.exe` still cannot be
+  produced without matching Godot Mono export templates.
+
+**Verification:** Debug and Release builds 0 warnings / 0 errors;
+MapAuthoringTests 7/7 and CoreTests 17/17; double-click launcher headless
+startup clean; player PCK contains the normal main-menu scene but no editor
+scene, editor source path, or editor controller/workflow type marker. Tests
+cover empty/tiny round trips, deterministic output, schema errors, failed-save
+preservation, and refusal to silently discard dirty state.
+
+## Standalone map editor — Phases 3–4 rendering and editing (2026-09-04)
+
+- [x] Phase 3.1: `MapRegistry` and `MapLoader` resolve repository-relative map
+  IDs or `.tres` paths without absolute-path coupling.
+- [x] Phase 3.2: `MapSceneFactory` builds a deterministic snapshot covering
+  terrain, assets/clusters, paths, air corridors, tower nodes, markers, and
+  zones. The viewport draws the result as clear authored placeholders ready
+  for catalog sprites in Phase 5.
+- [x] Phase 3.3–3.4: the board uses D64's 64px tile contract, centered map
+  framing, grid majors, zoom-around-cursor, middle-mouse pan, cursor tile
+  conversion, click selection, additive selection, and a live map hierarchy.
+- [x] Phase 4.1–4.2: selection service and command history support multi-select,
+  undo/redo, redo invalidation, and compound commands.
+- [x] Phase 4.3–4.4: validated move/rotate/scale commands plus delete,
+  duplicate, copy, and paste with fresh IDs and exact snapshot undo.
+- [x] Phase 4.5: inspector exposes ID/category and editable position, rotation,
+  and scale controls. Changes issue commands; terrain scale is disabled and
+  uniform-scale rules remain enforced for scalable asset types.
+- [x] Window-close protection now routes dirty documents through the same
+  Save/Discard/Cancel prompt as File → Close.
+
+**Verification:** `MapAuthoringTests` 11/11, including registry resolution,
+render snapshot coverage, selection, transforms, exact undo/redo, duplicate,
+copy/paste, and delete. Debug build 0 warnings / 0 errors; the previous
+CoreTests 17/17 and Release build remain green. The live editor launches via
+the root `.cmd`/PowerShell launcher; a distributable `.exe` remains blocked by
+missing Godot Mono export templates.
+
+## Standalone map editor — remaining pipeline phases (2026-09-04)
+
+**Corrected 2026-09-05 (R17, D84):** the checkboxes below described service
+classes as complete without verifying they were reachable from the actual
+editor UI. An R17 audit (grepping every phase's service class for any
+reference outside its own file, across `src/` and `tests/`) found several
+with **zero** callers anywhere - not the editor, not a test. They compile
+and, where checked, work correctly in isolation, but a person using the
+standalone map editor cannot reach them. Corrected markers below; see D84
+for the full per-phase evidence.
+
+- [~] Phase 5: catalog DTO compatibility, searchable/filterable palette,
+  thumbnail fallback, catalog-ID placement, and placement cancellation.
+  Reachable and working (`MapAssetPalettePanel`, wired into
+  `MapEditorController`) - but only for decorative art-catalog props
+  (`ArtPaletteQuery`/`ArtAssetCatalog`), not for any gameplay object type.
+- [~] Phase 6: 64px terrain socket/adjacency/occupancy rules, snapped terrain
+  commands, rotation-only terrain editing, and terrain diagnostics.
+  `TerrainRules`/`TerrainPlacementPreview` exist and compile but have no
+  caller anywhere in `src/` or `tests/` - there is no way to paint a new
+  terrain tile in the editor. An existing `TerrainInstance` can still be
+  selected/moved/rotated generically via `MapObjectLocator` (see Phase 4.5).
+- [~] Phases 7–9: catalog-backed runtime art slots, clusters, layer
+  visibility/locking service, authored tower nodes, path-point commands,
+  gameplay markers, air corridor data, and deterministic multi-path runtime
+  path selection support. The **data model and runtime consumption** are
+  real (`MapObjectLocator` generically selects/moves/rotates/scales every
+  one of these object kinds once they exist in a document, and
+  `MapRuntimeDataFactory`/`MapRuntimeAuthoringBuilder` consume them at
+  mission load). The **creation tools** are not: `MapLayerService` (layer
+  visibility/locking) and `MapGameplayCommands` (adding a new tower node,
+  marker, zone, or air corridor) have zero callers anywhere. There is no way
+  to create a new instance of any of these from inside the editor - only to
+  select, move, or delete one that already exists in the loaded document
+  (authored some other way: hand-edited `.tres`, or Phase 10's generation
+  converter, if that itself becomes reachable).
+- [~] Phase 10: deterministic generation configuration, planner reuse, and
+  candidate-to-MapDefinition conversion with provenance and editable pads.
+  `MapGenerationService`/`MapGenerationConfiguration`/`MapPlanConverter`
+  exist and reference each other, but nothing calls them from the editor:
+  the header's "Generate" menu button is a stub that only prints "GENERATE
+  COMMANDS ARRIVE IN A LATER MAP-EDITOR PHASE" to the status bar
+  (`MapEditorController.ShowPhaseMessage`). Same stub for the "View" and
+  "Map" menu buttons, and "Edit" is a tooltip-style hint rather than a real
+  menu (its actual commands - undo/redo/delete/duplicate/copy/paste - work
+  via keyboard shortcuts, which are real and tested).
+- [x] Phases 11–13: severity-coded diagnostics, focus mapping, runtime
+  MapLoader handoff, Test Map launch, publish validation, canonical map
+  repository output, and MissionDefinition MapId resolution. Confirmed
+  reachable: `MapEditorController`'s diagnostics panel, "TEST MAP", and
+  "PUBLISH" buttons all call real services (`MapDiagnosticsService`,
+  `MapPreviewLauncher`, `MapPublisher`).
+- [ ] Phase 14: editor-only recent-map/recent-asset preferences, recoverable
+  autosave service, and seeded scatter command. `MapEditorPreferences`,
+  `MapRecoveryService`, and `MapScatterService` all exist but have zero
+  callers anywhere - no recent-files list, no autosave-recovery prompt on
+  launch, and no scatter command are reachable from the editor UI at all.
+- [x] Phase 15: standalone launch and shared planner/domain services are now
+  the supported authoring path; the legacy planner source remains in the
+  repository for comparison, but its Godot editor dock is no longer
+  registered.
+
+**Verification:** Godot Mono project build succeeds; all discovered suites pass
+(Build 6, Core 17, DataValidator 4, Doctrine 14, M4 nation/enemy/wave 3, M4
+tower 5, M5 signature/air 5, MapAuthoring 13, MapPlanning 6, Progression 18);
+data validation reports 0 errors/0 warnings across 65 resources; authored
+`editor_smoke_fixture` loads through the real mission scene; launcher screenshot
+review passed at 1920×1080. A distributable `.exe` is still unavailable because
+matching Godot Mono Windows export templates are not installed.

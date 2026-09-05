@@ -5,7 +5,7 @@ using FrontsOfWar.Map;
 
 namespace FrontsOfWar.Enemies;
 
-public partial class FriendlyUnitController : Node2D, IDamageSource
+public partial class FriendlyUnitController : Node2D, IDamageSource, IPoolLifecycle
 {
     [Export] public FriendlyUnitDefinition Definition;
 
@@ -14,20 +14,48 @@ public partial class FriendlyUnitController : Node2D, IDamageSource
     private float _hp;
     private float _lifetime;
     private EnemyController _engagedEnemy;
+    private ulong _engagedEnemyGeneration;
     private float _engagedSeconds;
 
     public string SourceId => $"friendly_{Name}";
     public bool IsAlive => _hp > 0f;
     public float CurrentHp => _hp;
-    public bool IsEngaged => _engagedEnemy is { IsAlive: true };
+    public bool IsEngaged => HasCurrentEngagement;
+    public ulong PoolGeneration { get; private set; }
+
+    private bool HasCurrentEngagement
+        => _engagedEnemy != null && _engagedEnemy.IsPoolGenerationCurrent(_engagedEnemyGeneration);
 
     public void Initialize(FriendlyUnitDefinition definition, PathNetwork path, float startDistance)
     {
+        PoolGeneration++;
         Definition = definition;
         _path = path;
         _distance = Mathf.Clamp(startDistance, 0f, path.LengthPixels);
         _hp = definition.MaxHp;
+        _lifetime = 0f;
+        _engagedEnemy = null;
+        _engagedEnemyGeneration = 0;
+        _engagedSeconds = 0f;
         GlobalPosition = path.GetPositionAtDistance(_distance);
+        QueueRedraw();
+    }
+
+    public void OnRentedFromPool() => ResetForPool(clearDefinition: false);
+
+    public void OnReturnedToPool() => ResetForPool(clearDefinition: true);
+
+    private void ResetForPool(bool clearDefinition)
+    {
+        _path = null;
+        _distance = 0f;
+        _hp = 0f;
+        _lifetime = 0f;
+        _engagedEnemy = null;
+        _engagedEnemyGeneration = 0;
+        _engagedSeconds = 0f;
+        if (clearDefinition) Definition = null;
+        Position = Vector2.Zero;
         QueueRedraw();
     }
 
@@ -37,10 +65,13 @@ public partial class FriendlyUnitController : Node2D, IDamageSource
         _lifetime += delta;
         if (_lifetime >= Definition.LifetimeSeconds) { _hp = 0f; return; }
 
-        if (_engagedEnemy == null || !_engagedEnemy.IsAlive)
+        if (!HasCurrentEngagement)
+        {
             _engagedEnemy = FindNearestEnemy(enemies);
+            _engagedEnemyGeneration = _engagedEnemy?.PoolGeneration ?? 0;
+        }
 
-        if (_engagedEnemy != null && _engagedEnemy.IsAlive)
+        if (HasCurrentEngagement)
         {
             float distance = GlobalPosition.DistanceTo(_engagedEnemy.GlobalPosition);
             if (distance <= GameBalanceConfigAutoload.Config.TilePixelSize * 0.45f)

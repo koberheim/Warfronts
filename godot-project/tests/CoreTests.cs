@@ -318,6 +318,44 @@ public class CoreTests : TestClass
         Require(GD.Load<PackedScene>("res://scenes_root/results.tscn") != null, "Results scene loads");
     }
 
+    [Test]
+    public void MapEditorLaunchRouteIsDeveloperOnlyAndAllowlisted()
+    {
+        Require(
+            Boot.ResolveLaunchScene(new[] { "--map-editor" }, false, true) == Boot.MapEditorScene,
+            "Developer flag opens map editor in a developer build");
+        Require(
+            Boot.ResolveLaunchScene(new[] { "--map-editor" }, false, false) == Boot.MainMenuScene,
+            "Player build ignores map editor flag");
+        Require(
+            Boot.ResolveLaunchScene(new[] { "--screen=map_editor" }, false, true) == Boot.MainMenuScene,
+            "Screenshot screen argument cannot bypass map editor gate");
+        Require(
+            Boot.ResolveLaunchScene(new[] { "--screen=mission" }, false, false) == Boot.MainMenuScene,
+            "Player build ignores screenshot routes");
+        Require(
+            Boot.ResolveLaunchScene(new[] { "--screen=unknown", "--mission" }, false, false) == Boot.MainMenuScene,
+            "Player build ignores debug mission routes");
+    }
+
+    [Test]
+    public void MapEditorSceneBuildsRequiredWorkbenchRegions()
+    {
+        var packed = GD.Load<PackedScene>(Boot.MapEditorScene);
+        Require(packed != null, "Map editor scene loads");
+        var editor = packed.Instantiate<Control>();
+        TestScene.AddChild(editor);
+
+        Require(editor.FindChild("Header", true, false) != null, "Map editor header exists");
+        Require(editor.FindChild("AssetPalette", true, false) != null, "Map editor asset palette exists");
+        Require(editor.FindChild("Viewport", true, false) != null, "Map editor viewport exists");
+        Require(editor.FindChild("Inspector", true, false) != null, "Map editor inspector exists");
+        Require(editor.FindChild("Diagnostics", true, false) != null, "Map editor diagnostics exists");
+        Require(editor.FindChild("StatusBar", true, false) != null, "Map editor status bar exists");
+
+        editor.Free();
+    }
+
     private sealed class FakeTargetable : ITargetable
     {
         public Vector2 GlobalPosition { get; }

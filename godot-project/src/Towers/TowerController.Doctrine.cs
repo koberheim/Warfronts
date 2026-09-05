@@ -23,11 +23,13 @@ public partial class TowerController
     // falling back to normal targeting once it expires or the forced target
     // dies/leaves range — see IsValidTarget in TowerController.cs.
     private ITargetable _forcedTarget;
+    private ulong _forcedTargetGeneration;
     private float _forcedTargetRemaining;
 
     public void ForceTarget(ITargetable target, float durationSeconds)
     {
         _forcedTarget = target;
+        _forcedTargetGeneration = (target as Enemies.EnemyController)?.PoolGeneration ?? 0;
         _forcedTargetRemaining = durationSeconds;
     }
 

@@ -1,5 +1,7 @@
 using Godot;
 using FrontsOfWar.Core;
+using FrontsOfWar.Debug;
+using FrontsOfWar.Meta;
 using FrontsOfWar.UI.Theme;
 
 namespace FrontsOfWar.UI.Flow;
@@ -13,12 +15,12 @@ public partial class TutorialController : CanvasLayer
     private static readonly string[] Steps =
     {
         "1 / Defense Line — enemies follow the route to the objective. Stop them before they leak.",
-        "2 / Build pads — click a pad to place a tower. The current grey-box defense is already deployed.",
+        "2 / Build pads — click a pad to place your first tower before starting the first wave.",
         "3 / Damage types — Small Arms handles Soft targets; Armor-Piercing handles tanks.",
         "4 / Targeting — select a tower to inspect its priority, range, and lifetime damage.",
         "5 / Preview — the strip shows the next wave in full, then two waves of warning information.",
         "6 / Command Points — abilities appear in the bottom-right hotbar; pause still allows planning.",
-        "7 / Signature — the Arsenal factory produces friendly units that walk backward and stall enemies.",
+        "7 / Signature — every nation has a signature. Complete one mission with a nation to unlock its signature.",
         "8 / Adapt — upgrades, sells, and the post-mortem explain what to change before retrying."
     };
 
@@ -90,6 +92,11 @@ public partial class TutorialController : CanvasLayer
     private void Finish()
     {
         MissionSession.TutorialCompleted = true;
+        // Screenshot runs are visual fixtures, not player sessions: never
+        // let a captured Skip/Begin interaction mutate a developer profile.
+        if (ScreenshotCapture.ArgValue(OS.GetCmdlineArgs(), "--screenshot-dir") == null
+            && !ProfileStore.TryCompleteTutorial(out string saveError))
+            GD.PushWarning($"Tutorial completion will be retried on the next profile save: {saveError}");
         GameLoop.Instance.Time.Resume();
         _card.QueueFree();
         _card = null;

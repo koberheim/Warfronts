@@ -2,6 +2,7 @@ using Godot;
 using FrontsOfWar.Core;
 using FrontsOfWar.Enemies;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FrontsOfWar.Towers;
 
@@ -70,12 +71,51 @@ public partial class CommandPostController : Node2D
 
     public void RevealTargets(IReadOnlyList<EnemyController> enemies, float tilePixelSize)
     {
+        var stats = Upgrade.CurrentStats();
+        bool isForwardObserver = stats.StatusEffectId == "Spotted";
         float multiplier = Definition?.DisplayName?.Contains("Radar", System.StringComparison.OrdinalIgnoreCase) == true ? 2f : 1f;
-        float radius = Mathf.Max(0f, Upgrade.CurrentStats().AuraRadiusTiles) * tilePixelSize * multiplier * DoctrineAuraRadiusMultiplier;
+        float radius = Mathf.Max(0f, stats.AuraRadiusTiles) * tilePixelSize * multiplier * DoctrineAuraRadiusMultiplier;
         foreach (var enemy in enemies ?? System.Array.Empty<EnemyController>())
-            if (enemy != null && enemy.IsConcealed && enemy.GlobalPosition.DistanceTo(GlobalPosition) <= radius)
+        {
+            if (enemy == null || !enemy.IsConcealed) continue;
+            // Forward Observer (GDD §6 T9 branch fork): reveal extends to the
+            // entire map for Air units specifically, not just the aura radius.
+            bool mapWideAir = isForwardObserver && enemy.IsAir;
+            if (mapWideAir || enemy.GlobalPosition.DistanceTo(GlobalPosition) <= radius)
                 enemy.SetRevealed(true);
+        }
     }
+
+    // Forward Observer's own effect, distinct from the passive Concealed
+    // reveal above: "Applies Spotted to the strongest enemy in a 10-tile
+    // radius on a 4s rotation" (GDD §6 T9 branch fork). StatusDurationSeconds
+    // does double duty as both the pulse cadence and the applied Spotted
+    // duration, matching MinefieldController's identical reuse of the same
+    // field for its own periodic Suppressed trigger. Inert on L1/L2 and on
+    // the Logistics Depot branch, neither of which set StatusEffectId.
+    public void TickSpottedPulse(float tickDeltaSeconds, IReadOnlyList<EnemyController> enemies, float tilePixelSize)
+    {
+        var stats = Upgrade.CurrentStats();
+        if (stats.StatusEffectId != "Spotted" || stats.StatusDurationSeconds <= 0f)
+        {
+            _spottedPulseElapsed = 0f;
+            return;
+        }
+
+        _spottedPulseElapsed += tickDeltaSeconds;
+        if (_spottedPulseElapsed < stats.StatusDurationSeconds) return;
+        _spottedPulseElapsed -= stats.StatusDurationSeconds;
+
+        float radius = stats.RangeTiles * tilePixelSize;
+        int targetCount = Mathf.Max(1, stats.SalvoCount);
+        var strongest = (enemies ?? System.Array.Empty<EnemyController>())
+            .Where(enemy => enemy != null && enemy.IsAlive && GlobalPosition.DistanceTo(enemy.GlobalPosition) <= radius)
+            .OrderByDescending(enemy => enemy.CurrentHp)
+            .Take(targetCount);
+        foreach (var enemy in strongest) enemy.ApplySpotted(stats.StatusDurationSeconds);
+    }
+
+    private float _spottedPulseElapsed;
 
     // Sets (never adds — auras from multiple posts don't stack, GDD §6 T9)
     // this post's bonus on every tower within its radius, but only if it's

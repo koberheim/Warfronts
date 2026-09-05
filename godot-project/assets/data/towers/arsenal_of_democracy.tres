@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=6 format=3]
+[gd_resource type="Resource" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/ArsenalDefinition.cs" id="1"]
 [ext_resource type="Resource" path="res://assets/data/enemies/friendly_rifle_squad.tres" id="2"]
@@ -6,7 +6,10 @@
 [ext_resource type="Resource" path="res://assets/data/enemies/friendly_light_tank.tres" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/friendly_unit.tscn" id="5"]
 
+[ext_resource type="PackedScene" path="res://scenes/towers/arsenal_factory.tscn" id="controller"]
+
 [resource]
+ControllerScene = ExtResource("controller")
 script = ExtResource("1")
 Id = "arsenal_of_democracy"
 DisplayName = "Arsenal of Democracy Factory"

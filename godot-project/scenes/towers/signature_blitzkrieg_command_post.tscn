@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/BlitzkriegCommandController.cs" id="1"]
-[ext_resource type="Resource" path="res://assets/data/towers/signature_blitzkrieg_command_post.tres" id="2"]
 
 [node name="BlitzkriegCommandPost" type="Node2D"]
 script = ExtResource("1")
-Definition = ExtResource("2")

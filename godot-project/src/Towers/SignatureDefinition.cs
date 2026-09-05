@@ -20,6 +20,7 @@ public partial class SignatureDefinition : Resource
     [Export] public string Id = "";
     [Export] public string DisplayName = "";
     [Export] public string NationId = "";
+    [Export] public PackedScene ControllerScene;
     [Export] public SignatureKind Kind;
     [Export] public int[] LevelCosts = { 650, 423, 748 };
     [Export] public int[] ChargeCaps = { 2, 3, 4 };

@@ -13,13 +13,16 @@ namespace FrontsOfWar.UI.Flow;
 // the default focused action.
 public partial class ResultsController : Node2D
 {
+    private Label _saveWarning;
+    private Button _retrySave;
+
     public override void _Ready()
     {
         GameLoop.Instance?.Time.Resume();
         var mission = GD.Load<MissionDefinition>(MissionSession.CurrentMissionPath);
         var config = GameBalanceConfigAutoload.Config;
         var profile = ProfileStore.Current;
-        var summary = RecordProgression(mission, profile, config);
+        var summary = RecordProgression(mission, profile, config, out string saveError);
 
         var content = FlowScreen.Build(this);
         var column = FlowScreen.PaperSheet(content, 900f, 680f, Control.LayoutPreset.Center, out _, 0, 0, 12);
@@ -48,6 +51,15 @@ public partial class ResultsController : Node2D
         }
         if (summary == null) unlocks.AddChild(UiFactory.Label("PaperSmallLabel", "No mission record to score - reached without a completed mission."));
 
+        if (!string.IsNullOrEmpty(saveError))
+        {
+            _saveWarning = UiFactory.Wrapped("PaperSmallLabel", $"Progress is pending save: {saveError}");
+            _saveWarning.AddThemeColorOverride("font_color", UiPalette.Amber);
+            column.AddChild(_saveWarning);
+            _retrySave = UiFactory.Button("PaperButton", "Retry Save", RetrySave);
+            column.AddChild(_retrySave);
+        }
+
         var menu = UiFactory.Button("PaperButton", "Main Menu", () => GetTree().ChangeSceneToFile("res://scenes_root/main_menu.tscn"));
         var loadout = UiFactory.Button("PaperButton", "Change Loadout", () => { MissionSession.ResetMission(); GetTree().ChangeSceneToFile("res://scenes_root/loadout.tscn"); });
         var retry = UiFactory.Button("PrimaryButton", "Retry Mission", () => { MissionSession.ResetMission(); GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn"); });
@@ -59,13 +71,26 @@ public partial class ResultsController : Node2D
 
     // Null (nothing to score) when the results screen is reached without a
     // real MissionStatsCollector snapshot - e.g. a debug scene load.
-    private static ProgressionSummary RecordProgression(MissionDefinition mission, PlayerProfile profile, GameBalanceConfig config)
+    private static ProgressionSummary RecordProgression(MissionDefinition mission, PlayerProfile profile,
+        GameBalanceConfig config, out string saveError)
     {
-        var stats = MissionSession.LastResult;
-        if (stats == null) return null;
+        saveError = "";
+        if (!MissionSession.TryClaimResultForPersistence(out var stats)) return null;
         var summary = ProgressionService.RecordResult(profile, mission, MissionSession.CurrentNationId, stats, config);
-        ProfileStore.Save();
+        ProfileStore.TrySave(out saveError);
         return summary;
+    }
+
+    private void RetrySave()
+    {
+        if (ProfileStore.TrySave(out string saveError))
+        {
+            _saveWarning.Text = "Progress saved.";
+            _saveWarning.AddThemeColorOverride("font_color", UiPalette.Green);
+            _retrySave.Disabled = true;
+            return;
+        }
+        _saveWarning.Text = $"Progress is pending save: {saveError}";
     }
 
     private static Control StarRow(bool[] stars, StarObjectiveDefinition objective)

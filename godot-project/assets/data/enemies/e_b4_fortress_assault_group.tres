@@ -1,0 +1,27 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_heavy_armor.tscn" id="2"]
+[ext_resource type="Resource" path="res://assets/data/enemies/e3_swarm_infantry.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+Id = "b4_fortress_assault_group"
+DisplayName = "Fortress Assault Group"
+Archetype = 6
+ArmorClass = 3
+IsAir = false
+BaseHp = 9000.0
+MoveSpeedTilesPerSec = 1.0
+LeakCost = 0
+Bounty = 150
+IsBoss = true
+MultiPhaseHpThresholds = PackedFloat32Array(0.6, 0.25)
+Phase3SpeedMultiplier = 1.5
+SiegeBombardRangeTiles = 11.0
+SiegeBombardIntervalSeconds = 6.0
+SiegeSuppressionDurationSeconds = 6.0
+AddDefinition = ExtResource("3")
+AddCount = 3
+AddIntervalSeconds = 10.0
+ControllerScene = ExtResource("2")

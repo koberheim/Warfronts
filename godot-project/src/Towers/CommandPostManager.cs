@@ -40,4 +40,10 @@ public class CommandPostManager
         foreach (var post in _posts)
             post.RevealTargets(enemies, tilePixelSize);
     }
+
+    public void TickSpottedPulse(float tickDeltaSeconds, IReadOnlyList<EnemyController> enemies, float tilePixelSize)
+    {
+        foreach (var post in _posts)
+            post.TickSpottedPulse(tickDeltaSeconds, enemies, tilePixelSize);
+    }
 }

@@ -1,8 +1,11 @@
-[gd_resource type="Resource" load_steps=2 format=3]
+[gd_resource type="Resource" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/Towers/SignatureDefinition.cs" id="1"]
 
+[ext_resource type="PackedScene" path="res://scenes/towers/signature_blitzkrieg_command_post.tscn" id="controller"]
+
 [resource]
+ControllerScene = ExtResource("controller")
 script = ExtResource("1")
 Id = "blitzkrieg_command_post"
 DisplayName = "Blitzkrieg Command Post"

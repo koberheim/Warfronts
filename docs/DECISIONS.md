@@ -1128,9 +1128,10 @@ revisited — worth preserving before it's lost to editing history.
     reference rather than as approved shipping strings.
 - **Reference:** GDD §14.2-14.3, §10.1, §9.2 (briefing length), §13.10;
   `docs/UI_DESIGN_SPEC.md` §5 (Courier Prime carries briefing/report text).
-- **Status:** Active. No existing strings have been rewritten to match yet
-  - the one authored briefing in `m01_bocage_crossroads.tres` still predates
-  this guide.
+- **Status:** Active, except the 85/15 dose split, superseded by D63
+  (75/25). No existing strings have been rewritten to match yet - the one
+  authored briefing in `m01_bocage_crossroads.tres` still predates this
+  guide.
 
 ### D60 - Register the complete non-held environment art queue as review assets
 
@@ -1152,6 +1153,805 @@ revisited — worth preserving before it's lost to editing history.
 - **Reference:** ART_GENERATION_PROMPTS.md, docs/FRONTS OF WAR ART DESIGN.md
   §§40–50, GDD §14.
 - **Status:** Active. Manual gameplay-context art acceptance remains open.
+
+### D61 - Standalone map editor shares the Godot project but uses a developer-only application path
+- **Decided by:** Codex under standing delegation (User requested a repository-backed implementation blueprint)
+- **Date:** 2026-09-04
+- **Decision:** Build the future Fronts of War Map Editor as a dedicated
+  developer-only Godot scene and launch path inside the existing
+  `godot-project`, backed by a new shared `MapDefinition` Resource saved as a
+  text `.tres` under `assets/data/maps/`. Keep `MapPlanDefinition` as the
+  normalized M3.5 candidate/interchange model and convert accepted candidates
+  into editable production maps. Keep the existing planner plugin during
+  migration, then retire its UI after standalone parity. Normal player launch
+  remains on `boot.tscn`; the editor flag is accepted only by developer builds
+  and the player export excludes the editor scene. A required repository-root
+  `Launch-MapEditor.ps1` resolves the Godot project and .NET-enabled Godot
+  executable, supplies `--map-editor`, forwards optional arguments, and is the
+  normal one-command developer workflow.
+- **Why:** The repository has one C# project, shared `res://` resources, a
+  stable catalog/planner stack, and no existing runtime `MapDefinition` or
+  map loader. A second Godot project would duplicate configuration and import
+  state; an EditorPlugin cannot provide the requested standalone workflow.
+  The GDD expects authored map resources, fixed deterministic routes, and no
+  runtime procedural generation. A separate production model is necessary
+  because the current planner model has no terrain instances, art transforms,
+  stable object IDs, or complete runtime path metadata.
+- **Reference:** `docs/standalone_map_editor_blueprint.md`; GDD §§3.1, 11.2,
+  15.1, 15.2, 15.6, 18.1; supersedes the standalone UI/export assumptions in
+  `docs/fronts_of_war_map_planner_design_spec.md` while retaining its planner
+  algorithms and catalog concepts.
+- **Status:** Active.
+
+### D62 - Phase 1 map editor uses debug and export-time isolation
+- **Decided by:** Codex under standing delegation (User approved proceeding
+  from the reviewed blueprint and specifically requested a launcher)
+- **Date:** 2026-09-04
+- **Decision:** Implement the standalone map editor's first phase as a
+  developer workbench reached only through the repository-root
+  `Launch-MapEditor.ps1` and a Debug-only `--map-editor` route in `Boot`.
+  The shell reuses the project theme and presents named asset-palette,
+  hierarchy, viewport, inspector, diagnostics, and status regions without
+  creating or mutating map data. Player separation has three layers:
+  `--screen` is now an explicit five-scene allowlist and cannot name the map
+  editor; the `Windows Player` preset excludes `map_editor.tscn` and
+  `src/Editor/*`; and the editor C# types are enclosed in `#if DEBUG` so they
+  are absent from Release assemblies. `Windows Developer` retains all editor
+  resources and is documented as a Debug export.
+  - **Godot's C# export prerequisite is now repository-owned.** The 4.7.2
+    exporter refuses to publish this project without `FrontsOfWar.sln`, so
+    that one solution is exempted from the repository's general `*.sln`
+    ignore rule and maps Release to Release explicitly.
+  - **Existing `EditorPlugin` entry classes are editor-only.** The four
+    plugin entry scripts now use Godot's documented `#if TOOLS` guard. This
+    resolves their pre-existing Release compile failure without removing the
+    docks or changing editor behavior.
+  - **Verification:** Debug and Release builds both succeed with zero
+    warnings/errors; CoreTests passes 17/17; headless editor startup succeeds;
+    launcher success/failure paths pass; the 1920×1080 editor capture passed
+    visual inspection. A generated player PCK contains the main menu but no
+    editor scene, source path, or compiled `MapEditorController` marker. Full
+    Windows executable export is not runnable on this machine until Godot
+    4.7.2 Mono export templates are installed.
+- **Reference:** D61; `docs/standalone_map_editor_blueprint.md` Phase 1; GDD
+  §15.1 principle 7 and §18.1; Godot editor-plugin and export filtering
+  documentation.
+- **Status:** Active.
+
+### D63 - Catch-22 dose raised from 15% to 25%
+- **Decided by:** User
+- **Date:** 2026-09-04
+- **Decision:** `docs/WRITING_STYLE_GUIDE.md` §2's mix is now 75% dispatch
+  prose / 25% Catch-22 (was 85/15, D59). Read the request as a frequency and
+  prominence change, not a tone change, since D59's hard boundaries (GDD
+  §14.3: satire never touches a nation, its soldiers, casualties, or the
+  banned-content list; no winking; delivery stays deadpan) are policy, not
+  taste, and a numeric dial can't move them. Concretely: mission briefings
+  go from one late beat to two (situation still stated straight before the
+  first one), codex entries from one closing line to one-or-two with room
+  to build a beat across them, and results/post-mortem copy is now named
+  the surface where the register can carry the whole flavor line. The §7
+  checklist's flat "cut to one beat" rule became "cut to §5's budget" so it
+  does not re-impose the old 15% ceiling by accident. All five samples in
+  §8 updated to demonstrate the new dose, including a second beat added to
+  the Bocage Crossroads briefing sample and a loop-back sentence added to
+  the Field Mortar codex sample.
+- **Reference:** refines D59; GDD §14.3 boundaries unchanged.
+- **Status:** Active. Supersedes D59's specific dose numbers; D59's targeting
+  rules and register-by-surface structure stand.
+
+### D64 - Terrain grid cell size: one cell = one gameplay tile (64px)
+- **Decided by:** Claude under standing delegation (user asked to plan
+  Western Europe tileset generation, flagged that "the test tiles for
+  terrain are not small enough," and confirmed writing this into the
+  blueprint as its Phase 6.1 answer rather than holding for the parallel
+  map-editor effort)
+- **Date:** 2026-09-04
+- **Decision:** `TerrainInstance.Cell` (`standalone_map_editor_blueprint.md`
+  §8.2) is one gameplay tile = 64px, matching `GameBalanceConfig
+  .TilePixelSize` exactly - no separate terrain-unit converter. This was an
+  open gap: the blueprint defined `Cell` as "an integer grid coordinate"
+  with no pixel size, deferred to Phase 6.1 ("Define terrain set/socket
+  contracts," not yet implemented - Phase 2 is next per PROGRESS.md), and
+  §22/the risk table both flagged the terrain connectivity contract as
+  unresolved. The only existing terrain-tile precedent was D42's
+  1024x1024px environment-art export size, which had never been validated
+  as a placement grid - it covers 16x16 gameplay tiles per piece, and
+  against the blueprint's own worked example (Bocage Crossroads, 28x18
+  tiles) that's barely two placements across the whole map. 64px was
+  chosen over a coarser option that would have matched D42's existing
+  256px/4-tile route-socket width, because 64px is the only size that
+  divides any map's `WidthTiles`/`HeightTiles` with zero rounding
+  remainder, since those dimensions are already expressed in that same
+  unit. Route pieces are unaffected - they remain larger multi-cell overlay
+  composites on the same grid, matching the layered-route work already in
+  progress for Western Europe. Written directly into the blueprint (§8.2,
+  §6.1's task text, §19 as decision 12, and §22) rather than left as a
+  separate side note, since that document is Sol's build target for the
+  standalone map editor and needs to be the single source of truth.
+- **Reference:** `docs/standalone_map_editor_blueprint.md` §8.2, §19.12,
+  §22; refines D42 (that decision's pixel size stands for art export/review
+  resolution, not placement grid).
+- **Status:** Active as the working answer, written where the map editor's
+  builder (Sol) will read it. Not confirmed by Sol directly - flag for
+  review if their implementation needs something else before Phase 6 locks
+  it in.
+
+## Note on D60-D62 vs D63-D64 ordering
+
+D60-D62 (environment art queue, map editor architecture, map editor Phase 1)
+and D63-D64 (Catch-22 dose, terrain grid cell) were written concurrently by
+two different agents working this repository at the same time (see
+`AGENTS.md`) without visibility into each other's in-flight edits, which
+briefly produced duplicate D60/D61 numbers. Renumbered on discovery per this
+log's own append-don't-rewrite rule; no entry's content changed, only D63
+and D64's numbers and this note were added. If you are an agent writing here
+concurrently with another session, re-read the file's true tail immediately
+before appending, not a cached view from earlier in your turn.
+
+### D65 - Western Europe route tileset: 2-tile road width, 17-piece topology set, no rotation reuse
+- **Decided by:** Claude under standing delegation (user asked for a
+  concrete Western Europe tileset plan, flagged seam alignment as the most
+  critical requirement and asked whether blending was possible, and asked
+  for a full path-topology variety: bends, T's, 4-ways, dead ends, curves)
+- **Date:** 2026-09-04
+- **Decision:** `godot-project/assets/art/theaters/western_europe/
+  ROUTE_TILESET_PLAN.md` is the concrete generation plan for the route
+  overlay layer (D44/D45's separate transparent layer over ground
+  material), built on D64's 64px cell. Key numbers: route pieces are a
+  4x4-cell (256x256px final) footprint generated at 512x512px (2x
+  supersample); the socket opening is D45's existing 256px figure
+  unchanged, now explicit that this is the *generation-resolution* number,
+  giving a **128px (2-tile) final road width** rather than D45's implicit
+  4-tile width. 17 pieces cover the full topology: straight x2, a new
+  curved-straight variant x2 (answers the "curved paths" request as a
+  drop-in alternate at the same socket, not a new socket type), corner x4,
+  T-junction x4, crossroads x1 (no orientation - symmetric by definition),
+  dead-end/entry x4.
+  - **Revised D45's road width, didn't just adopt it.** D45 predates any
+    production map having real tile dimensions on record. The map-editor
+    blueprint's Bocage Crossroads example (28x18 tiles, from D64's own
+    evidence) makes a 4-tile-wide road disproportionate - roughly a
+    seventh of the map's width - and GDD's framing of a 1-tile bridge as a
+    deliberately narrow chokepoint implies normal roads are only modestly
+    wider, not 4x wider. 2 tiles was chosen to fit that evidence.
+  - **Rotation stays off the table for route art**, matching D44/D45's own
+    finding (rotated/shared branch material read as "visibly patterned"
+    with "unattractive overlaps") plus a second, independent reason: art
+    spec §36-37 bakes lighting into terrain art with an explicit
+    "consistent light direction" rule, so a rotated piece's shadows would
+    visibly mismatch its neighbors across a large edge-to-edge surface -
+    unlike the free-rotation approach that's correct for small independent
+    unit/tower sprites (D3, D64's own layering work).
+  - **Existing REVIEW art is kept as a style reference, not discarded.**
+    The 8 existing route-overlay files (corners, 2 T's, cross, 1 entry) and
+    the WE-ROUTE-001-010 batch already proved the shapes are achievable;
+    they're superseded as production dimensions but stay in place to
+    re-author from rather than starting blind.
+- **Reference:** refines D45 (road width only; the socket/layering/
+  unique-topology-art principles stand); builds on D64; GDD's bridge/lane
+  width framing (§11.1 M3).
+- **Status:** Active as the working plan. Like D64, not confirmed against
+  Sol's map editor requirements directly - the 64px cell it's built on
+  carries the same caveat.
+
+### D66 - Route tile seams forced by deterministic alpha feather + overlap, not by prompt instruction
+- **Decided by:** Claude under standing delegation (user reported that
+  previous test maps built from the D42/D43/D45 route tiles had visible
+  zigzag seams between tiles)
+- **Date:** 2026-09-04
+- **Decision:** Route tile edges no longer rely on the image generator
+  matching pixels across independently-generated pieces. New script
+  `tools/art/Add-RouteSocketFeather.ps1` applies a linear alpha ramp (full
+  opacity at `FeatherWidth` px inward, down to 0 at the true edge; corner
+  regions use the min of the two applicable edge ramps) to a piece's socket
+  edges. Adjacent pieces are placed overlapping by that same width instead
+  of flush, so whichever piece draws on top dissolves smoothly into the one
+  beneath regardless of how well their painted content actually agrees.
+  Default `FeatherWidth` is 96px at the 512px generation canvas (48px
+  final), matching `ROUTE_TILESET_PLAN.md` §2. The generation prompt
+  template was also corrected to stop asking for pixel-matched edges, since
+  that ask was never enforceable and produced false confidence.
+  - **Root cause found before proposing a fix.** Read both existing prep
+    scripts (`Prepare-WesternEuropeTopologyOverlay.ps1`,
+    `Prepare-WesternEuropeRouteMaterial.ps1`, both D42-era). Neither
+    performs any blending — they only crop, reposition, and strip
+    flattened-background artifacts. D43's "outer 32px exact match, then
+    blend" was therefore only ever prompt text asking the generator to
+    cooperate; nothing in the pipeline enforced it, which is exactly why it
+    produced zigzags once real test maps were assembled from independently
+    generated pieces.
+  - **Verified, not just written.** Ran the script against an existing
+    generated tile (`route_overlay_sunken_lane_ne_v01.png`) and confirmed a
+    clean linear alpha ramp by direct pixel measurement (0 / 13 / 64 / 128
+    / 191 / 255 at 0 / 5 / 24 / 48 / 72 / 96px from the edge against a 96px
+    width) before writing it into the plan as the answer.
+  - **`ROUTE_TILESET_PLAN.md` updated in place**, not left inconsistent
+    with this fix: §1 now explains the diagnosis and correction plainly
+    (including that the plan's own first draft repeated the same
+    unenforced claim), §2's socket contract adds feather width and overlap
+    placement, §4's prompt template drops the "match pixels" ask, and §6's
+    acceptance checklist adds "ran through the feather script" and changes
+    the adjacency test from edge-to-edge to overlapping placement.
+- **Reference:** `tools/art/Add-RouteSocketFeather.ps1`;
+  `godot-project/assets/art/theaters/western_europe/ROUTE_TILESET_PLAN.md`
+  §1-2, §4, §6; refines D43 (supersedes its unenforced exact-match claim,
+  keeps its "route is a separate overlay layer" and per-topology-unique-art
+  principles); builds on D65.
+- **Status:** Active. Visually verified on real content: composited two
+  actual independently-generated tiles (`route_overlay_sunken_lane_ne_v01`
+  + `_wn_v01`) both flush/unprocessed and feathered/overlapping, side by
+  side. The flush version reproduces the reported zigzag plainly (a visible
+  kink in the hedgerow line, an abrupt road-color shift). The feathered
+  version's seam is not detectable at the same crop and zoom - the
+  hedgerow line reads as one continuous curve. Comparison images sent to
+  the user. Still open: this was a standalone image composite, not yet run
+  through the real Godot adjacency-test scene or the new plan's actual
+  512px generation size (the test used the existing 1024px-era tiles at a
+  proportionally-scaled 192px feather width) - confirm both before treating
+  the technique as production-proven end to end.
+
+### D67 - Canonical map documents use tile-space schema-v1 Godot Resources
+- **Decided by:** Codex under standing delegation (user approved continuation
+  of the standalone map editor blueprint and specifically requested a usable
+  launcher or opening manual)
+- **Date:** 2026-09-04
+- **Decision:** Phase 2's canonical authored map is `MapDefinition`, a text
+  `.tres` Resource graph under `assets/data/maps`. Positions and dimensions are
+  stored in gameplay tile space (D64); object IDs are globally unique stable
+  lowercase strings; rotations use quarter turns where legal; scalable placed
+  assets use uniform scale only. Air corridors have an authoring Resource in
+  tile units and will convert to the existing pixel-space runtime definition at
+  the Phase 3/13 boundary rather than changing runtime semantics early.
+  - Schema version 1 is mandatory. Missing, unsupported, future, corrupt, and
+    structurally invalid resources fail explicitly; no implicit migration is
+    invented before an older production schema exists.
+  - Save normalization sorts unordered collections by stable ID/key while
+    preserving ordered geometry. Godot's randomized external-resource suffixes
+    are canonicalized after temporary serialization so equivalent map graphs
+    produce identical source-control text.
+  - Save As writes a sibling temporary resource, stages any previous file as a
+    backup, then replaces it; validation or serialization failure leaves the
+    last known-good resource intact.
+  - `MapDocument` owns path/dirty state separately from authored data. The live
+    File menu exposes New/Open/Save/Save As/Close and requires an explicit
+    Save/Discard/Cancel decision before replacing dirty state.
+  - A double-click `.cmd` wrapper and detailed opening manual supplement the
+    PowerShell launcher. A distributable Windows executable remains blocked
+    only by missing Godot 4.7.2 Mono export templates, not project code.
+- **Reference:** `docs/standalone_map_editor_blueprint.md` Phase 2; GDD
+  §15.1 principles 1, 3, 4, and 7; builds on D61, D62, and D64.
+- **Status:** Active.
+
+### D68 - Phases 3–4 render and mutate through a shared editor command boundary
+- **Decided by:** Codex under standing delegation (user asked to continue the
+  standalone map editor through Phases 3 and 4)
+- **Date:** 2026-09-04
+- **Decision:** Map loading is split into `MapRegistry` (ID-to-repository path)
+  and `MapLoader` (ID/path loading). `MapSceneFactory` converts a canonical
+  `MapDefinition` into a deterministic render snapshot, keeping the viewport
+  independent of asset-catalog availability. The viewport owns camera/grid and
+  hit testing; `SelectionService` owns the selection set; `MapDocument` owns
+  dirty state and delegates every mutation to `IMapEditCommand`/`CommandHistory`.
+  - Transform, delete, duplicate, copy, and paste commands use deep map
+    snapshots for exact undo/redo and validate the resulting document before a
+    command enters history. Fresh stable IDs are generated only for explicit
+    user duplication/paste operations.
+  - The editor uses authored placeholders for assets until Phase 5 catalog
+    integration; this keeps Phase 3 useful for inspecting geometry without
+    inventing a second asset-resolution system.
+  - The inspector edits only position, rotation, and legal scale fields and
+    issues the same commands as viewport tools. Terrain scale and unsupported
+    object transforms are refused at the command boundary.
+  - Window-close requests are intercepted so dirty documents cannot exit
+    without the existing Save/Discard/Cancel decision.
+- **Reference:** `docs/standalone_map_editor_blueprint.md` Phases 3–4; GDD
+  §15.1 principles 1, 3, 4, 6, and 7; builds on D67.
+- **Status:** Active.
+
+### D69 - Catalog, planner, validation, and runtime preview share one map pipeline
+- **Decided by:** Codex under standing delegation (user asked to complete the remaining standalone editor phases)
+- **Date:** 2026-09-04
+- **Decision:** The remaining standalone editor phases use pure shared services
+  for catalog queries, tile-snapped placement, terrain rules, path/pad/marker
+  authoring, deterministic planner conversion, production diagnostics,
+  preferences/recovery, and runtime preview. The editor invokes those services
+  through commands; runtime consumes the resulting MapDefinition through
+  MapLoader and MapRuntimeDataFactory. A checked-in smoke fixture proves the
+  real mission loader handoff, while the existing mission scene remains the
+  default when no --map-id is supplied.
+- **Why:** This preserves the GDD's data-over-code and low-coupling rules,
+  makes generated candidates ordinary editable maps, and prevents the editor
+  from growing a second gameplay or asset-resolution implementation.
+- **Reference:** standalone map editor blueprint Phases 5–15; GDD §§15.1,
+  15.6, 18.1.
+- **Status:** Active.
+
+### D70 - Retire the legacy map-planner dock after standalone parity
+- **Decided by:** Codex under standing delegation (user asked to complete the remaining standalone editor phases)
+- **Date:** 2026-09-04
+- **Decision:** Remove the legacy `addons/map_planner` Godot editor plugin and
+  its dock/canvas UI, remove its editor-plugin registration, and retain the
+  shared `FrontsOfWar.Map.Planning` domain services as the supported candidate
+  generation path for the standalone editor.
+- **Why:** Phases 5–14 now cover catalog placement, production validation,
+  planner conversion, publishing, runtime preview, recovery, and launch. The
+  old dock would otherwise leave two competing authoring surfaces and violate
+  the Phase 15 migration checkpoint.
+- **Reference:** standalone map editor blueprint Phases 15.1–15.4; GDD
+  §§15.1, 15.6, and 18.1.
+- **Status:** Active.
+
+### D71 - Release completion mandate and reported M3 playtest gate
+- **Decided by:** User (scope and playtest confirmation); Codex (execution order)
+- **Date:** 2026-09-05
+- **Decision:** Audit and execute the remaining GDD launch scope using Astra
+  coordination with Luna/Terra/Sol. The User explicitly confirmed that three
+  unfamiliar players finished the slice and at least one requested a replay.
+  Treat the M3 gate as passed on that report, without claiming agent-observed
+  playtest evidence. Track reviewable tasks and acceptance evidence in
+  `docs/RELEASE_COMPLETION.md`.
+- **Why:** Foundational correctness and truthful verification precede further
+  content, despite earlier implementation/completion labels. Repair current
+  runtime, save, pooling and build defects before prompt 40/content expansion.
+  This short deviation from the ladder reduces regression risk; no new scope
+  or cuts are introduced.
+- **Status:** Active.
+
+### D72 - Fail-closed verification and separated combat fixture
+- **Decided by:** Codex
+- **Date:** 2026-09-05
+- **Decision:** Verification requires successful native exits and nonempty,
+  zero-failure/zero-skip test summaries. Retain the old prebuilt combat layout
+  only under `tests/fixtures/combat_smoke.tscn`, reached with developer-only
+  `--smoke-test`. Normal missions resolve their MissionDefinition MapId and
+  validate all wave/path references before simulation; no prototype fallback.
+- **Why:** The old runner falsely passed a failed SDK build. The corrected
+  runner then caught a real path_0/prototype-main mismatch that isolated tests
+  missed. A combat fixture is useful evidence but is not the player journey.
+- **Reference:** GDD §§15.1, 15.7, 19; release ledger R01/R03.
+- **Status:** Active.
+
+### D73 - Authored Bocage migration remains a review candidate
+- **Decided by:** Codex
+- **Date:** 2026-09-05
+- **Decision:** Supply the missing `bocage_crossroads` resource with two entries
+  merging into one route, 22 pads and hedgerow Enclosed tags. Copy the existing
+  twelve-wave composition to a campaign-specific resource and assign second
+  spawn groups to the northern entry. Keep the old sequence for regression.
+  Use already-approved catalog assets without changing their approval status.
+  The new layout stays Review pending visual QA and balance playtests.
+- **Why:** The prior mission MapId did not resolve at all. This restores the
+  documented map/runtime contract without treating generated candidate data
+  or automated checks as human approval of a final shipping map.
+- **Reference:** GDD §§11.1, 15.1; release ledger R03/R09/R14.
+- **Status:** Active.
+
+### D74 - Bounded pooled enemy and friendly leases
+- **Decided by:** Codex
+- **Date:** 2026-09-05
+- **Decision:** Prewarm authored enemy/friendly scenes before combat and freeze
+  their capacities. Queue excess requests FIFO until a lease returns. Track a
+  generation on each lease so retained targets cannot damage a recycled unit.
+  Reset status, shields, engagement, reveal and path state on reuse.
+- **Why:** Pool exhaustion must not allocate mid-wave, drop authored spawns or
+  leak previous-unit state. Sol hit its model usage limit after partial edits;
+  Astra completed and reviewed that assignment locally. Projectile/effect pool
+  coverage still needs its separate R16 audit.
+- **Reference:** GDD §15.1; release ledger R05.
+- **Status:** Active.
+
+### D75 - Build break from an interrupted settings-system edit; full verification now passes
+- **Decided by:** Claude
+- **Date:** 2026-09-05
+- **Decision:** Picked up the Codex-coordinated release audit (D71-D74) where it
+  stopped. The working tree had `dotnet build` failing: the new
+  `src/Core/UserSettings.cs` (mid-flight prompt 44/R12 work) declared a
+  private `static InputBindingData Key(Key key)` helper in the same class
+  where it built `BindingDefinitions` with `Key(Key.P)` literals - the method
+  name shadowed the `Godot.Key` enum for the rest of the file, so every
+  `Key.P`-style member access failed to resolve (CS0119). Renamed the helper
+  to `KeyBinding` (its only call sites); no other file referenced the old
+  name. Re-ran `tools/Run-HeadlessChecks.ps1` afterward: build, all 14
+  discovered GoDotTest suites (including `RuntimeMapIntegrationTests` 7/7,
+  `PlayerFlowPersistenceTests` 6/6, `PoolingTests` 3/3, `CampaignSelectionTests`
+  4/4), `--validate-data` (0/0 across 67 resources), and the smoke run (0
+  errors, 19 kills) all pass.
+- **Why:** `docs/RELEASE_COMPLETION.md`'s evidence log still marked R03/R06 as
+  "in progress"/"pending" and did not mention R04/R05's newer suites at all -
+  it was written before this uncommitted batch landed and before the build
+  broke. The mission's `MissionDefinition.MapId` now resolves to the authored
+  `bocage_crossroads` map resource (D73), and a `CampaignSelectionController`
+  reachable from the main menu's "Campaign" button already drives nation/
+  mission selection (`MissionCatalog`) - both ledger rows were more complete
+  than their status text suggested. `src/Core/UserSettings.cs` and
+  `src/Meta/PlayerSettings.cs` exist but are not yet called from anywhere
+  (`Boot`, pause menu, main menu) and have no dedicated test suite; the
+  Settings screen itself, and several §13.8/13.9 fields the GDD lists
+  (VSync/frame cap/resolution picker, screen shake, subtitles, damage-number
+  and tutorial-hint toggles, confirm-before-sell, targeting-priority
+  defaults), are not implemented at all - there is no camera-shake or
+  subtitle system yet for those settings to control.
+- **Reference:** GDD §13.8-13.9, prompt 44; release ledger R03/R05/R06/R12.
+- **Status:** Active.
+
+### D76 - Godot Mono Windows export templates installed; R02 closed with a real .exe
+- **Decided by:** User (approved the download); Claude (execution)
+- **Date:** 2026-09-05
+- **Decision:** Downloaded the official `Godot_v4.7.2-stable_mono_export_templates.tpz`
+  (~1.15 GB, from the godotengine/godot-builds GitHub release) and installed
+  only the four `windows_{debug,release}_x86_64{,_console}.exe` files this
+  project's presets use into `%APPDATA%\Godot\export_templates\
+  4.7.2.stable.mono\`, rather than extracting the full archive (which also
+  carries Linux/macOS/Android/iOS/web templates this project never exports
+  to). Then ran `tools/Build-Windows.ps1 -Preset "Windows Player"` for the
+  first time; it produced a real `FrontsOfWar.exe`/`.pck` that boots headless
+  with zero errors and carries no `map_editor`/`MapEditorController` string in
+  either file.
+- **Why:** R02/R13 needed an actual export attempt, not just config
+  inspection, to be trustworthy evidence; the templates were the one missing
+  external dependency. The first extraction attempt targeted a C:-drive temp
+  path and failed - this machine's C: drive was completely full (0 bytes
+  free) - so the retry targeted E: (where `%APPDATA%` for this profile
+  actually resolves, and where 700+ GB is free) and only extracted the four
+  needed entries instead of the whole archive. The C: drive's near-zero free
+  space is a pre-existing condition on the User's machine, unrelated to this
+  repo; flagged to the User rather than silently worked around.
+- **Reference:** GDD §15.7 (release path); release ledger R02/R13.
+- **Status:** Active.
+
+### D77 - R07 wired: minefield route placement and the Forward Observer branch
+- **Decided by:** Claude
+- **Date:** 2026-09-05
+- **Decision:** Wired two fully-implemented-but-never-called systems flagged
+  in `docs/PROGRESS.md`'s known-gaps list. (1) `SpecialPlacementService` now
+  gets constructed in `MapRuntime` and ticked every frame; `BuildBar` routes
+  a selected Minefield card to a click-anywhere-on-route placement mode
+  (reusing `AbilityHotbar`'s screen-to-world canvas-transform conversion)
+  instead of pad glow, and shows a "placed/max" counter on the card per GDD
+  §6 T8. This uncovered a deeper gap: `t8_minefield.tres` had no
+  `ControllerScene` at all, and no `.tscn` for `MinefieldController` existed
+  in the repository - placement could never have worked regardless of UI
+  wiring. Added `scenes/towers/tower_minefield.tscn` (the controller draws
+  its own visual, so it's just the script on a bare `Node2D`) and set
+  `ControllerScene` on the resource. (2) `CommandPostController` gained
+  `TickSpottedPulse` (Forward Observer: mark the strongest enemy in
+  `RangeTiles` Spotted every `StatusDurationSeconds` - reusing that field as
+  both cadence and duration, exactly as `MinefieldController` already does
+  for its own periodic Suppressed trigger) and `RevealTargets` now reveals
+  Air units map-wide specifically on that branch, per GDD §6 T9. Added
+  `tests/PlacementIntegrationTests.cs` (6/6) covering both systems.
+- **Why:** R07's stated acceptance ("Minefield route placement... Forward
+  Observer... costs match data") named exactly these two gaps. Pad
+  restrictions and cost-curve validation were already covered by existing
+  tests/the Data Validator, so R07 needed only these two pieces.
+- **Scope not covered (deferred to R16 balance/nation-parity, or R06/R15
+  UX):** a placed minefield has no click/inspect/sell UI (`MinefieldController`
+  has no click-Area2D, unlike `TowerController`/`CommandPostController`);
+  Japan's field-count cap of 9 and doctrine field-cap bonuses (Island
+  Defense's stated +3) are unwired - `SpecialPlacementService.
+  ExtraMinefieldCapacity` is a neutral `() => 0` for every mission; the
+  existing (pre-dating this session) British "double-radius Concealed
+  reveal" hack keys off `DisplayName.Contains("Radar")`, which also fires for
+  Germany's identically-named "Radar Flak Tower" - not something this change
+  introduced, but worth fixing alongside the nation-parity pass; the British
+  "Forward Observer marks two targets simultaneously" lean is unwired (the
+  pulse already reads `TowerStatBlock.SalvoCount` as its target count and
+  defaults to 1, so this needs only a nation-data value, not new code).
+- **Reference:** GDD §6 (T8, T9); release ledger R07.
+- **Status:** Active.
+
+### D78 - Campaign Selection alliance/nation button sizing and centering fixed
+- **Decided by:** User (reported the visual bug); Claude (fix)
+- **Date:** 2026-09-05
+- **Decision:** The User ran the game and reported the Allies/Axis buttons on
+  `campaign_selection.tscn` were "too big by probably 50%, and off-center /
+  asymmetrical." Root cause: `CampaignSelectionController.BuildAllianceSelection`
+  set a 500x300 `CustomMinimumSize` (compare the far busier, four-line nation
+  cards at only 370x360) on two `Button`s inside an `HBoxContainer` with no
+  `Alignment` set (defaults to left/`BEGIN`) and no vertical shrink flag (so
+  the buttons stretched to fill the row's `ExpandFill` height, growing well
+  past 300). Fixed: `CustomMinimumSize` to 320x170, `SizeFlagsVertical =
+  ShrinkCenter` on each button, `Alignment = Center` on the row. Applied the
+  same `ShrinkCenter`/`Alignment = Center` fix to the adjacent nation-card row,
+  which had the identical latent defect (not reported, but same code shape).
+  Verified visually via a real screenshot (`--screen=campaign_selection`,
+  newly added to the screenshot tool's route allowlist alongside
+  `Boot.IsAllowedScreen`/`ResolveLaunchScene` - it didn't exist when this
+  screen was built).
+- **Why:** A concrete UI regression the User found by actually running the
+  build - exactly the kind of thing headless tests can't catch (D55 already
+  notes screenshot review is required for this reason).
+- **Reference:** GDD §13.1/§9.1; UI_DESIGN_SPEC.md.
+- **Status:** Active.
+
+### D79 - Alliance/nation art is a known, deliberately deferred gap
+- **Decided by:** User (flagged); Claude (logged)
+- **Date:** 2026-09-05
+- **Decision:** The User noted `campaign_selection.tscn`'s alliance and
+  nation choices need real art (insignia/emblems), not just text buttons.
+  No art was generated this session. Tracked as a known gap for the R14 art
+  pass rather than actioned now.
+- **Why:** Nation-specific and insignia art has been deliberately held
+  pending implementation review since the post-M4 art prep pass (see the
+  "Deliberately held nation-specific units, enemies... national insignia"
+  note in `docs/PROGRESS.md` and D36/D39/D40) - generating it now would cut
+  ahead of that established, User-directed review gate rather than follow it.
+- **Reference:** release ledger R14; `docs/PROGRESS.md` art sections.
+- **Status:** Open.
+
+### D80 - R12 Settings screen wired; a real fullscreen-default regression caught first
+- **Decided by:** Claude
+- **Date:** 2026-09-05
+- **Decision:** Built the Settings screen GDD §13.8-13.9 describes, scoped to
+  what `UserSettings`/`PlayerSettings` (D75) actually back: Video (fullscreen,
+  UI scale), Audio (five volumes), Accessibility (colorblind palette, visual
+  effects intensity), Controls (full rebinding, conflict detection, reset).
+  Since `fow_theme.tres` only defines styles for `Label`/`PanelContainer`/
+  `Button` variations (docs/UI_DESIGN_SPEC.md §7), every control is a themed
+  `Button` - discrete stepped rows (e.g. volumes as Off/25/50/75/100%) instead
+  of a native `HSlider`, avoiding an unstyled widget clashing with the paper
+  aesthetic. `SettingsPanel` (`src/UI/Menus/`) is the shared content, used by
+  both `SettingsController` (a normal flow screen reachable from the main
+  menu) and `PauseMenu` (a second card swapped in over the pause card - no
+  scene change, so opening Settings mid-mission never touches GameLoop/
+  MissionSession state). `Boot.StartMission` now calls `UserSettings.Apply`
+  on every launch, including headless (it no-ops window-specific calls there).
+- **Why:** This was the exact task mid-flight when the build broke (D75) -
+  the direct continuation of that work. Wiring `Apply` at boot surfaced a
+  real bug before it could ship: `PlayerSettings.Fullscreen` defaulted to
+  `false`, so every fresh profile would have silently launched windowed the
+  moment this code path actually ran, contradicting `project.godot`'s
+  fullscreen-by-default setting (the "Launch fullscreen at 1080p by default"
+  commit). Fixed the default to `true` and verified the fix live via a real
+  screenshot (`--screen=settings`) showing "Fullscreen" pressed on a fresh
+  profile, not just a unit test.
+- **Scope not covered** (needs new backing systems, not just UI, so
+  deliberately deferred rather than half-built): VSync/resolution/frame cap,
+  screen shake (no camera-shake system exists), subtitles (no VO/subtitle
+  system exists), default game speed, auto-pause-on-wave-complete,
+  confirm-before-sell, targeting-priority defaults, tutorial-hints/damage-
+  number toggles. The in-game Codex is a separate, still-locked main-menu
+  button, unrelated to this settings work.
+- **Reference:** GDD §13.8-13.9, prompt 44; release ledger R12.
+- **Status:** Active.
+
+### D81 - Volume rows became real sliders (PaperSlider)
+- **Decided by:** User; Claude (implementation)
+- **Date:** 2026-09-05
+- **Decision:** The User asked for the five volume rows to be actual
+  draggable slider bars, not the stepped Off/25/50/75/100% buttons D80
+  shipped. Added `PaperSlider` (`src/UI/Theme/`), a `Control` that paints its
+  own track/fill/handle in `_Draw()` rather than using Godot's native
+  `HSlider` (which needs its own grabber icon texture to look intentional -
+  new asset work `fow_theme.tres` doesn't have yet). It fires `ValueChanged`
+  continuously while dragging (applied live - just an in-memory
+  `AudioServer` bus volume) and `DragEnded` once on release, so
+  `ProfileStore.TrySave` writes the profile to disk once per drag rather
+  than on every mouse-motion event. Display, UI Scale, Colorblind Palette and
+  Visual Effects stay stepped button rows - those are categorical choices,
+  not continuous ranges, so a slider doesn't fit them.
+- **Why:** A direct, specific UI request. The debounced save was a
+  correctness call, not requested explicitly: an undebounced save would have
+  written the profile to disk many times per second while scrubbing.
+- **Reference:** GDD §13.8; release ledger R12; supersedes D80's volume rows.
+- **Status:** Active.
+
+### D82 - R08 map gimmick systems implemented (Tide, Sandstorm, Mud, Canopy, clipped arcs)
+- **Decided by:** Claude
+- **Date:** 2026-09-05
+- **Decision:** Implemented all five gimmicks GDD §11.2 describes as
+  runtime systems, generic and data-driven (via `MapGimmick`/
+  `RuntimeGimmickData`, keyed by a free-form `Type` string and scoped by
+  `PathIds`), independent of any specific map: **Tide** and **Sandstorm**
+  are "active for the first N seconds of every M-second cycle" timers
+  (matching the Sandstorm variant's own "20s on a 60s cycle" phrasing) that
+  gate `GimmickSystem.IsPathAvailable`/`GlobalRangeMultiplier`; **Mud** and
+  **Canopy** are static per-path lookups (no timer - GDD doesn't describe
+  either as cyclical). Mud reuses `EnemyArchetype` (LightVehicle/
+  MediumArmor/HeavyArmor only - `GimmickRules.IsVehicle`) rather than
+  `ArmorClass`, since Armored Infantry is armored but still walks on foot.
+  Canopy ORs a new `_inCanopy` flag into `EnemyController.IsConcealed`
+  alongside E11's existing `recon_concealment` check, so it falls through to
+  the same `IsRevealed`/`SetRevealed`/Spotted machinery already built and
+  tested. Ruined Town's clipped-range arc (the GDD's own "one genuinely
+  expensive gimmick") is a facing+half-angle cone check
+  (`GimmickRules.IsWithinArc`) added to `TowerController.IsValidTarget` - the
+  single choke-point every firing mode (primary, densest-cluster, secondary)
+  already routes through - with the authored facing/angle living on
+  `BuildPad`/`TowerPlacementNode` and copied onto a placed tower exactly like
+  `PadTag` already is.
+- **Why:** R08's ledger acceptance named these five by name. GDD §18.3 lists
+  the clipped-range arc as a *contingency* cut ("if the schedule slips, cut
+  in this order") - `CUT.md` is empty, so nothing has actually invoked that
+  clause, and the GDD's own §11.2 table treats it as in-scope ("justified
+  because it defines one map's whole identity"); cutting it preemptively
+  would have been picking a side without flagging the conflict.
+- **Scope not covered, on purpose:** Tide's WaveRunner integration - closing
+  a path should reroute new spawns onto a fallback per GDD prose ("pushing
+  all enemies onto the upper road"), but `SpawnGroup` has no authored
+  fallback-path concept, and no real tidal map (M7 Coastal Fortification,
+  R09) exists yet to validate the exact intended behavior against.
+  `GimmickSystem.IsPathAvailable` is real and tested; only that one consumer
+  is deferred. Similarly, the arc gimmick covers only the targeting/range-
+  shape half of the GDD's cost estimate ("a pie-slice range shape and a
+  line-of-sight check") - there is no terrain-collision/wall model anywhere
+  in the project for a true line-of-sight check, and building one is
+  properly R09's job once Ruined Town's actual wall geometry is authored.
+- **Reference:** GDD §11.1, §11.2, §18.3; release ledger R08.
+- **Status:** Active.
+
+### D83 - R10 remaining bosses (B2-B4) and Elite variants implemented
+- **Decided by:** Claude
+- **Date:** 2026-09-05
+- **Decision:** Implemented B2 Armored Column Command, B3 Bomber Wing, B4
+  Fortress Assault Group, and Elite Medium Armor's Frontal Plate (GDD §10.3)
+  as generic, data-driven `EnemyDefinition` mechanics rather than one bespoke
+  class per boss:
+  - **B2 Convoy:** a command vehicle's aura (`ConvoyAuraRadiusTiles`/
+    `ConvoyDamageResistancePercent`/`ConvoyGrantsSuppressionImmunity`)
+    projects to any nearby enemy, reusing the exact nearby-ally-by-distance
+    pattern `EnemyControllerSupport.cs` already established for E9 Support/
+    E10 Escort/E11 Recon (query `_enemyProvider`, filter by radius) rather
+    than inventing a parallel discovery mechanism. Its death-triggered
+    "collapse escorts to 50% HP" needed a new `CapHealth` method - a direct
+    HP cap that bypasses `ApplyDamage`'s whole resolution pipeline (armor
+    multiplier, shields, Convoy resistance itself), since routing a scripted
+    narrative beat through combat damage would let those systems blunt or
+    absorb it.
+  - **B3 Formation:** enemies sharing a `FormationGroupId` (matched by string,
+    not object identity, so it works whether they're spawned from one
+    shared resource or several) get a damage reduction while every member is
+    alive, and each lost member applies a multiplicative speed penalty to
+    survivors - on *both* the ground and air movement paths in
+    `EnemyController.SimTick`, which are separate code branches; `BossTests`
+    caught that the air branch was missed on the first pass.
+  - **B4 multi-phase:** a new `MultiPhaseBossController`, distinct from B1's
+    `BossPhaseController` (which is specifically a 2-phase armor-skirt
+    model), for an arbitrary number of one-way HP-fraction-threshold phases
+    with a 3-second halt on each transition (the GDD's "visible telegraph").
+    Phase 2 ("becomes a Siege platform") reuses the Siege archetype's
+    existing `SiegeBombardRangeTiles`/`IntervalSeconds`/
+    `SuppressionDurationSeconds` fields, `EnemySiegeBombardEvent` (already
+    consumed by `TowerController.OnEnemySiegeBombard`), and
+    `AddDefinition`/`AddCount`/`AddIntervalSeconds` (already consumed by
+    `EnemyManager`'s existing `BossAddsRequestedEvent` plumbing) - zero new
+    consumer code needed for either. `EnemyManager.GetSiegeHoldDistance` now
+    also checks `MultiPhaseBoss?.IsSiegePhase` so B4 holds at range during
+    phase 2, the same as a real Siege unit.
+  - **Frontal Plate:** a frontal damage-reduction cone reusing
+    `GimmickRules.IsWithinArc` (D82) against the enemy's own heading
+    (`Velocity.Angle()`), active only once damaged past
+    `FrontalPlateActivateHpFraction`. Required adding `GlobalPosition` to
+    `IDamageSource` (free - every implementer is already a `Node2D`) so
+    `ApplyDamage` knows which direction a hit came from.
+  - **Elite Swarm/Elite Siege** needed no new fields at all - `SpawnGroup.
+    Count` (already exists, unconsumed comment aside - `HpMultiplierOverride`
+    was already wired in `WaveRunner.cs:107`) and a stat-adjusted
+    `EnemyDefinition` resource copy are genuinely "pure data, no new code" as
+    GDD says.
+  - Fixed a stale `DataValidator` warning ("Boss EnemyDefinition has no
+    SkirtHp set") that assumed every boss uses B1's skirt model; it now also
+    recognizes Convoy/Formation/MultiPhase as valid boss mechanics.
+- **Why:** R10's ledger acceptance named these bosses/elites explicitly.
+  Reusing existing plumbing (nearby-ally auras, Siege's bombard event, boss
+  add-request event) instead of one bespoke system per boss kept the change
+  proportional and testable - `BossTests` (8/8) caught two real bugs
+  (`CapHealth` not triggering the Convoy collapse; the air movement branch
+  missing the Formation speed penalty) before they could ship.
+- **Deliberately simplified, and logged rather than silently dropped:**
+  - B4 phase 2's adds use a single archetype (Swarm Infantry) instead of
+    GDD's "waves of Swarm **and** Fast Infantry" - `AddDefinition` is a
+    single-reference field shared with B1; giving it a list would touch B1's
+    working, tested behavior for a B4-only need.
+  - B4 phase 3's "simultaneous 3-bomber air element" is not built - it needs
+    a new "spawn escort units on a phase transition" hook, which nothing in
+    the game does yet. The phase's core mechanics (Suppression immunity,
+    +50% speed, direct sprint via the halted-then-unleashed pathing) are all
+    real and tested.
+  - Frontal Plate requires the enemy to be currently moving
+    (`Velocity != Vector2.Zero`) to have a heading to project a cone from; a
+    perfectly stationary enemy gets no protection rather than an arbitrary
+    one. GDD itself flags Frontal Plate as "the most cuttable mechanic in
+    the game" if playtesting shows it unreadable.
+  - No mission/wave data places any of these into an actual campaign mission
+    - missions 8 (B2), 10 (B3), and 12 (B4) don't exist yet (R09).
+- **Reference:** GDD §10.3; release ledger R10.
+- **Status:** Active.
+
+### D84 - R17 editor-parity audit: eight map-editor services have zero callers
+- **Decided by:** Claude
+- **Date:** 2026-09-05
+- **Decision:** Audited every phase-5-through-14 claim in `docs/PROGRESS.md`'s
+  "Standalone map editor — remaining pipeline phases" section against actual
+  reachability, using the method: grep every service class name across
+  `src/` and `tests/` excluding its own declaration file. A class with a real
+  UI path shows up referenced from `MapEditorController.cs` or one of its
+  bound panels, and usually also from `MapAuthoringTests.cs` (sanity-checked
+  this against known-working services - `MapTransformCommand`,
+  `SelectionService`, `MapClipboard`, `MapPublisher` - before trusting a zero
+  result). Eight classes came back with **zero references anywhere outside
+  their own file** - not the editor, not a test:
+  `MapLayerService`, `MapScatterService`, `MapGameplayCommands`,
+  `MapEditorPreferences`, `MapRecoveryService`, `MapPathEditing`,
+  `TerrainRules`, `TerrainPlacementPreview`. A ninth, `MapGenerationService`
+  (with its `MapGenerationConfiguration`), is referenced only by each other -
+  self-consistent, but never called from the editor either. Concretely: the
+  editor header's "Generate", "View", and "Map" menu buttons
+  (`MapEditorController.BuildHeader`) are stubs that print "COMMANDS ARRIVE
+  IN A LATER MAP-EDITOR PHASE" to the status bar
+  (`ShowPhaseMessage`) - clicking any of them does nothing else. "Edit" is
+  the same stub dressed as a hint (its real commands - undo/redo/delete/
+  duplicate/copy/paste - work via keyboard shortcuts, which are wired and
+  covered by `MapAuthoringTests`). `MapAssetPalettePanel` (Phase 5, genuinely
+  reachable) only ever places decorative art-catalog props via
+  `ArtPaletteQuery`/`MapAssetCommands.AddAsset` - there is no palette entry,
+  button, or menu item anywhere that creates a new terrain tile, tower node,
+  marker, zone, air corridor, or gimmick. `MapObjectLocator` (Phase 4.5,
+  genuinely reachable) generically selects/moves/rotates/scales/deletes
+  every one of those object kinds *once one already exists* in the loaded
+  document - so the editor can inspect and transform authored content, but
+  cannot originate most kinds of it. Corrected the affected checkboxes in
+  `docs/PROGRESS.md` from `[x]` to `[~]`/`[ ]` with the specific gap named
+  per phase, rather than leaving a blanket "complete" claim standing.
+- **Why:** This is exactly R17's mandate ("audit services versus reachable
+  UI; correct earlier unsupported completion claims") and the same pattern
+  this session already found three times independently in gameplay code
+  (`SpecialPlacementService`, `UserSettings`, `GimmickSystem` were all fully
+  implemented with zero call sites before D77/D80/D82) - worth checking
+  systematically in the one other large subsystem (the map editor) that
+  accumulated many phases without an end-to-end reachability check between
+  them.
+- **Scope note:** this entry is the audit-and-correct half of R17 only.
+  Building the missing creation UI (a real Generate menu with a
+  configuration dialog, a Map menu for gimmick/marker/zone/corridor
+  authoring, a terrain palette and painting tool, a preferences dialog with
+  recent files, and an autosave-recovery prompt) is a substantial new body
+  of work - comparable in size to everything else done this session
+  combined - and was not started under this entry. It would need its own
+  explicitly-scoped effort, not a silent expansion of R17's "audit and
+  correct docs" mandate.
+- **Reference:** GDD §15.6 (editor tooling); release ledger R17.
+- **Status:** Active.
+
+### D85 - Alliance/nation UI banners generated, integrated, and a real-flag request declined in part
+- **Decided by:** User (design direction and generation); Claude (content-policy boundary, integration)
+- **Date:** 2026-09-05
+- **Decision:** Generated and integrated 8 banner images for
+  `campaign_selection.tscn`'s alliance and nation cards (2 alliances + 6
+  nations) - a deliberate, User-directed exception to D36's standing
+  "hold nation-specific art" gate, scoped to this UI screen only (gameplay
+  tower/unit/enemy identity art remains held). The User initially asked for
+  era-accurate real flags and said real flag art was fine "despite the
+  rules"; declined the Germany/Japan/Italy portion of that specifically -
+  the actual WWII-era German state/war flag was the swastika flag and
+  Japan's actual military ensign was the rayed war flag, both explicitly
+  named first among GDD §14.3's absolute content rules, and not something
+  generated regardless of any project-level override (a limit on the
+  assistant's own output, independent of house rules). Landed on a middle
+  path instead: real, uncharged national colors (a palette isn't protected
+  content) plus a real flag-shaped composition, with the GDD's own invented
+  emblem in place of the real one - Germany is the one exception, using the
+  equipment palette (field-green/grey-green) instead of any historical flag
+  colors, since both real options there are politically charged. Registered
+  as `review.ART-UI-FLAG-001` through `008` in `art_asset_catalog.json` and
+  `assets/art/ART_ASSET_INVENTORY.md`; files live at
+  `assets/art/shared/ui/flags/` (moved there from the User's initial drop
+  location, matching the existing `commander_map_table_frame_v01.png`
+  precedent for shared UI illustration art). Integrated into
+  `CampaignSelectionController`: each card is a borderless `TextureButton`
+  (the banner *is* the button, not an image inset inside a themed
+  `PaperButton`) with the nation/alliance name and nation stat summary as
+  plain labels underneath, per the User's follow-up request to drop the
+  paper-panel background entirely.
+- **Why:** GDD §14 is explicitly absolute, not house style ("this is not a
+  judgment call to make casually" per `CLAUDE.md`) - a direct user
+  instruction to override it is exactly the documented case to flag rather
+  than silently follow. The compromise (real colors + real flag shape +
+  invented emblem) delivers what the User was actually after - the flags
+  reading as era-grounded rather than fully abstract shapes - without either
+  problem.
+- **Status:** Active.
 
 ## How to add to this log
 

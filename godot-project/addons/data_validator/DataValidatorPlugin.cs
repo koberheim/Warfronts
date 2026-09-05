@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 using FrontsOfWar.Debug;
 
@@ -49,3 +50,4 @@ public partial class DataValidatorPlugin : EditorPlugin
         dialog.PopupCentered();
     }
 }
+#endif

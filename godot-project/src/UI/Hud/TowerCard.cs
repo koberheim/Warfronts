@@ -16,6 +16,7 @@ public partial class TowerCard : Button
     private HBoxContainer _costRow;
     private Label _costLabel;
     private Label _needLabel;
+    private Label _fieldCountLabel;
 
     public void Setup(TowerDefinition definition, Key hotkey)
     {
@@ -64,7 +65,20 @@ public partial class TowerCard : Button
         _needLabel.Visible = false;
         column.AddChild(_needLabel);
 
+        _fieldCountLabel = UiFactory.Label("SmallLabel", "", HorizontalAlignment.Center);
+        _fieldCountLabel.Visible = false;
+        column.AddChild(_fieldCountLabel);
+
         IgnoreMouse(margin);
+    }
+
+    // Minefields are free-placement rather than pad-limited (GDD §6 T8), so
+    // their card shows a "placed / max" counter instead of relying on pad
+    // occupancy to communicate the limit.
+    public void SetFieldCount(int placed, int max)
+    {
+        _fieldCountLabel.Visible = true;
+        _fieldCountLabel.Text = $"{placed}/{max} placed";
     }
 
     public void SetState(int cost, int shortfall, bool selected)

@@ -1,4 +1,11 @@
 # FRONTS OF WAR — MAP PLANNER & ASSISTED MAP GENERATOR
+
+> **Status (2026-09-04):** This document remains the historical/M3.5 planner
+> subsystem specification. Its candidate-generation, scoring, validation, and
+> catalog concepts remain in force, but its editor UI/export assumptions are
+> superseded by `docs/standalone_map_editor_blueprint.md` for the standalone
+> developer map-authoring application.
+
 ## Design Specification v1.0
 
 ## 1. Purpose

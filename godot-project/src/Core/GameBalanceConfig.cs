@@ -50,10 +50,23 @@ public partial class GameBalanceConfig : Resource
     [Export] public float NationalParityTolerance = 0.03f;
 
     [ExportGroup("Simulation")]
+    [Export] public int MinefieldMaximumFields = 6;
+    [Export] public float MinefieldMinimumSpacingTiles = 2.5f;
+    [Export] public float MinefieldPlacementToleranceTiles = 0.45f;
+    [Export] public float BuildTimeRecruit = 35f;
+    [Export] public float BuildTimeRegular = 25f;
+    [Export] public float BuildTimeVeteran = 20f;
+    [Export] public float BuildTimeElite = 15f;
+    [Export] public float BossBuildTimeSeconds = 40f;
     [Export] public int SimulationHz = 60;
     [Export] public int PerformanceBudgetEnemies = 200;
     [Export] public int PerformanceBudgetTowers = 40;
     [Export] public int PerformanceBudgetProjectiles = 300;
+    [Export] public int EnemyPoolPrewarmHeadroom = 4;
+    [Export] public int EnemyPoolBossAddReserve = 16;
+    [Export] public int EnemyPoolHardCapacityPerScene = 200;
+    [Export] public int FriendlyPoolPrewarmPerScene = 8;
+    [Export] public int FriendlyPoolHardCapacityPerScene = 16;
 
     [ExportGroup("World Scale")]
     // GDD §6: "Range values are in tiles ... sized to a 64px reference

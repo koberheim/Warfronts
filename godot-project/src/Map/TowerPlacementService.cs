@@ -15,6 +15,11 @@ public enum TowerPlacementResult
     PadOccupied,
     NoControllerScene,
     InsufficientSupply,
+    ArchetypeNotAllowed,
+    RequiresPath,
+    FieldLimitReached,
+    TooCloseToMinefield,
+    SignatureLimitReached,
 }
 
 public readonly struct TowerPlacementOutcome
@@ -71,7 +76,9 @@ public class TowerPlacementService
     public TowerPlacementOutcome TryPlace(TowerDefinition definition, BuildPad pad)
     {
         if (pad == null || definition == null) return new TowerPlacementOutcome(TowerPlacementResult.NoControllerScene);
+        if (definition.Archetype == TowerArchetype.Minefield) return new TowerPlacementOutcome(TowerPlacementResult.RequiresPath);
         if (pad.IsOccupied) return new TowerPlacementOutcome(TowerPlacementResult.PadOccupied);
+        if (!pad.Allows(definition)) return new TowerPlacementOutcome(TowerPlacementResult.ArchetypeNotAllowed);
         if (definition.ControllerScene == null) return new TowerPlacementOutcome(TowerPlacementResult.NoControllerScene);
 
         float multiplier = DoctrineCostMultiplierProvider?.Invoke(definition, pad.Tag) ?? 1f;
@@ -102,7 +109,9 @@ public class TowerPlacementService
         var tower = definition.ControllerScene.Instantiate<TowerController>();
         tower.Definition = definition;
         tower.PadTag = pad.Tag;
-        tower.Position = pad.GlobalPosition;
+        tower.ArcFacingDegrees = pad.ArcFacingDegrees;
+        tower.ArcHalfAngleDegrees = pad.ArcHalfAngleDegrees;
+        tower.Position = _towerContainer is Node2D parent ? parent.ToLocal(pad.GlobalPosition) : pad.GlobalPosition;
         _towerContainer.AddChild(tower);
         _towers.Register(tower);
         return tower;
@@ -112,7 +121,7 @@ public class TowerPlacementService
     {
         var post = definition.ControllerScene.Instantiate<CommandPostController>();
         post.Definition = definition;
-        post.Position = pad.GlobalPosition;
+        post.Position = _commandPostContainer is Node2D parent ? parent.ToLocal(pad.GlobalPosition) : pad.GlobalPosition;
         _commandPostContainer.AddChild(post);
         _commandPosts.Register(post);
         return post;
@@ -136,10 +145,12 @@ public class TowerPlacementService
     public bool TryRelocate(TowerController tower, BuildPad destinationPad)
     {
         if (tower == null || destinationPad == null || destinationPad.IsOccupied) return false;
+        if (!destinationPad.Allows(tower.Definition)) return false;
         if (!_padByInstance.TryGetValue(tower, out var sourcePad) || sourcePad == destinationPad) return false;
 
         sourcePad.SetOccupied(false);
         tower.GlobalPosition = destinationPad.GlobalPosition;
+        tower.PadTag = destinationPad.Tag;
         destinationPad.SetOccupied(true);
         _padByInstance[tower] = destinationPad;
         return true;

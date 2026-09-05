@@ -6,6 +6,8 @@ using FrontsOfWar.Enemies;
 using FrontsOfWar.Nations;
 using FrontsOfWar.Towers;
 using FrontsOfWar.Waves;
+using FrontsOfWar.Map.Authoring;
+using FrontsOfWar.Meta;
 
 namespace FrontsOfWar.Debug;
 
@@ -56,6 +58,7 @@ public static partial class DataValidator
     public static void ValidateResources(IReadOnlyList<(string Path, Resource Resource)> resources, DataValidationReport report)
     {
         ValidateDuplicateIds(resources, report);
+        ValidateMapsAndMissions(resources, report);
 
         var towers = resources.Where(r => r.Resource is TowerDefinition)
             .Select(r => (r.Path, Tower: (TowerDefinition)r.Resource)).ToList();
@@ -145,6 +148,8 @@ public static partial class DataValidator
                 SignatureDefinition s => s.Id,
                 ArsenalDefinition a => a.Id,
                 FriendlyUnitDefinition f => f.Id,
+                MissionDefinition m => m.Id,
+                MapDefinition m => m.Metadata?.Id,
                 _ => null,
             };
             if (string.IsNullOrEmpty(id)) continue;

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_siege_artillery.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e12_siege_artillery_elite"
+DisplayName = "Elite Siege Gun"
+Archetype = 11
+ArmorClass = 1
+BaseHp = 480.0
+MoveSpeedTilesPerSec = 0.9
+LeakCost = 3
+Bounty = 34
+SpecialAbilityId = "siege_bombard"
+SiegeBombardRangeTiles = 13.0
+SiegeBombardIntervalSeconds = 8.0
+SiegeSuppressionDurationSeconds = 6.0
+ControllerScene = ExtResource("2")

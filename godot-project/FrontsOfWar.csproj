@@ -7,7 +7,35 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- ExportDebug is the developer runtime boundary, not a shipping build. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'ExportDebug'">
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- GoDotTest is needed by the editor and debug export test runner only. -->
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' Or '$(Configuration)' == 'ExportDebug'">
     <PackageReference Include="Chickensoft.GoDotTest" Version="2.0.42" />
+  </ItemGroup>
+
+  <!--
+    Godot's ExportRelease configuration must not carry test/editor code into
+    the player assembly. MapPlanDefinition.cs and MapPlanGeometry.cs remain
+    because runtime MinefieldRules uses their shared PlanPoint/geometry types;
+    the remaining planner files are editor/test-only in this checkout.
+  -->
+  <ItemGroup Condition="'$(Configuration)' == 'ExportRelease'">
+    <Compile Remove="tests\**\*.cs" />
+    <!-- Addon entrypoints are TOOLS-guarded; dock implementations are not. -->
+    <Compile Remove="addons\**\*.cs" />
+    <Compile Remove="src\Editor\**\*.cs" />
+    <Compile Remove="src\Map\Planning\CandidateDiversity.cs" />
+    <Compile Remove="src\Map\Planning\MapCandidateGenerator.cs" />
+    <Compile Remove="src\Map\Planning\MapLayoutTemplate.cs" />
+    <Compile Remove="src\Map\Planning\MapPlanConverter.cs" />
+    <Compile Remove="src\Map\Planning\MapPlanMetricsCalculator.cs" />
+    <Compile Remove="src\Map\Planning\MapPlannerConfig.cs" />
+    <Compile Remove="src\Map\Planning\MapPlanScorer.cs" />
+    <Compile Remove="src\Map\Planning\MapPlanValidator.cs" />
+    <Compile Remove="src\Map\Planning\PadSuggestionService.cs" />
   </ItemGroup>
 </Project>

@@ -6,19 +6,21 @@ using FrontsOfWar.UI.Theme;
 namespace FrontsOfWar.UI.Menus;
 
 // The pause menu (docs/UI_DESIGN_SPEC.md §8.7; GDD §13.7): a paper card
-// with Resume (focused), Restart, Settings (later), Abandon (inline
-// confirm) and Quit to Menu. Holds the simulation while open and gives the
+// with Resume (focused), Restart, Settings (D80: a second embedded card,
+// not a scene change), Abandon (inline confirm) and Quit to Menu. Holds the
+// simulation while open and gives the
 // previous pause state back on Resume, so a menu opened over the tutorial's
 // pause does not un-pause the tutorial. Only the card blocks the mouse: the
 // HUD underneath keeps working, matching "building stays available".
 public partial class PauseMenu : Control
 {
     private PanelContainer _card;
+    private PanelContainer _settingsCard;
     private Button _resume;
     private HBoxContainer _confirmRow;
     private bool _wasPaused;
 
-    public bool IsOpen => _card.Visible;
+    public bool IsOpen => _card.Visible || _settingsCard.Visible;
 
     public override void _Ready()
     {
@@ -42,11 +44,7 @@ public partial class PauseMenu : Control
         column.AddChild(_resume);
         column.AddChild(UiFactory.Button("PaperButton", "Restart Mission", Restart));
 
-        var settings = UiFactory.Button("PaperButton", "Settings", null, "lock");
-        settings.Disabled = true;
-        settings.TooltipText = "Later in development";
-        column.AddChild(settings);
-        column.AddChild(UiFactory.Label("PaperSmallLabel", "Settings arrive later in development"));
+        column.AddChild(UiFactory.Button("PaperButton", "Settings", OpenSettings));
 
         column.AddChild(UiFactory.Button("PaperButton", "Abandon Mission", () => _confirmRow.Visible = true));
         _confirmRow = UiFactory.HBox(8);
@@ -61,14 +59,46 @@ public partial class PauseMenu : Control
 
         column.AddChild(UiFactory.Button("PaperButton", "Quit to Menu", QuitToMenu));
 
+        // A second card swapped in over the first (never a scene change) -
+        // Settings mid-mission must not touch GameLoop/MissionSession state.
+        _settingsCard = UiFactory.Panel("PaperPanel");
+        _settingsCard.CustomMinimumSize = new Vector2(640f, 760f);
+        _settingsCard.Visible = false;
+        AddChild(_settingsCard);
+        UiFactory.Anchor(_settingsCard, LayoutPreset.Center, 0, 0);
+        var settingsColumn = UiFactory.VBox(10);
+        _settingsCard.AddChild(settingsColumn);
+        settingsColumn.AddChild(UiFactory.Label("StampLabel", "SETTINGS", uppercase: true));
+        settingsColumn.AddChild(UiFactory.Rule(true));
+        var scroll = new ScrollContainer { SizeFlagsVertical = SizeFlags.ExpandFill };
+        settingsColumn.AddChild(scroll);
+        var settingsPanel = new SettingsPanel { SizeFlagsHorizontal = SizeFlags.ExpandFill };
+        scroll.AddChild(settingsPanel);
+        settingsPanel.Setup(CloseSettings);
+
         if (ScreenshotCapture.UiStateIs("pause")) Callable.From(Open).CallDeferred();
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is not InputEventKey { Pressed: true, Echo: false, Keycode: Key.Escape }) return;
+        if (_settingsCard.Visible) { CloseSettings(); GetViewport().SetInputAsHandled(); return; }
         if (IsOpen) Close(); else Open();
         GetViewport().SetInputAsHandled();
+    }
+
+    private void OpenSettings()
+    {
+        _card.Visible = false;
+        _settingsCard.Visible = true;
+        UiFactory.FadeIn(_settingsCard);
+    }
+
+    private void CloseSettings()
+    {
+        _settingsCard.Visible = false;
+        _card.Visible = true;
+        _resume.GrabFocus();
     }
 
     public void Open()

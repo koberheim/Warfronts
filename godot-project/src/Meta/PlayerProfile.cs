@@ -16,6 +16,10 @@ public sealed class PlayerProfile
 
     public bool TutorialCompleted { get; set; }
 
+    // Player-local presentation and input preferences. They deliberately do
+    // not affect balance, progression, or the campaign outcome.
+    public PlayerSettings Settings { get; set; } = new();
+
     // nationId -> accumulated Faction Mastery XP (GDD §12.3). Cosmetic-only
     // reward track; never touches gameplay stats (§12.2's absolute rule).
     public Dictionary<string, double> MasteryXp { get; set; } = new();

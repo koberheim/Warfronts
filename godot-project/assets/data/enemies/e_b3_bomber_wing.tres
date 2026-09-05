@@ -1,0 +1,22 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_air_unit.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "b3_bomber_wing"
+DisplayName = "Bomber Wing"
+Archetype = 7
+ArmorClass = 1
+IsAir = true
+BaseHp = 1067.0
+MoveSpeedTilesPerSec = 1.6
+LeakCost = 0
+Bounty = 60
+IsBoss = true
+FormationGroupId = "b3_wing"
+FormationSize = 3
+FormationDamageReductionPercent = 0.3
+FormationBreakSpeedPenaltyPercent = 0.2
+ControllerScene = ExtResource("2")

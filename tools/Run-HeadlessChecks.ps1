@@ -35,6 +35,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $results = New-Object System.Collections.Generic.List[PSObject]
+. (Join-Path $PSScriptRoot "HeadlessCheckPolicy.ps1")
 
 function Add-CheckResult {
     param([string]$Check, [string]$Status, [string]$Detail)
@@ -105,7 +106,7 @@ else {
             $suiteNames.Add($m.Groups[1].Value)
         }
     }
-    $suiteNames = $suiteNames | Sort-Object -Unique
+    $suiteNames = @($suiteNames | Sort-Object -Unique)
 
     if (-not (Test-Path -Path $GodotMono)) {
         Add-CheckResult "GoDotTest suites" "FAIL" "Godot Mono binary not found at $GodotMono"
@@ -113,20 +114,18 @@ else {
         Add-CheckResult "smoke run" "FAIL" "Godot Mono binary not found at $GodotMono"
     }
     else {
+        if ($suiteNames.Count -eq 0) {
+            Add-CheckResult "GoDotTest suites" "FAIL" "no GoDotTest suites discovered"
+        }
+
         foreach ($suite in $suiteNames) {
             Write-Host "==> godot --headless --run-tests=$suite"
             $testRun = Invoke-NativeCapture -FilePath $GodotMono `
                 -Arguments @("--headless", "--path", $ProjectPath, "--run-tests=$suite", "--quit-after", "1500") `
                 -WorkingDirectory $ProjectPath
-            $match = [regex]::Match($testRun.Output, 'Test results: Passed: (\d+) \| Failed: (\d+) \| Skipped: (\d+)')
-            if ($match.Success) {
-                $failed = [int]$match.Groups[2].Value
-                $detail = "Passed: $($match.Groups[1].Value) | Failed: $failed | Skipped: $($match.Groups[3].Value)"
-                Add-CheckResult "tests: $suite" $(if ($failed -eq 0) { "PASS" } else { "FAIL" }) $detail
-                if ($failed -ne 0) { Write-Host $testRun.Output }
-            }
-            else {
-                Add-CheckResult "tests: $suite" "FAIL" "could not parse 'Test results:' line from output"
+            $testResult = Get-GoDotTestCheckResult -ExitCode $testRun.ExitCode -Output $testRun.Output
+            Add-CheckResult "tests: $suite" $testResult.Status $testResult.Detail
+            if ($testResult.Status -eq "FAIL") {
                 Write-Host $testRun.Output
             }
         }
@@ -136,21 +135,16 @@ else {
             -Arguments @("--headless", "--path", $ProjectPath, "--validate-data", "--quit-after", "600") `
             -WorkingDirectory $ProjectPath
         Write-Host $validateRun.Output
-        $summaryMatch = [regex]::Match($validateRun.Output, 'SUMMARY:.*')
-        $summaryText = $(if ($summaryMatch.Success) { $summaryMatch.Value } else { "no SUMMARY line found" })
-        Add-CheckResult "validate-data" $(if ($validateRun.ExitCode -eq 0) { "PASS" } else { "FAIL" }) "$summaryText (exit $($validateRun.ExitCode))"
+        $validateResult = Get-DataValidationCheckResult -ExitCode $validateRun.ExitCode -Output $validateRun.Output
+        Add-CheckResult "validate-data" $validateResult.Status $validateResult.Detail
 
         Write-Host "==> godot --headless smoke run (--fixed-fps 60 --quit-after 5400)"
         $smokeRun = Invoke-NativeCapture -FilePath $GodotMono `
-            -Arguments @("--headless", "--path", $ProjectPath, "--fixed-fps", "60", "--quit-after", "5400") `
+            -Arguments @("--headless", "--path", $ProjectPath, "--smoke-test", "--fixed-fps", "60", "--quit-after", "5400") `
             -WorkingDirectory $ProjectPath
-        $smokeLines = $smokeRun.Output -split "`r?`n"
-        $errorLines = $smokeLines | Where-Object { $_ -match "error|exception" }
-        $killLines = $smokeLines | Where-Object { $_ -match "\[kill\]" }
-        $smokeOk = (($errorLines.Count -eq 0) -and ($killLines.Count -ge 1))
-        Add-CheckResult "smoke run" $(if ($smokeOk) { "PASS" } else { "FAIL" }) `
-            "$($errorLines.Count) error/exception line(s), $($killLines.Count) [kill] line(s)"
-        if (-not $smokeOk) { Write-Host $smokeRun.Output }
+        $smokeResult = Get-SmokeCheckResult -ExitCode $smokeRun.ExitCode -Output $smokeRun.Output
+        Add-CheckResult "smoke run" $smokeResult.Status $smokeResult.Detail
+        if ($smokeResult.Status -eq "FAIL") { Write-Host $smokeRun.Output }
     }
 }
 
@@ -158,7 +152,7 @@ Write-Host ""
 Write-Host "===================== Run-HeadlessChecks summary ====================="
 $results | Format-Table -AutoSize | Out-String -Width 200 | Write-Host
 
-$failureCount = ($results | Where-Object { $_.Status -eq "FAIL" }).Count
+$failureCount = Get-HeadlessFailureCount -Results $results
 if ($failureCount -gt 0) {
     Write-Host "$failureCount check(s) FAILED."
     exit 1

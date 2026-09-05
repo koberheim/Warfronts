@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 
 [Tool]
@@ -23,3 +24,4 @@ public partial class BalanceDashboardPlugin : EditorPlugin
         _dock = null;
     }
 }
+#endif

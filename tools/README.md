@@ -1,5 +1,40 @@
 # tools/
 
+## Standalone map editor launcher
+
+Double-click `Launch-MapEditor.cmd`, or use `Launch-MapEditor.ps1` at the
+repository root, to open the developer-only map
+editor from any working directory. It resolves `godot-project/` relative to
+the launcher and uses `-GodotMono`, then `$env:GODOT_MONO`, then the
+machine-local D13 fallback path.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Launch-MapEditor.ps1
+
+# Explicit .NET-enabled Godot executable and optional forwarded arguments
+powershell -ExecutionPolicy Bypass -File .\Launch-MapEditor.ps1 `
+    -GodotMono "D:\Godot\Godot_v4.7.2-stable_mono_win64_console.exe" `
+    --resolution 1920x1080 --position 0,0
+```
+
+The launcher requires the Mono/.NET Godot build; a standard GDScript-only
+binary exits with an actionable error. Direct automation can invoke Godot
+with `--path <repository>/godot-project --map-editor`.
+
+`godot-project/export_presets.cfg` defines two Windows boundaries:
+
+- `Windows Player` is the release/player preset and excludes
+  `scenes_root/map_editor.tscn`, future `scenes/editor/*` resources, and
+  `src/Editor/*`; editor C# types are also omitted from Release with
+  `#if DEBUG`.
+- `Windows Developer` retains editor resources and must be exported with
+  `--export-debug`; launch the result with `--map-editor`.
+
+The normal project entry remains `boot.tscn`. Release builds ignore
+`--map-editor`, and `--screen=map_editor` is not an allowed screenshot route.
+See `docs/MAP_EDITOR_MANUAL.md` for the complete opening and troubleshooting
+guide.
+
 ## Run-HeadlessChecks.ps1
 
 Runs every automated check the repo has, in one pass, headlessly:
@@ -74,7 +109,7 @@ part of `Run-HeadlessChecks.ps1`:
      --screenshot-dir="C:\some\abs\dir" --screenshot-frames=40,900
 ```
 
-- `--screen=` one of `main_menu`, `briefing`, `loadout`, `mission`, `results`.
+- `--screen=` one of `main_menu`, `campaign_selection`, `settings`, `briefing`, `loadout`, `mission`, `results`.
 - `--screenshot-frames=` comma-separated frame numbers to save (default 45);
   the process quits after the last one. Frame ~900 of the mission shows a
   wave in progress.

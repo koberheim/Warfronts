@@ -15,13 +15,13 @@ wins — see §5.
 ## 1. The voice in one sentence
 
 **A 1940s wire dispatch written by someone who has read the paperwork and
-believes about 85% of it.**
+believes about 75% of it.**
 
 ---
 
-## 2. The mix: 85% press prose, 15% Catch-22
+## 2. The mix: 75% press prose, 25% Catch-22
 
-### The 85% — WW2-era press and dispatch prose
+### The 75% — WW2-era press and dispatch prose
 
 The base register is the field dispatch and the wire-service communiqué:
 plain, concrete, front-loaded, and unhurried by adjectives.
@@ -45,11 +45,21 @@ plain, concrete, front-loaded, and unhurried by adjectives.
 - **Period-plausible vocabulary**, without jargon-dumping. The reader should
   never need a glossary.
 
-### The 15% — the Catch-22 register
+### The 25% — the Catch-22 register
 
-A dry, deadpan seam of institutional absurdity. Used sparingly: roughly
-**one beat per briefing, one line per codex entry, and never twice in a
-row.**
+A dry, deadpan seam of institutional absurdity, running through the text
+often enough to be a recognizable feature of the game's voice rather than an
+occasional garnish.
+
+**Frequency budget:**
+
+- **Mission briefing:** two beats, or one sustained absurdity carried across
+  a short paragraph. Never the opening line — the situation is stated
+  straight first.
+- **Codex entry:** one to two lines, and the entry may close on the joke.
+- **Results / post-mortem:** the register can carry the whole flavor line.
+- **Consecutive beats** are now permitted where they build (a rule, then its
+  consequence). Three in a row is a bit.
 
 What it actually is:
 
@@ -59,16 +69,21 @@ What it actually is:
   carefully filed, about something absurd.
 - **The document that contradicts itself** without noticing.
 - **Understatement pushed one inch too far**, delivered straight.
+- **The competing authority.** Two offices, each correct, jointly producing
+  something no one asked for.
 
-What it is **not**:
+What it is **not** — these do not loosen with the dose:
 
 - Winking. No "am I right," no nudges, no jokes that announce themselves.
 - Zany. No comic exaggeration, no funny names, no slapstick.
-- Loud. The satire is dry enough that a fast reader might miss it. That is
-  correct.
+- Loud. The delivery stays deadpan no matter how often it appears.
 
-If a line would get a laugh out loud, it is over the dose. The target is a
-short exhale through the nose.
+**The dose governs frequency and prominence, never volume.** 25% means the
+absurdity shows up more often and is allowed to carry more of a passage — it
+does not mean the jokes get bigger, broader, or more pleased with
+themselves. A reader should still be able to take every line at face value
+and lose nothing but the second meaning. The target remains a short exhale
+through the nose, arriving more often.
 
 ---
 
@@ -138,9 +153,9 @@ that.
 
 | Surface | Voice | Satire dose |
 |---|---|---|
-| **Mission briefing** (~120 words, GDD §9.2; typewriter/Courier per UI spec §5) | Full dispatch register | One beat, late in the text |
-| **Codex — towers, enemies, damage table** | Dispatch register, impersonal | One dry line per entry, at the end |
-| **Results / post-mortem flavor** | Dispatch register | The safest home for the 15% |
+| **Mission briefing** (~120 words, GDD §9.2; typewriter/Courier per UI spec §5) | Full dispatch register | Two beats — situation stated straight first, never the opening line |
+| **Codex — towers, enemies, damage table** | Dispatch register, impersonal | One to two dry lines per entry; may close on the joke |
+| **Results / post-mortem flavor** | Dispatch register | The safest home for the 25% — may carry the whole line |
 | **Achievement names** | Dispatch register, terse | Permitted |
 | **Radio chatter and combat barks** | **None** | **Zero.** GDD §14.3: lines are "short, generic, tactical," operational only ("Contact, north road."). No wit, no personality, no exceptions. |
 | **Tower and enemy names** | Flat and functional | None. A name is a label, per GDD §10.1's archetype naming. |
@@ -155,7 +170,7 @@ that.
 
 - Mission briefing: **~120 words** (GDD §9.2 — two per mission, one per
   alliance).
-- Codex entry: 60–90 words.
+- Codex entry: 70–100 words (room for the closing beat).
 - Results flavor line: one or two sentences.
 - Tutorial prompt: under 25 words.
 - Tooltip: one sentence.
@@ -173,7 +188,8 @@ Run every authored string through this before it lands:
    (GDD §14.3).
 3. Does it reference casualties, wounds, or the dead in any wry register?
    → Cut it.
-4. Is there more than one satirical beat? → Cut to one.
+4. Does the string exceed its §5 dose (more beats than budgeted, or a beat
+   as the opening line of a briefing)? → Cut to budget.
 5. Does it wink, or explain its own joke? → Rewrite straight.
 6. Any exclamation points, rhetorical questions, or modern idiom? → Strike.
 7. Do in-world capitalized terms match the UI exactly? → Fix.
@@ -192,16 +208,18 @@ the codex, not here.
 
 <!--
 SAMPLE A — Mission briefing (Bocage Crossroads, ~115 words).
-Full dispatch register. One satirical beat, late. No real place, no date.
+Full dispatch register, two beats. Situation stated straight first (the
+opening line carries no joke, per §5); one beat mid-text, one at the close.
+No real place, no date.
 
     BOCAGE CROSSROADS — OPERATIONAL SUMMARY
 
-    Enemy armor is probing the crossroads from the north road. The
-    hedgerows here are old and deep-rooted. They will stop a man and they
-    will not stop a tank, which is the arrangement the enemy is counting
-    on.
+    Enemy armor is probing the crossroads from the north road. Hold the
+    Defense Line through twelve waves.
 
-    Hold the Defense Line through twelve waves.
+    The hedgerows here are old and deep-rooted. They will stop a man and
+    will not stop a tank, an asymmetry Command's survey team recorded and,
+    having recorded it, considered resolved.
 
     The finale brings a Breakthrough Panzer. Its skirt armor comes apart
     fastest under Explosive fire; once it is off, Armor-Piercing does the
@@ -213,8 +231,10 @@ Full dispatch register. One satirical beat, late. No real place, no date.
 -->
 
 <!--
-SAMPLE B — Codex entry (Field Mortar, ~70 words).
-Impersonal. The satire is on doctrine-as-document, not on any nation.
+SAMPLE B — Codex entry (Field Mortar, ~75 words).
+Impersonal. Two beats that build on each other (the second closes the loop
+the first opens) — permitted at 25% where it wasn't at 15%. The satire is
+on doctrine-as-document, not on any nation.
 
     FIELD MORTAR
 
@@ -224,12 +244,14 @@ Impersonal. The satire is on doctrine-as-document, not on any nation.
 
     Doctrine holds that indirect fire is most efficient against massed
     infantry. Doctrine is correct, and is silent on how to persuade
-    infantry to mass, a matter it leaves to the position.
+    infantry to mass, a matter it leaves to the position. The position, in
+    turn, leaves it to doctrine.
 -->
 
 <!--
 SAMPLE C — Results screen (victory).
-The safest home for the 15%. Bureaucratic, circular, harmless.
+The safest home for the 25% — the flavor line is carried entirely by the
+register. Bureaucratic, circular, harmless.
 
     POSITION HELD.
 
@@ -241,6 +263,9 @@ The safest home for the 15%. Bureaucratic, circular, harmless.
 
 <!--
 SAMPLE D — Calibration pair. Same joke, two doses.
+The dose controls how OFTEN this appears and how much of a passage it
+carries — not how it's delivered. The "over the dose" fault list below is
+about tone discipline, and holds at 25% exactly as it held at 15%.
 
     OVER THE DOSE (do not ship):
     "Command approved your anti-tank guns! Sadly, Command also approved

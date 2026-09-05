@@ -9,6 +9,17 @@ namespace FrontsOfWar.Map;
 public partial class BuildPad : Node2D
 {
     [Export] public PadTag Tag = PadTag.Standard;
+    [Export] public string[] AllowedArchetypeIds = System.Array.Empty<string>();
+
+    // Ruined Town's clipped-range-arc gimmick (GDD §11.1 M4) - copied onto
+    // whatever tower is placed here (see TowerPlacementService.PlaceTower).
+    // 180 means no clipping, the default for every pad on every other map.
+    [Export] public float ArcFacingDegrees;
+    [Export(PropertyHint.Range, "1,180,1")] public float ArcHalfAngleDegrees = 180f;
+
+    public bool Allows(Towers.TowerDefinition definition)
+        => definition != null && (AllowedArchetypeIds == null || AllowedArchetypeIds.Length == 0 ||
+            System.Array.Exists(AllowedArchetypeIds, id => id == definition.Id || id == definition.Archetype.ToString()));
 
     public bool IsOccupied { get; private set; }
     public bool IsHovered { get; private set; }
@@ -42,7 +53,12 @@ public partial class BuildPad : Node2D
         _hoverArea.InputEvent -= OnInputEvent;
     }
 
-    public void SetOccupied(bool occupied) => IsOccupied = occupied;
+    public void SetOccupied(bool occupied)
+    {
+        IsOccupied = occupied;
+        if (_highlight != null) _highlight.Visible = !occupied && (_buildModeGlow || IsHovered);
+        QueueRedraw();
+    }
 
     // Toggled by the build bar (GDD §13.4: "build pads glow when the build
     // menu is open") for every unoccupied pad while a tower is selected.
@@ -76,9 +92,23 @@ public partial class BuildPad : Node2D
     // card is selected, stronger fill on hover) drawn over the pad mark.
     public override void _Draw()
     {
-        if (!_buildModeGlow || IsOccupied) return;
+        if (IsOccupied) return;
         var amber = UI.Theme.UiPalette.Amber;
-        var rect = new Rect2(-20f, -20f, 40f, 40f);
+        var stone = UI.Theme.UiPalette.PaperDark;
+        var rect = new Rect2(-24f, -24f, 48f, 48f);
+        DrawRect(rect.Grow(3), UI.Theme.UiPalette.Shadow with { A = 0.7f });
+        DrawRect(rect, UI.Theme.UiPalette.Slate with { A = 0.8f });
+        DrawRect(rect, stone with { A = 0.85f }, false, 3f);
+        if (Tag == PadTag.Enclosed)
+        {
+            DrawPolyline(new[] { new Vector2(-12, 7), new Vector2(-12, -5), new Vector2(0, -14), new Vector2(12, -5), new Vector2(12, 7) }, stone, 3f, true);
+        }
+        else
+        {
+            DrawLine(new Vector2(-9, 0), new Vector2(9, 0), stone, 2f, true);
+            DrawLine(new Vector2(0, -9), new Vector2(0, 9), stone, 2f, true);
+        }
+        if (!_buildModeGlow && !IsHovered) return;
         if (IsHovered) DrawRect(rect, amber with { A = 0.2f });
         DrawRect(rect, amber with { A = 0.95f }, false, 2f);
     }

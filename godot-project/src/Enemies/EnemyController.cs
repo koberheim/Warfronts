@@ -12,7 +12,7 @@ namespace FrontsOfWar.Enemies;
 // explicit SimTick calls from EnemyManager, not Godot's _PhysicsProcess —
 // see GameLoop's fixed-tick model (§15.4): every enemy must advance exactly
 // the same amount regardless of render framerate or game speed.
-public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
+public partial class EnemyController : Node2D, ITargetable, IDamageReceiver, IPoolLifecycle
 {
     [Export] public EnemyDefinition Definition;
 
@@ -29,18 +29,25 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
     private float _airProgress;
     private float _shieldRemaining;
     private bool _revealed;
+    private bool _inCanopy;
+    private float _mudSpeedMultiplier = 1f;
     private Func<IReadOnlyList<EnemyController>> _enemyProvider;
     private EnemyController _repairTarget;
 
     public BossPhaseController BossPhase { get; private set; }
+    public MultiPhaseBossController MultiPhaseBoss { get; private set; }
     public PathNetwork PathNetwork { get; private set; }
 
-    public StatusController Status { get; } = new();
+    public StatusController Status { get; private set; } = new();
 
     public float CurrentHp => _currentHp;
     public bool IsAlive => _currentHp > 0f;
-    public bool IsAir => Definition.IsAir;
-    public bool IsConcealed => Definition?.SpecialAbilityId == "recon_concealment";
+    public bool IsAir => Definition?.IsAir == true;
+    // Canopy (GDD §11.1 M6 Snowy Forest Pass): a path-level gimmick, not a
+    // per-enemy trait like E11 Recon's, but the same reveal machinery below
+    // (IsRevealed, SetRevealed, Status.IsSpotted) applies to both sources
+    // uniformly - "reuses E11's system entirely" per GDD §11.2.
+    public bool IsConcealed => Definition?.SpecialAbilityId == "recon_concealment" || _inCanopy;
     public bool IsRevealed => !IsConcealed || _revealed || Status.IsSpotted;
     public float PathProgress => IsAir && _airCorridor != null ? _airProgress : _pathFollower?.Progress ?? 0f;
     public float PathDistancePixels => IsAir && _airCorridor != null
@@ -50,9 +57,18 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
     public float MaxHp => _maxHp;
     public float ShieldRemaining => _shieldRemaining;
     public EnemyController RepairTarget => _repairTarget;
+    // Every Initialize call starts a distinct lease of this pooled node. Any
+    // system that retains an EnemyController across ticks (notably a direct-
+    // fire projectile) must capture this value and reject a later generation.
+    public ulong PoolGeneration { get; private set; }
+
+    public bool IsPoolGenerationCurrent(ulong generation)
+        => generation == PoolGeneration && IsAlive;
 
     public void Initialize(PathNetwork path, float hpScaleMultiplier = 1f, AirCorridorDefinition airCorridor = null)
     {
+        PoolGeneration++;
+        Status.Reset();
         PathNetwork = path;
         _pathFollower = new PathFollower(path);
         _hpScaleMultiplier = hpScaleMultiplier;
@@ -68,13 +84,63 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
         _airProgress = 0f;
         _shieldRemaining = Definition.Archetype == EnemyArchetype.Escort ? Definition.EscortShieldMaxHp : 0f;
         _revealed = false;
-        BossPhase = Definition.IsBoss ? new BossPhaseController(Definition) : null;
+        _inCanopy = false;
+        _mudSpeedMultiplier = 1f;
+        _softBlocked = false;
+        _previousPosition = Vector2.Zero;
+        Velocity = Vector2.Zero;
+        _enemyProvider = null;
+        _repairTarget = null;
+        bool isMultiPhase = (Definition.MultiPhaseHpThresholds?.Length ?? 0) > 0;
+        BossPhase = Definition.IsBoss && !isMultiPhase ? new BossPhaseController(Definition) : null;
+        MultiPhaseBoss = Definition.IsBoss && isMultiPhase ? new MultiPhaseBossController(Definition) : null;
         _cohesionLeadProgress = 0f;
         _siegeBombardRemaining = Definition.SpecialAbilityId == "siege_bombard"
             ? Definition.SiegeBombardIntervalSeconds : 0f;
         _bossSkirtVisual = GetNodeOrNull<CanvasItem>("Skirt");
+        if (_bossSkirtVisual != null) _bossSkirtVisual.Visible = true;
         GlobalPosition = Definition.IsAir && _airCorridor != null
             ? _airCorridor.EntryPosition : path.GetPositionAtDistance(0f);
+        QueueRedraw();
+    }
+
+    public void OnRentedFromPool()
+    {
+        // Initialize supplies the definition/path and performs the full reset.
+        // This hook intentionally only establishes an inert pre-initialize
+        // state so a rented node can never expose data from its prior lease.
+        ResetForPool(clearDefinition: false);
+    }
+
+    public void OnReturnedToPool() => ResetForPool(clearDefinition: true);
+
+    private void ResetForPool(bool clearDefinition)
+    {
+        _pathFollower = null;
+        PathNetwork = null;
+        _currentHp = 0f;
+        _maxHp = 0f;
+        _hpScaleMultiplier = 1f;
+        _previousPosition = Vector2.Zero;
+        _softBlocked = false;
+        _cohesionLeadProgress = 0f;
+        _siegeBombardRemaining = 0f;
+        _airCorridor = null;
+        _airProgress = 0f;
+        _shieldRemaining = 0f;
+        _revealed = false;
+        _inCanopy = false;
+        _mudSpeedMultiplier = 1f;
+        _enemyProvider = null;
+        _repairTarget = null;
+        Velocity = Vector2.Zero;
+        BossPhase = null;
+        MultiPhaseBoss = null;
+        Status.Reset();
+        if (_bossSkirtVisual != null) _bossSkirtVisual.Visible = true;
+        if (clearDefinition) Definition = null;
+        Position = Vector2.Zero;
+        QueueRedraw();
     }
 
     public void SetEnemyProvider(Func<IReadOnlyList<EnemyController>> provider) => _enemyProvider = provider;
@@ -85,13 +151,25 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
 
         Status.Tick(tickDeltaSeconds);
         BossPhase?.Tick(tickDeltaSeconds);
+        if (MultiPhaseBoss != null)
+        {
+            MultiPhaseBoss.UpdatePhase(_currentHp, _maxHp);
+            MultiPhaseBoss.Tick(tickDeltaSeconds);
+            if (MultiPhaseBoss.ConsumeBombardReady(out float bombardRange, out float bombardDuration))
+                EventBus.Instance?.Publish(new EnemySiegeBombardEvent(this, GlobalPosition, bombardRange, bombardDuration));
+        }
 
         if (Definition.Archetype == EnemyArchetype.Support) TickFieldRepair(tickDeltaSeconds);
         if (Definition.IsAir && _airCorridor != null)
         {
+            // B3 Bomber Wing (GDD §10.3): "each destroyed bomber... slows the
+            // survivors by 20%" needs to apply here too - air units skip the
+            // ground movement branch below entirely, so FormationState()
+            // must be consulted on both paths.
+            float airSpeedMultiplier = FormationState().speedMultiplier;
             _previousPosition = GlobalPosition;
             float distance = Mathf.Max(1f, _airCorridor.LengthPixels);
-            _airProgress = Mathf.Min(1f, _airProgress + Definition.MoveSpeedTilesPerSec *
+            _airProgress = Mathf.Min(1f, _airProgress + Definition.MoveSpeedTilesPerSec * airSpeedMultiplier *
                 GameBalanceConfigAutoload.Config.TilePixelSize * tickDeltaSeconds / distance);
             GlobalPosition = _airCorridor.EntryPosition.Lerp(_airCorridor.ObjectivePosition, _airProgress);
             Velocity = tickDeltaSeconds > 0f ? (GlobalPosition - _previousPosition) / tickDeltaSeconds : Vector2.Zero;
@@ -114,11 +192,14 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
         var config = GameBalanceConfigAutoload.Config;
         float speedMultiplier = Status.IsSuppressed ? config.SuppressedMoveSpeedMultiplier : 1f;
         speedMultiplier *= NearbyReconSpeedMultiplier();
+        speedMultiplier *= _mudSpeedMultiplier;
+        speedMultiplier *= FormationState().speedMultiplier;
         if (Definition.SpecialAbilityId == "swarm_cohesion" &&
             _cohesionLeadProgress - PathProgress >= Definition.CohesionCatchupThreshold)
             speedMultiplier *= Definition.CohesionCatchupSpeedMultiplier;
-        if (!_softBlocked)
-            _pathFollower.Advance(Definition.MoveSpeedTilesPerSec * (BossPhase?.SpeedMultiplier ?? 1f), speedMultiplier, tickDeltaSeconds, config.TilePixelSize);
+        if (!_softBlocked && MultiPhaseBoss?.IsHalted != true)
+            _pathFollower.Advance(Definition.MoveSpeedTilesPerSec * (BossPhase?.SpeedMultiplier ?? MultiPhaseBoss?.SpeedMultiplier ?? 1f),
+                speedMultiplier, tickDeltaSeconds, config.TilePixelSize);
         GlobalPosition = _pathFollower.CurrentPosition;
         Velocity = tickDeltaSeconds > 0f ? (GlobalPosition - _previousPosition) / tickDeltaSeconds : Vector2.Zero;
 
@@ -133,7 +214,7 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
 
     public void ApplyDamage(float baseDamage, DamageType type, IDamageSource source)
     {
-        if (!IsAlive) return;
+        if (!IsAlive || Definition == null) return;
 
         float multiplier = DamageTable.Default.Multiplier(type, Definition.ArmorClass);
         float dealt = BossPhase?.ResolveDamage(baseDamage, type, Status.IsSpotted)
@@ -141,17 +222,46 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
         if (BossPhase is { IsSkirtIntact: false } && _bossSkirtVisual != null)
             _bossSkirtVisual.Visible = false;
         dealt = AbsorbShieldedDamage(dealt);
+        dealt *= ConvoyDamageResistanceMultiplier() * FormationState().damageMultiplier;
+        if (source != null) dealt *= FrontalPlateDamageMultiplier(source.GlobalPosition);
         _currentHp = Mathf.Max(0f, _currentHp - dealt);
 
         EventBus.Instance?.Publish(new EnemyDamagedEvent(this, dealt, multiplier, type, source));
 
         if (_currentHp <= 0f)
+        {
+            TriggerConvoyCollapseOnDeath();
             EventBus.Instance?.Publish(new EnemyKilledEvent(this, Definition.Bounty));
+        }
     }
 
     public void SetSoftBlocked(bool blocked) => _softBlocked = blocked;
 
     public void SetRevealed(bool revealed) => _revealed = revealed;
+
+    // Set each tick by MapRuntime from GimmickSystem (Canopy/Mud, GDD §11.1
+    // M6/M8) - both are queried by PathNetwork.PathId, so a system outside
+    // this class supplies the lookup rather than EnemyController knowing
+    // about MapGimmick/GimmickSystem itself.
+    public void SetInCanopy(bool inCanopy) => _inCanopy = inCanopy;
+    public void SetMudSpeedMultiplier(float multiplier) => _mudSpeedMultiplier = multiplier;
+
+    // A scripted HP cap (B2's Convoy collapse, GDD §10.3: "instantly
+    // collapses the escorts to 50% HP") - deliberately bypasses the whole
+    // damage-resolution pipeline (armor multipliers, shields, Convoy/
+    // Frontal Plate resistance) since this isn't combat damage, it's a
+    // narrative-beat state change. Never raises HP.
+    public void CapHealth(float maxAllowedHp)
+    {
+        if (!IsAlive || maxAllowedHp >= _currentHp) return;
+        _currentHp = Mathf.Max(0f, maxAllowedHp);
+        QueueRedraw();
+        if (_currentHp <= 0f)
+        {
+            TriggerConvoyCollapseOnDeath();
+            EventBus.Instance?.Publish(new EnemyKilledEvent(this, Definition.Bounty));
+        }
+    }
 
     public float RestoreHealth(float amount)
     {
@@ -169,113 +279,15 @@ public partial class EnemyController : Node2D, ITargetable, IDamageReceiver
         if (_pathFollower != null) _pathFollower.HoldDistancePixels = distancePixels;
     }
 
-    public int ConsumeBossAddRequest() => BossPhase?.ConsumePendingAdds() ?? 0;
+    public int ConsumeBossAddRequest() => BossPhase?.ConsumePendingAdds() ?? MultiPhaseBoss?.ConsumePendingAdds() ?? 0;
 
     public void ApplySuppressed(float durationSeconds, float hardCapSeconds)
     {
-        if (Definition.SuppressionImmune) return;
+        if (Definition?.SuppressionImmune == true) return;
+        if (MultiPhaseBoss?.IsSuppressionImmune == true) return; // B4 phase 3
+        if (IsConvoyProtectedFromSuppression()) return; // B2's Convoy aura
         Status.ApplySuppressed(durationSeconds, hardCapSeconds);
     }
     public void ApplySpotted(float durationSeconds) => Status.ApplySpotted(durationSeconds);
 
-    // Health bar only appears once damaged (GDD §13.6 — reduces clutter),
-    // always carries the armor-class glyph on its left cap when visible,
-    // and status badges to the right. Never color alone — glyph shapes
-    // differ by armor class, matching the accessibility rule in §13.9.
-    public override void _Draw()
-    {
-        if (!IsAlive || Definition == null || _maxHp <= 0f) return;
-
-        const float barWidth = 42f;
-        const float barHeight = 4f;
-        const float yOffset = -30f;
-        float fraction = _currentHp / _maxHp;
-
-        if (Definition.IsBoss || _currentHp < _maxHp)
-        {
-            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth, barHeight), UiPalette.Slate with { A = 0.9f });
-            DrawRect(new Rect2(-barWidth / 2f, yOffset, barWidth * fraction, barHeight), UiPalette.Red);
-        }
-
-        if (BossPhase is { IsSkirtIntact: true })
-        {
-            float skirtFraction = BossPhase.SkirtMaxHp > 0f ? BossPhase.SkirtHp / BossPhase.SkirtMaxHp : 0f;
-            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth, barHeight), UiPalette.Slate with { A = 0.9f });
-            DrawRect(new Rect2(-barWidth / 2f, yOffset - 6f, barWidth * skirtFraction, barHeight), UiPalette.Amber);
-        }
-
-        DrawArmorGlyph(new Vector2(-barWidth / 2f - 7f, yOffset + barHeight / 2f));
-
-        float badgeX = barWidth / 2f + 6f;
-        float badgeY = yOffset + barHeight / 2f;
-        if (Status.IsSuppressed)
-        {
-            DrawCircle(new Vector2(badgeX, badgeY), 3f, UiPalette.Grey);
-            badgeX += 8f;
-        }
-        if (Status.IsSpotted)
-            DrawArc(new Vector2(badgeX, badgeY), 3f, 0f, Mathf.Tau, 12, UiPalette.Red, 1.5f, true);
-        if (Definition.Archetype == EnemyArchetype.Escort && _shieldRemaining > 0f)
-        {
-            float radius = Definition.EscortShieldRadiusTiles * GameBalanceConfigAutoload.Config.TilePixelSize;
-            var bubble = new Vector2[7];
-            for (int i = 0; i < bubble.Length; i++)
-                bubble[i] = new Vector2(radius, 0f).Rotated(i * Mathf.Tau / bubble.Length);
-            DrawPolyline(bubble, UiPalette.Blue with { A = 0.28f }, 2f, true);
-            DrawRect(new Rect2(-21f, 24f, 42f, 3f), UiPalette.Slate with { A = 0.9f });
-            DrawRect(new Rect2(-21f, 24f, 42f * (_shieldRemaining / Mathf.Max(1f, Definition.EscortShieldMaxHp)), 3f), UiPalette.Blue);
-        }
-        if (_repairTarget != null && _repairTarget.IsAlive)
-            DrawLine(Vector2.Zero, ToLocal(_repairTarget.GlobalPosition), UiPalette.Green with { A = 0.9f }, 3f);
-        if (IsAir)
-        {
-            DrawLine(new Vector2(-20f, 10f), new Vector2(20f, 10f), new Color(0.15f, 0.15f, 0.2f, 0.35f), 8f);
-            DrawColoredPolygon(new[] { new Vector2(-18f, 0f), new Vector2(18f, 0f), new Vector2(0f, -8f) }, new Color(0.8f, 0.82f, 0.86f));
-        }
-        if (Definition.Archetype == EnemyArchetype.Support)
-        {
-            DrawRect(new Rect2(-15f, -10f, 30f, 20f), new Color(0.42f, 0.54f, 0.58f));
-            DrawLine(new Vector2(0f, -10f), new Vector2(10f, -22f), new Color(0.75f, 0.78f, 0.68f), 3f);
-        }
-        if (Definition.Archetype == EnemyArchetype.Escort)
-        {
-            DrawRect(new Rect2(-17f, -11f, 34f, 22f), new Color(0.48f, 0.5f, 0.58f));
-            DrawLine(new Vector2(-12f, -15f), new Vector2(-6f, 15f), new Color(0.75f, 0.78f, 0.84f), 3f);
-            DrawLine(new Vector2(12f, -15f), new Vector2(6f, 15f), new Color(0.75f, 0.78f, 0.84f), 3f);
-        }
-        if (Definition.Archetype == EnemyArchetype.Recon)
-        {
-            DrawCircle(Vector2.Zero, 8f, new Color(0.65f, 0.7f, 0.72f, 0.45f));
-            for (int i = 0; i < 8; i += 2)
-                DrawArc(Vector2.Zero, 12f, i * Mathf.Tau / 8f, (i + 1) * Mathf.Tau / 8f, 4, new Color(0.75f, 0.8f, 0.82f, 0.7f), 2f);
-        }
-    }
-
-    // Deliberately distinct shapes, not just colors (Soft: square, Hardened:
-    // small circle, Armored: larger circle, Heavy: diamond) — GDD §5.3's
-    // "cloth square / half shield / full shield / double shield" reading,
-    // approximated with primitives until real icon art exists.
-    private void DrawArmorGlyph(Vector2 center)
-    {
-        switch (Definition.ArmorClass)
-        {
-            case ArmorClass.Soft:
-                DrawRect(new Rect2(center - new Vector2(2.5f, 2.5f), new Vector2(5f, 5f)), new Color(0.85f, 0.85f, 0.8f));
-                break;
-            case ArmorClass.Hardened:
-                DrawCircle(center, 3f, new Color(0.75f, 0.75f, 0.75f));
-                break;
-            case ArmorClass.Armored:
-                DrawCircle(center, 4f, new Color(0.7f, 0.72f, 0.78f));
-                break;
-            case ArmorClass.Heavy:
-                var points = new[]
-                {
-                    center + new Vector2(0f, -5f), center + new Vector2(5f, 0f),
-                    center + new Vector2(0f, 5f), center + new Vector2(-5f, 0f),
-                };
-                DrawColoredPolygon(points, new Color(0.85f, 0.7f, 0.3f));
-                break;
-        }
-    }
 }

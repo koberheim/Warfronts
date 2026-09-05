@@ -25,7 +25,13 @@ public static partial class DataValidator
         if (enemy.ControllerScene == null)
             report.AddError(path, "EnemyDefinition ControllerScene is null.");
 
-        if (enemy.IsBoss && enemy.SkirtHp <= 0f)
-            report.AddWarning(path, "Boss EnemyDefinition has no SkirtHp set.");
+        // B1's armor-skirt is one of several boss mechanics now (GDD §10.3);
+        // B2/B3/B4 use Convoy/Formation/MultiPhase instead (docs/DECISIONS.md
+        // D83), so only warn when a boss has none of them authored at all.
+        bool hasAlternateBossMechanic = enemy.ConvoyAuraRadiusTiles > 0f
+            || !string.IsNullOrWhiteSpace(enemy.FormationGroupId)
+            || (enemy.MultiPhaseHpThresholds?.Length ?? 0) > 0;
+        if (enemy.IsBoss && enemy.SkirtHp <= 0f && !hasAlternateBossMechanic)
+            report.AddWarning(path, "Boss EnemyDefinition has no SkirtHp (or an alternate boss mechanic) set.");
     }
 }

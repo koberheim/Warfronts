@@ -18,6 +18,19 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     [Export] public TowerDefinition Definition;
     [Export] public PadTag PadTag = PadTag.Standard;
 
+    // Copied from the placing BuildPad (GDD §11.1 M4 Ruined Town's "clipped
+    // range arcs" - the one Enclosed-pad gimmick that isn't just a tag).
+    // ArcHalfAngleDegrees >= 180 means "no clipping" (every other pad on
+    // every other map). See GimmickRules.IsWithinArc.
+    [Export] public float ArcFacingDegrees;
+    [Export] public float ArcHalfAngleDegrees = 180f;
+
+    // Set each tick by MapRuntime from GimmickSystem.GlobalRangeMultiplier
+    // (GDD §11.1 M2 variant, Mission 10's Sandstorm) - reset to 1 (no-op)
+    // whenever no sandstorm gimmick is active, same convention as
+    // AuraRangeMultiplier below.
+    public float GimmickRangeMultiplier = 1f;
+
     public TargetingProfile CurrentTargeting { get; set; }
     public TowerUpgradeController Upgrade { get; private set; }
     public float LifetimeDamage { get; private set; }
@@ -56,6 +69,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
     private float _cooldownRemaining;
     private float _secondaryCooldownRemaining;
     private ITargetable _currentTarget;
+    private ulong _currentTargetGeneration;
 
     // The turret sprite (art doc sprite_generation_prompts.md §1.7 — a
     // separate rotating layer over the static emplacement). Null for
@@ -109,13 +123,15 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         if (_suppressionRemaining > 0f) _suppressionRemaining -= tickDeltaSeconds;
         if (_rallyRemaining > 0f) _rallyRemaining -= tickDeltaSeconds;
         if (_forcedTargetRemaining > 0f) _forcedTargetRemaining -= tickDeltaSeconds;
+        if (_currentTarget is EnemyController pooled && !pooled.IsPoolGenerationCurrent(_currentTargetGeneration)) _currentTarget = null;
+        if (_forcedTarget is EnemyController forced && !forced.IsPoolGenerationCurrent(_forcedTargetGeneration)) _forcedTarget = null;
         if (IsSuppressed) return; // fully disabled — no targeting, no firing
 
         var stats = Upgrade.CurrentStats();
         UpdateTurretRotation(tickDeltaSeconds, stats.TurnRateSeconds);
         float tilePixelSize = GameBalanceConfigAutoload.Config.TilePixelSize;
         float effectiveRangeTiles = stats.RangeTiles * DoctrineRangeMultiplier + DoctrineRangeBonusTiles;
-        float rangePixels = effectiveRangeTiles * tilePixelSize * AuraRangeMultiplier;
+        float rangePixels = effectiveRangeTiles * tilePixelSize * AuraRangeMultiplier * GimmickRangeMultiplier;
         float minRangePixels = stats.MinRangeTiles * tilePixelSize;
         float rallyMultiplier = _rallyRemaining > 0f ? _rallyRateOfFireMultiplier : 1f;
         float rateOfFire = stats.RateOfFirePerSec * AuraRateOfFireMultiplier * SignatureRateOfFireMultiplier *
@@ -135,12 +151,14 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
             if (_forcedTargetRemaining > 0f && IsValidTarget(_forcedTarget, rangePixels, minRangePixels))
             {
                 _currentTarget = _forcedTarget;
+                _currentTargetGeneration = (_currentTarget as EnemyController)?.PoolGeneration ?? 0;
             }
             else if (!IsValidTarget(_currentTarget, rangePixels, minRangePixels))
             {
                 var candidates = grid.QueryRadius(GlobalPosition, rangePixels)
                     .Where(t => IsAcquirable(t, stats) && IsValidTarget(t, rangePixels, minRangePixels));
                 _currentTarget = TargetingService.SelectTarget(candidates, CurrentTargeting, GlobalPosition);
+                _currentTargetGeneration = (_currentTarget as EnemyController)?.PoolGeneration ?? 0;
             }
 
             if (_currentTarget != null)
@@ -197,6 +215,8 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         float distSq = GlobalPosition.DistanceSquaredTo(target.GlobalPosition);
         if (distSq > rangePixels * rangePixels) return false;
         if (minRangePixels > 0f && distSq < minRangePixels * minRangePixels) return false;
+        if (ArcHalfAngleDegrees < 180f && !GimmickRules.IsWithinArc(GlobalPosition, ArcFacingDegrees, ArcHalfAngleDegrees, target.GlobalPosition))
+            return false;
         return true;
     }
 
@@ -248,7 +268,7 @@ public partial class TowerController : Node2D, IDamageSource, ISiegeTarget
         _secondaryCooldownRemaining -= delta;
         if (_secondaryCooldownRemaining > 0f) return;
         float rangeTiles = stats.SecondaryRangeTiles > 0f ? stats.SecondaryRangeTiles : stats.RangeTiles;
-        float rangePixels = rangeTiles * GameBalanceConfigAutoload.Config.TilePixelSize * AuraRangeMultiplier;
+        float rangePixels = rangeTiles * GameBalanceConfigAutoload.Config.TilePixelSize * AuraRangeMultiplier * GimmickRangeMultiplier;
         var candidates = grid.QueryRadius(GlobalPosition, rangePixels)
             .Where(candidate => IsAcquirable(candidate, stats.SecondaryTargetDomain) &&
                 IsValidTarget(candidate, rangePixels, 0f));

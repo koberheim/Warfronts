@@ -25,6 +25,9 @@ public partial class ScreenshotCapture : Node
 
     public static ScreenshotCapture FromCmdline(string[] args)
     {
+#if !DEBUG
+        return null;
+#else
         string dir = ArgValue(args, "--screenshot-dir");
         if (string.IsNullOrEmpty(dir)) return null;
 
@@ -39,14 +42,20 @@ public partial class ScreenshotCapture : Node
             capture.Frames.Sort();
         }
         return capture;
+#endif
     }
 
     // --ui-state=pause|inspect|postmortem asks the matching card to open by
     // itself a few frames in, so overlays that normally need a click can be
     // screenshotted. Ignored (null) outside a screenshot run.
-    public static string UiState => ArgValue(OS.GetCmdlineArgs(), "--screenshot-dir") == null
+    public static string UiState =>
+#if DEBUG
+        ArgValue(OS.GetCmdlineArgs(), "--screenshot-dir") == null
         ? null
         : ArgValue(OS.GetCmdlineArgs(), "--ui-state");
+#else
+        null;
+#endif
 
     public static bool UiStateIs(string state) => UiState == state;
 

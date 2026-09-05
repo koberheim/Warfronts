@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/Enemies/EnemyDefinition.cs" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_medium_armor.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+Id = "e6_medium_armor_elite"
+DisplayName = "Elite Medium Tank"
+Archetype = 5
+ArmorClass = 2
+IsAir = false
+BaseHp = 780.0
+MoveSpeedTilesPerSec = 1.5
+LeakCost = 3
+Bounty = 27
+HasFrontalPlate = true
+FrontalPlateActivateHpFraction = 0.35
+ControllerScene = ExtResource("2")

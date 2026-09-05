@@ -67,7 +67,7 @@ public sealed class MissionStatsCollector : IDisposable
         // DefenseLine ledger this reads from (GDD §19 prompt 41: "its
         // snapshot is stored in MissionSession.LastResult at mission end").
         LastSnapshot = BuildSnapshot();
-        MissionSession.LastResult = LastSnapshot;
+        MissionSession.StoreCompletedResult(LastSnapshot);
     }
 
     public MissionStatsSnapshot BuildSnapshot() => new()

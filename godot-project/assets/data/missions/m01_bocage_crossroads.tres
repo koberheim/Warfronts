@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/Meta/MissionDefinition.cs" id="1"]
 [ext_resource type="Script" path="res://src/Meta/StarObjectiveDefinition.cs" id="2"]
-[ext_resource type="Resource" path="res://assets/data/missions/m2_wave_sequence.tres" id="3"]
+[ext_resource type="Resource" path="res://assets/data/missions/m01_bocage_waves.tres" id="3"]
 
 [sub_resource type="Resource" id="StarObjective"]
 script = ExtResource("2")

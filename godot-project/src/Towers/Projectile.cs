@@ -11,6 +11,7 @@ namespace FrontsOfWar.Towers;
 public partial class Projectile : Node2D
 {
     private ITargetable _target;
+    private ulong _targetGeneration;
     private DamageType _damageType;
     private float _damage;
     private float _blastRadiusPixels;
@@ -29,6 +30,7 @@ public partial class Projectile : Node2D
                         IDamageSource source = null)
     {
         _target = target;
+        _targetGeneration = (target as EnemyController)?.PoolGeneration ?? 0;
         _damage = damage;
         _damageType = damageType;
         _blastRadiusPixels = blastRadiusPixels;
@@ -56,6 +58,7 @@ public partial class Projectile : Node2D
                                IDamageSource source = null)
     {
         _target = null;
+        _targetGeneration = 0;
         _damage = damage;
         _damageType = damageType;
         _blastRadiusPixels = blastRadiusPixels;
@@ -103,6 +106,7 @@ public partial class Projectile : Node2D
             }
         }
         else if (_target != null && _target.IsAlive
+                 && (_target is not EnemyController pooledTarget || pooledTarget.IsPoolGenerationCurrent(_targetGeneration))
                  && _target.GlobalPosition.DistanceSquaredTo(_impactPoint) <= _hitTolerancePixels * _hitTolerancePixels)
         {
             if (_target is EnemyController enemy)

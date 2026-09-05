@@ -8,25 +8,26 @@ using Chickensoft.GoDotTest;
 
 namespace FrontsOfWar.Core;
 
-// The project entry point. Normal play enters the reusable mission scene;
-// --run-tests routes the same Godot Mono process into the headless test
-// suite, and --validate-data routes it into the Data Validator (GDD §19
-// prompt 45) instead — both exit the process rather than falling through to
-// StartMission.
+// The project entry point. Normal play enters the main menu or mission;
+// developer tooling, validation, and tests use explicit command-line routes.
 public partial class Boot : Node2D
 {
+    public const string MainMenuScene = "res://scenes_root/main_menu.tscn";
+    public const string MissionScene = "res://scenes_root/mission.tscn";
+    public const string MapEditorScene = "res://scenes_root/map_editor.tscn";
+
 #if DEBUG
     private TestEnvironment _testEnvironment;
 #endif
 
     public override void _Ready()
     {
+#if DEBUG
         if (HasCmdlineArg("--validate-data"))
         {
             CallDeferred(nameof(RunDataValidation));
             return;
         }
-#if DEBUG
         var environment = TestEnvironment.From(OS.GetCmdlineArgs());
         if (environment.ShouldRunTests)
         {
@@ -40,12 +41,55 @@ public partial class Boot : Node2D
 
     private static bool HasCmdlineArg(string flag)
     {
-        foreach (string arg in OS.GetCmdlineArgs())
+        return HasCmdlineArg(OS.GetCmdlineArgs(), flag);
+    }
+
+    private static bool HasCmdlineArg(string[] args, string flag)
+    {
+        foreach (string arg in args)
             if (arg == flag)
                 return true;
         return false;
     }
 
+    // Pure launch resolution keeps the developer boundary directly testable.
+    // --screen is deliberately allowlisted: it is a screenshot convenience,
+    // not a general scene loader and cannot be used to enter map_editor.
+    public static string ResolveLaunchScene(string[] args, bool isHeadless, bool developerToolsAvailable)
+    {
+        if (!developerToolsAvailable) return MainMenuScene;
+        if (HasCmdlineArg(args, "--smoke-test")) return "res://tests/fixtures/combat_smoke.tscn";
+        if (developerToolsAvailable && HasCmdlineArg(args, "--map-editor"))
+            return MapEditorScene;
+
+        string requestedScreen = ScreenshotCapture.ArgValue(args, "--screen");
+        string screenScene = requestedScreen switch
+        {
+            "main_menu" => MainMenuScene,
+            "campaign_selection" => "res://scenes_root/campaign_selection.tscn",
+            "settings" => "res://scenes_root/settings.tscn",
+            "briefing" => "res://scenes_root/briefing.tscn",
+            "loadout" => "res://scenes_root/loadout.tscn",
+            "mission" => MissionScene,
+            "results" => "res://scenes_root/results.tscn",
+            _ => null,
+        };
+        if (screenScene != null) return screenScene;
+
+        if (isHeadless || HasCmdlineArg(args, "--mission")) return MissionScene;
+        return MainMenuScene;
+    }
+
+    private static bool DeveloperToolsAvailable()
+    {
+#if DEBUG
+        return true;
+#else
+        return false;
+#endif
+    }
+
+#if DEBUG
     private void RunDataValidation()
     {
         var report = DataValidator.ValidateProjectData();
@@ -53,7 +97,6 @@ public partial class Boot : Node2D
         GetTree().Quit(report.ExitCode);
     }
 
-#if DEBUG
     private async void RunTests()
     {
         await GoTest.RunTests(Assembly.GetExecutingAssembly(), this, _testEnvironment);
@@ -62,35 +105,55 @@ public partial class Boot : Node2D
 
     private void StartMission()
     {
-        // Loads the profile once (GDD §19 prompt 41) and mirrors its
-        // tutorial flag into the per-run MissionSession, matching how the
-        // rest of the M3 briefing/loadout/results flow reads MissionSession
-        // rather than the profile directly.
-        MissionSession.TutorialCompleted = ProfileStore.Current.TutorialCompleted;
         string[] args = OS.GetCmdlineArgs();
-        if (HasCmdlineArg("--skip-tutorial")) MissionSession.TutorialCompleted = true;
+        bool developerToolsAvailable = DeveloperToolsAvailable();
+        string requestedScreen = ScreenshotCapture.ArgValue(args, "--screen");
+        string launchScene = ResolveLaunchScene(
+            args,
+            DisplayServer.GetName() == "headless",
+            developerToolsAvailable);
 
-        // Dev-only screenshot capture (D54): --screen picks the root scene,
-        // the capture node rides on the tree root across the scene change.
-        string screen = ScreenshotCapture.ArgValue(args, "--screen");
-        var capture = ScreenshotCapture.FromCmdline(args);
+        if (HasCmdlineArg(args, "--map-editor") && !developerToolsAvailable)
+            GD.PushWarning("--map-editor is unavailable in player/release builds; starting the normal game.");
+        if (!string.IsNullOrEmpty(requestedScreen) && !IsAllowedScreen(requestedScreen))
+            GD.PushWarning($"Ignoring unsupported --screen value '{requestedScreen}'.");
+
+        // Dev-only screenshot capture (D54): the capture node rides on the
+        // tree root across the scene change. Screen values are allowlisted
+        // above so this cannot bypass the editor's launch boundary.
+        var capture = developerToolsAvailable ? ScreenshotCapture.FromCmdline(args) : null;
         if (capture != null)
         {
-            capture.ScreenName = string.IsNullOrEmpty(screen) ? (HasCmdlineArg("--mission") ? "mission" : "briefing") : screen;
+            capture.ScreenName = launchScene.GetFile().GetBaseName();
             GetTree().Root.CallDeferred(Node.MethodName.AddChild, capture);
         }
 
-        if (!string.IsNullOrEmpty(screen))
+        // The editor is isolated from player profile and MissionSession
+        // initialization. Phase 2 will add its own document state.
+        if (launchScene == MapEditorScene)
         {
-            GetTree().ChangeSceneToFile($"res://scenes_root/{screen}.tscn");
+            GetTree().ChangeSceneToFile(launchScene);
             return;
         }
-        if (DisplayServer.GetName() == "headless" || HasCmdlineArg("--mission"))
-        {
-            GetTree().ChangeSceneToFile("res://scenes_root/mission.tscn");
-            return;
-        }
-        // Normal play starts at the main menu (GDD §13.1; UI spec §8.1).
-        GetTree().ChangeSceneToFile("res://scenes_root/main_menu.tscn");
+
+        // Loads the profile once (GDD section 19 prompt 41) and mirrors its
+        // tutorial flag into per-run MissionSession state.
+        MissionSession.TutorialCompleted = ProfileStore.Current.TutorialCompleted;
+        if (developerToolsAvailable && HasCmdlineArg(args, "--skip-tutorial")) MissionSession.TutorialCompleted = true;
+
+        // Bindings/audio/fullscreen/UI-scale/colorblind theme (GDD §13.8-13.9)
+        // must apply from the first frame, not only once the player opens
+        // Settings. Safe in headless runs - UserSettings.Apply no-ops the
+        // window-specific calls when DisplayServer.GetName() == "headless".
+        UserSettings.Apply(GetTree());
+
+        // Normal play still starts at the main menu (GDD section 13.1; UI
+        // spec section 8.1); mission/headless/screenshot routes are unchanged.
+        GetTree().ChangeSceneToFile(launchScene);
+    }
+
+    private static bool IsAllowedScreen(string screen)
+    {
+        return screen is "main_menu" or "campaign_selection" or "settings" or "briefing" or "loadout" or "mission" or "results";
     }
 }

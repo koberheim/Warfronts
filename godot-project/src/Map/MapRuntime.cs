@@ -6,6 +6,7 @@ using FrontsOfWar.Doctrines;
 using FrontsOfWar.Economy;
 using FrontsOfWar.Enemies;
 using FrontsOfWar.Meta;
+using FrontsOfWar.Map.Authoring;
 using FrontsOfWar.Towers;
 using FrontsOfWar.Waves;
 using System.Linq;
@@ -39,6 +40,7 @@ public partial class MapRuntime : Node2D, ISimTickable
     [Export] public WaveSequence DebugWaveSequence;
     [Export] public bool DebugLogEvents;
     [Export] public bool DebugSingleWave;
+    [Export] public bool DeveloperFixture;
     [Export] public float MissionBuildTimeSeconds = 25f;
 
     public PathNetwork Path { get; private set; }
@@ -56,19 +58,40 @@ public partial class MapRuntime : Node2D, ISimTickable
     public MinefieldManager Minefields { get; } = new();
     public SeededRandom Random { get; private set; }
     public TowerPlacementService Placement { get; private set; }
+    public SpecialPlacementService SpecialPlacement { get; private set; }
+    public GimmickSystem Gimmicks { get; private set; }
     public DoctrineSystem Doctrines { get; private set; }
     public MissionStatsCollector Stats { get; private set; }
+    public MapDefinition AuthoringMap { get; private set; }
+    public RuntimeMapData AuthoringRuntimeData { get; private set; }
 
     private SpatialGrid _spatialGrid;
+#if DEBUG
     private DebugEventLogger _debugLogger;
+#endif
     private ArsenalController _arsenal;
     private float _buildTimeRemaining;
+    private float _buildPhaseDuration;
     private bool _waitingForBuild;
     private bool _missionOver;
     private bool _victoryPublished;
 
     public override void _Ready()
     {
+        try { InitializeMission(); }
+        catch (System.Exception error)
+        {
+            _missionOver = true;
+            GD.PushError($"Mission initialization failed: {error.Message}");
+            GetTree().Quit(1);
+        }
+    }
+
+    private void InitializeMission()
+    {
+        var missionDefinition = LoadMissionLayout();
+        var missionSequence = IsDeveloperFixture ? DebugWaveSequence : missionDefinition.WaveSequence;
+        Gimmicks = new GimmickSystem(AuthoringRuntimeData?.Gimmicks ?? System.Array.Empty<RuntimeGimmickData>());
         Path = GetNode<PathNetwork>(PathNetworkPath);
         var enemyContainer = GetNode<Node>(EnemyContainerPath);
         var projectileContainer = GetNode<Node>(ProjectileContainerPath);
@@ -77,6 +100,8 @@ public partial class MapRuntime : Node2D, ISimTickable
             : GetNode<Node>(FriendlyContainerPath);
 
         var config = GameBalanceConfigAutoload.Config;
+        if (missionSequence != null) Enemies.Prepare(missionSequence, enemyContainer, config);
+        else if (DebugStartWave != null) Enemies.Prepare(new WaveSequence { Waves = new[] { DebugStartWave } }, enemyContainer, config);
         Random = new SeededRandom(unchecked((ulong)(uint)MissionSeed));
 
         Projectiles = new ProjectileManager(projectileContainer);
@@ -84,7 +109,10 @@ public partial class MapRuntime : Node2D, ISimTickable
         DefenseLine = new DefenseLineLedger(Difficulty, config);
         CommandPoints = new CommandPointLedger(config, () => CommandPosts.TotalCommandPointBonus());
         Abilities = new AbilitySystem(config);
-        Waves = new WaveRunner(Enemies, Path, enemyContainer);
+        var pathNetworks = GetChildren().OfType<PathNetwork>().ToList();
+        var authoredPaths = new PathNetworkSet();
+        foreach (var network in pathNetworks) authoredPaths.Add(network);
+        Waves = new WaveRunner(Enemies, authoredPaths, Path, enemyContainer);
         Stats = new MissionStatsCollector(Difficulty, DefenseLine, () => Waves.CurrentWaveNumber);
         Enemies.AirCorridor = AirCorridor;
         Enemies.SiegeTargetsProvider = () => Towers.Towers.Select(tower => (ISiegeTarget)tower).ToArray();
@@ -129,15 +157,29 @@ public partial class MapRuntime : Node2D, ISimTickable
         // FriendlyContainerPath fallback above).
         Placement = new TowerPlacementService(
             towerContainer ?? this, commandPostContainer ?? this, Supply, Towers, CommandPosts);
+        // Signature/Arsenal build-slot placement isn't wired into the HUD yet
+        // (loadout's recommended kit places its signature by scene authoring,
+        // not a player click — see docs/PROGRESS.md); ExtraMinefieldCapacity
+        // stays a neutral 0 until a doctrine actually grants a field-count
+        // bonus (Island Defense, GDD §6 T8) — nothing sets it yet.
+        SpecialPlacement = new SpecialPlacementService(
+            this, Supply, Signatures, Minefields, FriendlyUnits, pathNetworks, config)
+        {
+            ExtraMinefieldCapacity = () => 0,
+        };
 
         // Doctrines (GDD §8.3, §19 prompt 39) — built after every manager it
         // touches exists, before Signatures/Minefields.Initialize below.
-        // United States only, since no other nation is selectable yet (§13.3
-        // is deferred — see LoadoutController).
-        var doctrine = DoctrineSystem.LoadDoctrine("united_states", MissionSession.SelectedDoctrineId);
+        var doctrine = DoctrineSystem.LoadDoctrine(MissionSession.CurrentNationId, MissionSession.SelectedDoctrineId);
+        var friendlyScenes = new System.Collections.Generic.List<PackedScene>();
+        if (doctrine?.Ability?.FriendlyUnitScene != null) friendlyScenes.Add(doctrine.Ability.FriendlyUnitScene);
+        var authoredArsenal = ArsenalPath == null ? null : GetNodeOrNull<ArsenalController>(ArsenalPath);
+        if (authoredArsenal?.Definition?.UnitScene != null) friendlyScenes.Add(authoredArsenal.Definition.UnitScene);
+        FriendlyUnits.Prepare(friendlyScenes, config);
         Doctrines = new DoctrineSystem(doctrine, config, Towers, CommandPosts, Minefields,
             Signatures, FriendlyUnits, Path, Placement, Projectiles, CommandPoints, Supply, DefenseLine);
         Placement.DoctrineCostMultiplierProvider = Doctrines.PlacementCostMultiplier;
+        SpecialPlacement.CostMultiplier = Doctrines.PlacementCostMultiplier;
         Doctrines.ApplyMissionStart();
 
         if (ArsenalPath != null)
@@ -164,14 +206,23 @@ public partial class MapRuntime : Node2D, ISimTickable
         }
         Minefields.Initialize(() => Enemies.GetTargetables());
 
+#if DEBUG
         if (DebugLogEvents) _debugLogger = new DebugEventLogger();
-        if (DebugWaveSequence?.Waves is { Length: > 0 } sequence)
+#endif
+        if (missionSequence?.Waves is { Length: > 0 } sequence)
         {
             TotalWaves = sequence.Length;
             int startIndex = RequestedDebugWaveIndex(sequence);
-            Waves.StartWave(sequence[startIndex]);
-            if (!DebugSingleWave)
-                for (int i = startIndex + 1; i < sequence.Length; i++) Waves.QueueWaves(new[] { sequence[i] });
+            if (IsDeveloperFixture)
+            {
+                Waves.StartWave(sequence[startIndex]);
+                if (!DebugSingleWave) Waves.QueueWaves(sequence.Skip(startIndex + 1));
+            }
+            else
+            {
+                Waves.QueueWaves(sequence.Skip(startIndex));
+                BeginBuildPhase();
+            }
         }
         else if (DebugStartWave != null)
         {
@@ -183,6 +234,7 @@ public partial class MapRuntime : Node2D, ISimTickable
 
     private static int RequestedDebugWaveIndex(WaveDefinition[] sequence)
     {
+#if DEBUG
         var args = OS.GetCmdlineArgs();
         for (int i = 0; i + 1 < args.Length; i++)
         {
@@ -192,16 +244,20 @@ public partial class MapRuntime : Node2D, ISimTickable
                     if (sequence[waveIndex].WaveNumber == requested) return waveIndex;
             }
         }
+#endif
         return 0;
     }
 
     public override void _ExitTree()
     {
+        if (AuthoringMap != null) GetViewport().SizeChanged -= FitMapCamera;
         Supply?.Dispose();
         DefenseLine?.Dispose();
         CommandPoints?.Dispose();
         Stats?.Dispose();
+#if DEBUG
         _debugLogger?.Dispose();
+#endif
         EventBus.Instance?.Unsubscribe<BossAddsRequestedEvent>(OnBossAddsRequested);
         EventBus.Instance?.Unsubscribe<BossReachedObjectiveEvent>(OnBossReachedObjective);
         EventBus.Instance?.Unsubscribe<DefenseLineDepletedEvent>(OnDefenseLineDepleted);
@@ -209,104 +265,4 @@ public partial class MapRuntime : Node2D, ISimTickable
             GameLoop.Instance.CurrentMission = null;
     }
 
-    public void SimTick(float tickDeltaSeconds)
-    {
-        if (_missionOver) return;
-        var config = GameBalanceConfigAutoload.Config;
-
-        Waves.Tick(tickDeltaSeconds);
-        FriendlyUnits.Tick(tickDeltaSeconds, Enemies);
-        Enemies.Tick(tickDeltaSeconds);
-        _spatialGrid.Rebuild(Enemies.GetTargetables());
-        CommandPosts.RevealTargets(Enemies.Enemies, config.TilePixelSize);
-        CommandPosts.Tick(tickDeltaSeconds, Towers, config.TilePixelSize);
-        Towers.ResetSignatureModifiers();
-        Signatures.Tick(tickDeltaSeconds);
-        Minefields.Tick(tickDeltaSeconds);
-        Towers.Tick(tickDeltaSeconds, _spatialGrid, Projectiles);
-        Projectiles.Tick(tickDeltaSeconds, _spatialGrid);
-        Abilities.Tick(tickDeltaSeconds, _spatialGrid);
-        Doctrines?.Tick(tickDeltaSeconds, _spatialGrid);
-
-        if (!_victoryPublished && !_waitingForBuild && !Waves.IsRunning && Enemies.Enemies.Count == 0
-            && Waves.PeekUpcoming(1).Count > 0)
-        {
-            Supply.Credit(Supply.EndOfWaveIncome(Waves.CurrentWaveNumber));
-            _waitingForBuild = true;
-            var nextWave = Waves.PeekUpcoming(1)[0];
-            _buildTimeRemaining = nextWave.IsBossWave ? 40f : MissionBuildTimeSeconds;
-            EventBus.Instance?.Publish(new BuildPhaseStartedEvent(Waves.CurrentWaveNumber + 1, _buildTimeRemaining));
-        }
-
-        if (_waitingForBuild)
-        {
-            _buildTimeRemaining -= tickDeltaSeconds;
-            if (_buildTimeRemaining <= 0f)
-            {
-                _waitingForBuild = false;
-                Waves.StartNextWave();
-            }
-        }
-
-        if (!_victoryPublished && !_waitingForBuild && !Waves.IsRunning && Enemies.Enemies.Count == 0
-            && Waves.PeekUpcoming(1).Count == 0 && Waves.CurrentWaveNumber > 0)
-        {
-            Supply.Credit(Supply.EndOfWaveIncome(Waves.CurrentWaveNumber));
-            _victoryPublished = true;
-            _missionOver = true;
-            MissionSession.LastMissionWon = true;
-            MissionSession.LastWaveReached = Waves.CurrentWaveNumber;
-            EventBus.Instance?.Publish(new MissionCompletedEvent(true));
-        }
-    }
-
-    public void RegisterTower(TowerController tower) => Towers.Register(tower);
-    public void StartWave(WaveDefinition wave) => Waves.StartWave(wave);
-
-    public float BuildTimeRemaining => Mathf.Max(0f, _buildTimeRemaining);
-    public bool IsBuildPhase => _waitingForBuild;
-    public int TotalWaves { get; private set; }
-
-    // The exact Supply the "Call Wave Early" button pays right now (GDD
-    // §7.7: "shows the exact bonus Supply before you commit") - the HUD reads
-    // this so the number shown is the number credited.
-    public int EarlyCallBonusNow => _waitingForBuild
-        ? Supply.EarlyCallBonus(Waves.CurrentWaveNumber, Mathf.Clamp(_buildTimeRemaining / Mathf.Max(1f, MissionBuildTimeSeconds), 0f, 1f))
-        : 0;
-
-    public void CallNextWaveEarly()
-    {
-        if (!_waitingForBuild) return;
-        Supply.Credit(EarlyCallBonusNow);
-        _waitingForBuild = false;
-        Waves.StartNextWave();
-    }
-
-    public bool ActivateAbility(Economy.AbilityType type, Vector2 targetPoint)
-        => Abilities.TryActivate(type, targetPoint, CommandPoints, Towers, DefenseLine);
-
-    public bool ActivateDoctrineAbility(Vector2 primaryPoint, Vector2? secondaryPoint = null,
-        TowerController towerTarget = null, BuildPad padTarget = null)
-        => Doctrines?.TryActivate(primaryPoint, _spatialGrid, secondaryPoint, towerTarget, padTarget) ?? false;
-
-    private void OnBossAddsRequested(BossAddsRequestedEvent evt)
-    {
-        if (evt.Boss?.BossPhase == null || evt.Boss.Definition.AddDefinition == null) return;
-        for (int i = 0; i < evt.Count; i++)
-            Enemies.Spawn(evt.Boss.Definition.AddDefinition, Path, evt.Boss.GetParent(), 1f);
-    }
-
-    private void OnBossReachedObjective(BossReachedObjectiveEvent evt)
-    {
-        if (!_missionOver) DefenseLine.ForceDeplete();
-    }
-
-    private void OnDefenseLineDepleted(DefenseLineDepletedEvent evt)
-    {
-        if (_missionOver) return;
-        _missionOver = true;
-        MissionSession.LastMissionWon = false;
-        MissionSession.LastWaveReached = Waves?.CurrentWaveNumber ?? 0;
-        EventBus.Instance?.Publish(new MissionCompletedEvent(false));
-    }
 }

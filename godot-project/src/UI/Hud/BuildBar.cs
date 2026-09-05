@@ -89,13 +89,30 @@ public partial class BuildBar : PanelContainer
             CancelBuildMode();
             GetViewport().SetInputAsHandled();
         }
+        else if (_selected?.Archetype == TowerArchetype.Minefield
+            && @event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left } mouse)
+        {
+            var worldPoint = GetViewport().GetCanvasTransform().AffineInverse() * mouse.Position;
+            // Success (0) is TowerPlacementResult's default enum value, so a
+            // null mission/service must fall back to an explicit failure
+            // here rather than `default(TowerPlacementOutcome)`.
+            var outcome = _mission?.SpecialPlacement?.TryPlaceMinefield(_selected, worldPoint)
+                ?? new TowerPlacementOutcome(TowerPlacementResult.NoControllerScene);
+            if (outcome.Success) CancelBuildMode();
+            // Refusals (off-route, field limit, too close to another field,
+            // insufficient Supply) leave build mode active so the player can
+            // try another point on the route, matching OnPadClicked below.
+            GetViewport().SetInputAsHandled();
+        }
     }
 
     private void SelectOrCancel(TowerDefinition definition)
     {
         if (_selected == definition) { CancelBuildMode(); return; }
         _selected = definition;
-        SetPadGlow(true);
+        // Minefields are free-placed on route path segments, not build pads
+        // (GDD §6 T8) - there is nothing to glow.
+        if (definition.Archetype != TowerArchetype.Minefield) SetPadGlow(true);
         RefreshCards();
     }
 
@@ -151,6 +168,8 @@ public partial class BuildBar : PanelContainer
         {
             int cost = slot.Definition.PreForkStatsForLevel(1).Cost;
             slot.Card.SetState(cost, cost - _mission.Supply.Balance, _selected == slot.Definition);
+            if (slot.Definition.Archetype == TowerArchetype.Minefield && _mission.SpecialPlacement != null)
+                slot.Card.SetFieldCount(_mission.Minefields.Fields.Count, _mission.SpecialPlacement.EffectiveMaxMinefields);
         }
     }
 

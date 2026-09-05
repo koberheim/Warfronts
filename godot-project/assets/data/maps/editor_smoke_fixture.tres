@@ -1,0 +1,93 @@
+[gd_resource type="Resource" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://src/Map/Authoring/MapDefinition.cs" id="1_map"]
+[ext_resource type="Script" path="res://src/Map/Authoring/MapMetadata.cs" id="2_metadata"]
+[ext_resource type="Script" path="res://src/Map/Authoring/GameplayMarker.cs" id="3_marker"]
+[ext_resource type="Script" path="res://src/Map/Authoring/PathDefinition.cs" id="4_path"]
+[ext_resource type="Script" path="res://src/Map/Authoring/TowerPlacementNode.cs" id="5_pad"]
+[ext_resource type="Script" path="res://src/Map/Authoring/MapAirCorridorDefinition.cs" id="6_air"]
+
+[sub_resource type="Resource" id="metadata"]
+script = ExtResource("2_metadata")
+Id = "editor_smoke_fixture"
+DisplayName = "Editor Runtime Smoke Fixture"
+Theater = "fictionalized_western_front"
+Biome = "bocage"
+WidthTiles = 20
+HeightTiles = 12
+TerrainSetId = "default"
+Status = 2
+Notes = "Small canonical map used to exercise editor preview and runtime loading."
+
+[sub_resource type="Resource" id="entry"]
+script = ExtResource("3_marker")
+Id = "entry_0"
+Kind = 0
+PositionTiles = Vector2(1, 6)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="objective"]
+script = ExtResource("3_marker")
+Id = "objective_0"
+Kind = 1
+PositionTiles = Vector2(19, 6)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="air_entry"]
+script = ExtResource("3_marker")
+Id = "air_entry_0"
+Kind = 4
+PositionTiles = Vector2(0, 1)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="air_objective"]
+script = ExtResource("3_marker")
+Id = "air_objective_0"
+Kind = 5
+PositionTiles = Vector2(19, 5)
+ShapeSizeTiles = Vector2(1, 1)
+
+[sub_resource type="Resource" id="path"]
+script = ExtResource("4_path")
+Id = "path_0"
+EntryMarkerId = "entry_0"
+ObjectiveMarkerId = "objective_0"
+Points = PackedVector2Array(1, 6, 6, 6, 10, 4, 14, 6, 19, 6)
+BakedRuntimePoints = PackedVector2Array(1, 6, 6, 6, 10, 4, 14, 6, 19, 6)
+CurveMode = 0
+ActiveFromWave = 1
+ActiveUntilWave = -1
+
+[sub_resource type="Resource" id="air"]
+script = ExtResource("6_air")
+Id = "air_0"
+EntryMarkerId = "air_entry_0"
+ObjectiveMarkerId = "air_objective_0"
+EntryPositionTiles = Vector2(0, 1)
+ObjectivePositionTiles = Vector2(19, 5)
+WidthTiles = 3
+
+[sub_resource type="Resource" id="pad_a"]
+script = ExtResource("5_pad")
+Id = "pad_0"
+PositionTiles = Vector2(5, 4)
+Tag = 0
+Enabled = true
+FootprintProfile = "single_tile"
+
+[sub_resource type="Resource" id="pad_b"]
+script = ExtResource("5_pad")
+Id = "pad_1"
+PositionTiles = Vector2(12, 8)
+Tag = 1
+Enabled = true
+FootprintProfile = "single_tile"
+
+[resource]
+script = ExtResource("1_map")
+SchemaVersion = 1
+Metadata = SubResource("metadata")
+Paths = Array[ExtResource("4_path")]([SubResource("path")])
+AirCorridors = Array[ExtResource("6_air")]([SubResource("air")])
+TowerNodes = Array[ExtResource("5_pad")]([SubResource("pad_a"), SubResource("pad_b")])
+Markers = Array[ExtResource("3_marker")]([SubResource("air_entry"), SubResource("air_objective"), SubResource("entry"), SubResource("objective")])

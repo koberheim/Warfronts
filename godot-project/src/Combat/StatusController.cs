@@ -16,6 +16,12 @@ public class StatusController
 
     public bool IsSuppressed => _suppressedRemaining > 0f;
     public bool IsSpotted => _spottedRemaining > 0f;
+    public void Reset()
+    {
+        _suppressedRemaining = 0f;
+        _suppressedTotalApplied = 0f;
+        _spottedRemaining = 0f;
+    }
 
     public void ApplySuppressed(float durationSeconds, float hardCapSeconds)
     {

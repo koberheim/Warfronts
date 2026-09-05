@@ -20,6 +20,7 @@ public class WaveRunner
 
     private readonly EnemyManager _enemyManager;
     private readonly PathNetwork _path;
+    private readonly PathNetworkSet _paths;
     private readonly Node _enemyParent;
     private readonly List<GroupState> _activeGroups = new();
     private readonly Queue<WaveDefinition> _upcoming = new();
@@ -32,9 +33,12 @@ public class WaveRunner
 
     public WaveRunner(EnemyManager enemyManager, PathNetwork path, Node enemyParent)
     {
-        _enemyManager = enemyManager;
-        _path = path;
-        _enemyParent = enemyParent;
+        _enemyManager = enemyManager; _path = path; _paths = new PathNetworkSet(); _paths.Add(path); _enemyParent = enemyParent;
+    }
+
+    public WaveRunner(EnemyManager enemyManager, PathNetworkSet paths, PathNetwork fallbackPath, Node enemyParent)
+    {
+        _enemyManager = enemyManager; _paths = paths ?? new PathNetworkSet(); _path = fallbackPath; _paths.Add(fallbackPath); _enemyParent = enemyParent;
     }
 
     // Queues a mission's wave list for the preview strip (GDD §10.7). The
@@ -101,7 +105,7 @@ public class WaveRunner
     private void SpawnOne(GroupState state)
     {
         float hpMultiplier = state.Group.HpMultiplierOverride > 0f ? state.Group.HpMultiplierOverride : 1f;
-        _enemyManager.Spawn(state.Group.Enemy, _path, _enemyParent, hpMultiplier);
+        _enemyManager.Spawn(state.Group.Enemy, _paths.ResolveForWave(state.Group.PathId, _currentWaveNumber, _path), _enemyParent, hpMultiplier);
 
         state.SpawnedCount++;
     }

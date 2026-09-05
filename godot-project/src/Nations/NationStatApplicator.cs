@@ -16,6 +16,7 @@ public static class NationStatApplicator
             DamageType = source.DamageType,
             DefaultTargeting = source.DefaultTargeting,
             ProjectileScene = source.ProjectileScene,
+            ControllerScene = source.ControllerScene,
             ProjectileSpeedTilesPerSec = source.ProjectileSpeedTilesPerSec,
             GroundOnly = source.GroundOnly,
             AirOnly = source.AirOnly,
